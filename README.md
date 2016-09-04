@@ -1,6 +1,6 @@
 # Tokyo discussion board
 
-Discussion board and a Q&amp;Q system
+Discussion board and a Q&amp;A system
 
 ##Threads
 
