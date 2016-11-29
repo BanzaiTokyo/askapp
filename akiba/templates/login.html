@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if form.errors %}
+<p>Sorry this is an error!</p>
+{% endif %}
+
+<form action="/auth/" method="post">{% csrf_token %}
+<label for="username">Username:</label>
+<input type="text" name="username" value="" id="username">
+<br>
+<label for="password">Password:</label>
+<input type="password" name="password" value="" id="password">
+
+<input type="submit" value="login">
+</form>
+
+</body>
+</html>
