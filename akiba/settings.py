@@ -39,11 +39,11 @@ SECRET_KEY = get_env_variable('DJANGO_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.akibadjango.appspot.com',]
+INTERNAL_IPS = ['127.0.0.1', '::1']
 
+ALLOWED_HOSTS = ['*', ]
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,9 +51,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'filetransfers',
+    'debug_toolbar',
     'akiba',
 )
+
+MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#    'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'akiba.urls'
@@ -70,7 +74,7 @@ ROOT_URLCONF = 'akiba.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(BASE_DIR)+'/templates/'],
+        'DIRS': [(BASE_DIR) + '/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,10 +89,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'akiba.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 
 # [START db_setup]
 # get database parameters from environment variables
@@ -109,6 +111,23 @@ DATABASES = {
 }
 # [END db_setup]
 
+# [django-registration] related parameters
+# https://django-registration.readthedocs.io/en/2.2/
+ACCOUNT_ACTIVATION_DAYS = 7
+
+EMAIL = get_env_variable('EMAIL_ADDRESS')
+
+# outgoing mail server settings
+SERVER_EMAIL = EMAIL
+DEFAULT_FROM_EMAIL = EMAIL
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
+EMAIL_SUBJECT_PREFIX = '[Akihabara.Tokyo]'
+EMAIL_HOST = get_env_variable('EMAIL_HOST')
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -122,13 +141,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_ROOT='static'
+# STATIC_ROOT='static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth.User'
 
-
+# SHOW_TOOLBAR_CALLBACK = True
+# RENDER_PANELS=True

@@ -16,6 +16,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from akiba import settings
 from akiba.views import index, HomeView, LoginView, AuthView, LoggedInView
 
 # please continue the login tutorial
@@ -24,7 +25,9 @@ from akiba.views import index, HomeView, LoginView, AuthView, LoggedInView
 urlpatterns = [
     url(regex = r'^$',
         view = HomeView.as_view(),
-        name = "homepage"),
+        name = "index"),
+
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 
     url(regex=r'^login$',
         view= LoginView.as_view(),
@@ -40,3 +43,10 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
 ]
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]

@@ -16,10 +16,12 @@ import os
 import logging
 
 from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
+from django.template import loader
 
 testVariable = os.environ.get('TEST_VARIABLE')
 
@@ -32,7 +34,11 @@ def index(request):
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse("Hello, world. This is something new for {}.".format(testVariable))
+        #return HttpResponse("Hello, world. This is something new for {}.".format(testVariable))
+        context = {
+            'key1': "value",
+        }
+        return render_to_response('index.html', context)
 
 
 class LoginView(View):
@@ -47,12 +53,14 @@ class AuthView(View):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         user = auth.authenticate(username=username, password=password)
-
         if user is not None:
             auth.login(request, user)
             return HttpResponseRedirect('/loggedin')
         else:
             return HttpResponseRedirect('/invalid')
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('you are not supposed to be here')
+
 
 class LoggedInView(View):
     def get(self, request, *args, **kwargs):
