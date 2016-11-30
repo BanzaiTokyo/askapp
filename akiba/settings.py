@@ -114,6 +114,7 @@ DATABASES = {
 # [django-registration] related parameters
 # https://django-registration.readthedocs.io/en/2.2/
 ACCOUNT_ACTIVATION_DAYS = 7
+# [END django-registration]
 
 EMAIL = get_env_variable('EMAIL_ADDRESS')
 
@@ -141,9 +142,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
 # STATIC_ROOT='static'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
@@ -151,5 +149,5 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth.User'
 
-# SHOW_TOOLBAR_CALLBACK = True
-# RENDER_PANELS=True
+#the url where the eser will be redirected after they log in
+LOGIN_REDIRECT_URL = '/'
