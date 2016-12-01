@@ -1,3 +1,4 @@
 Django==1.8.4
 django-registration==2.2
 django-debug-toolbar
+MySQL-python==1.2.5

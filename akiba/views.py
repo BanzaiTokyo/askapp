@@ -21,7 +21,8 @@ from django.views.generic import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
-from django.template import loader
+from django.template import loader, RequestContext
+from django.views.decorators.cache import never_cache
 
 testVariable = os.environ.get('TEST_VARIABLE')
 
@@ -38,7 +39,7 @@ class HomeView(View):
         context = {
             'key1': "value",
         }
-        return render_to_response('index.html', context)
+        return render(request, 'index.html', context)
 
 
 class LoginView(View):
