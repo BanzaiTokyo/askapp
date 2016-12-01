@@ -22,20 +22,19 @@ class Post(models.Model):
     )
 
     # defines the parent post. If the value is null, the post is a thread starter
-    parent = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    parent = models.ForeignKey('self', null=True)
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
     tags = models.ManyToManyField(Tag)
 
     # these fields are taken into account only if the post is thread starter
-    hidden = models.BooleanField(default=False)
-    closed = models.BooleanField(default=False)
-    sticky = models.BooleanField(default=False)
-    sponsored = models.BooleanField(default=False)
+    hidden = models.BooleanField(default=False) # the thread is visible only to the staff and the author
+    closed = models.BooleanField(default=False) # noone can post comments / answers in this threa
+    sticky = models.DateField(null=True) # this thread will be sticky until the given date
+    sponsored = models.BooleanField(default=False) # hopefully one day there will be ponsored threads...
 
     # reference to the user who created the post
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add = True)
@@ -54,7 +53,7 @@ class Post(models.Model):
     # post body
     text = models.TextField(null=False)
 
-    # post body with HTML tags
+    # post body with HTML markup
     texthtml = models.TextField(null=True)
 
     # post title can be null if the post is not a thread starter
@@ -62,8 +61,39 @@ class Post(models.Model):
 
     image = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')
 
-
-
-
     def __unicode__(self):
         return self.title
+
+class Action(models.Model):
+    '''
+    Actions are taken by users and can describe:
+    - update post (saving the old text and title)
+    - close post
+    - setting post sticky, etc
+    '''
+
+    TYPES_OF_ACTION = (
+        ("update", 'Update'),
+        ("close", 'Close'),
+        ("sticky", 'Sticky'),
+    )
+
+    takeby_by = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+
+    post = models.ForeignKey(Post, null=True)
+
+    # atomatically added timestamp field when the record is created
+    taken_on = models.DateTimeField(auto_now_add=True)
+
+    # action
+    action_name = models.TextField(null=False, choices=TYPES_OF_ACTION, default="update")
+
+    # old post body with HTML markup
+    old_text_html = models.TextField(null=True)
+
+    # old post body
+    old_text = models.TextField(null=True)
+
+    # old post title
+    old_title = models.TextField(null=True)
+

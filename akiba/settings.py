@@ -149,5 +149,5 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth.User'
 
-#the url where the eser will be redirected after they log in
+#the url where the user will be redirected after they log in
 LOGIN_REDIRECT_URL = '/'
