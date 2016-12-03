@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'snowpenguin.django.recaptcha2',
     'akiba',
 )
 
@@ -151,3 +152,6 @@ AUTH_USER_MODEL = 'auth.User'
 
 #the url where the user will be redirected after they log in
 LOGIN_REDIRECT_URL = '/'
+
+RECAPTCHA_PRIVATE_KEY = 'your private key'
+RECAPTCHA_PUBLIC_KEY = 'your public key'
