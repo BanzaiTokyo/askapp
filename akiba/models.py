@@ -61,6 +61,10 @@ class Post(models.Model):
 
     image = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')
 
+    # the current score of the post. It is only calculated for thread posts (no parents)
+    # that are not older than one week old
+    score = models.IntegerField(default=0)
+
     def __unicode__(self):
         return self.title
 

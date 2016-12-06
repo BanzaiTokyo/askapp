@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from registration.views import RegistrationView
-from forms import RecaptchaRegistrationForm
+from akiba.forms import RecaptchaRegistrationForm
 
 
 class HomeView(View):
