@@ -6,7 +6,7 @@ from akiba import settings
 class Tag(models.Model):
     tag_name = models.CharField(max_length=60, null=False)
 
-class Post(models.Model):
+class Thread(models.Model):
 
     # codes for types of posts
     QUESTION = "QQ"
@@ -20,9 +20,6 @@ class Post(models.Model):
         (DISCUSSION, 'Discussion'),
         (LINK, 'Link'),
     )
-
-    # defines the parent post. If the value is null, the post is a thread starter
-    parent = models.ForeignKey('self', null=True)
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
     tags = models.ManyToManyField(Tag)
@@ -42,7 +39,7 @@ class Post(models.Model):
     # atomatically added timestamp field when the record is modified
     modified = models.DateTimeField(auto_now = True)
 
-    # if the post is the thread starter it must define the thread's type
+    # Thread must have one of the types defined in TYPES_OF_THREAD
     thread_type = models.CharField(
         max_length=2,
         choices=TYPES_OF_THREAD,
@@ -50,13 +47,13 @@ class Post(models.Model):
         null=True
     )
 
-    # post body
-    text = models.TextField(null=False)
+    # thread body with HTML markup
+    text = models.TextField(null=True)
 
-    # post body with HTML markup
-    texthtml = models.TextField(null=True)
+    # link field for the Threads of the type Link
+    link = models.TextField(null=True)
 
-    # post title can be null if the post is not a thread starter
+    # thread title can be null if the post is not a thread starter
     title = models.CharField(max_length=255, null=True)
 
     image = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')
@@ -67,6 +64,27 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class Post(models.Model):
+    '''
+    Post is a part of the discussion on the levels below Thread
+    It can be comments, answers organized in several levels
+    '''
+
+    # defines the parent post. If the value is null, the post is a thread starter
+    parent = models.ForeignKey('self', null=True)
+
+    # the thread that the Post belongs to
+    thread_id = models.ForeignKey(Thread, null=True)
+
+    # atomatically added timestamp field when the record is created
+    created = models.DateTimeField(auto_now_add = True)
+
+    # post body with HTML markup
+    text = models.TextField(null=True)
+
+    #in question Thread, the topic starter or the admin can select one of the answers as "the answer"
+    the_answer = models.BooleanField(default=False)
 
 class Action(models.Model):
     '''
@@ -82,7 +100,7 @@ class Action(models.Model):
         ("sticky", 'Sticky'),
     )
 
-    takeby_by = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    taken_by = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     post = models.ForeignKey(Post, null=True)
 
@@ -92,12 +110,33 @@ class Action(models.Model):
     # action
     action_name = models.TextField(null=False, choices=TYPES_OF_ACTION, default="update")
 
-    # old post body with HTML markup
-    old_text_html = models.TextField(null=True)
-
     # old post body
     old_text = models.TextField(null=True)
 
     # old post title
     old_title = models.TextField(null=True)
 
+class ThreadLike(models.Model):
+    '''
+
+    '''
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+
+    # atomatically added timestamp field when the record is created
+    created = models.DateTimeField(auto_now_add=True)
+
+    points = models.IntegerField()
+
+
+class PostLike(models.Model):
+    '''
+
+    '''
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+
+    # atomatically added timestamp field when the record is created
+    created = models.DateTimeField(auto_now_add=True)
+
+    points = models.IntegerField()
