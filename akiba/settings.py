@@ -153,5 +153,6 @@ AUTH_USER_MODEL = 'auth.User'
 #the url where the user will be redirected after they log in
 LOGIN_REDIRECT_URL = '/'
 
-RECAPTCHA_PRIVATE_KEY = 'your private key'
-RECAPTCHA_PUBLIC_KEY = 'your public key'
+#RECAPTCHA KEYS
+RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
