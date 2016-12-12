@@ -2,3 +2,4 @@ Django==1.8.4
 django-registration==2.2
 django-debug-toolbar
 django-recaptcha2
+django-bootstrap3

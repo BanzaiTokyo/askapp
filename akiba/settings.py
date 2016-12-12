@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'snowpenguin.django.recaptcha2',
+    'bootstrap3',
     'akiba',
 )
 

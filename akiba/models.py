@@ -56,7 +56,11 @@ class Thread(models.Model):
     # thread title can be null if the post is not a thread starter
     title = models.CharField(max_length=255, null=True)
 
+    #image that illustrates the thread
     image = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')
+
+    #smaller version of the image
+    thumbnail = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/', null=True)
 
     # the current score of the post. It is only calculated for thread posts (no parents)
     # that are not older than one week old
