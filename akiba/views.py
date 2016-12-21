@@ -11,6 +11,21 @@ class HomeView(View):
         }
         return render(request, 'index.html', context)
 
+
+class NewRegisterView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'new-registration.html', context)
+
+class NewLoginView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'new-login.html', context)
+
 class ThreadView(View):
     def get(self, request, *args, **kwargs):
         context = {
