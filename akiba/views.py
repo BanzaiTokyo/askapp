@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import View
-from registration.views import RegistrationView
+from registration.backends.hmac.views import RegistrationView
 from akiba.forms import RecaptchaRegistrationForm
+from settings import BLACKLISTED_DOMAINS
+import logging
 
 
 class HomeView(View):
@@ -54,10 +56,12 @@ class AkibaRegistrationView(RegistrationView):
     form_class = RecaptchaRegistrationForm
     template_name = 'registration_form.html'
 
-    def register(self, form):
-        """
-        Implement user-registration logic here. Access to both the
-        request and the registration form is available here.
+    @staticmethod
+    def is_email_blacklisted(email):
+        return any([email.lower().endswith('@'+d) for d in BLACKLISTED_DOMAINS])
 
-        """
-        raise NotImplementedError
+    def send_activation_email(self, user):
+        if self.is_email_blacklisted(user.email):
+            logging.debug('blacklisted email %s', user.email)
+        else:
+            super(AkibaRegistrationView, self).send_activation_email(user)
