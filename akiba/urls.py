@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from akiba import settings
-from akiba.views import HomeView, ThreadView, CommentView, AkibaRegistrationView
+from akiba.views import HomeView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
 
 
 urlpatterns = [
@@ -13,6 +13,10 @@ urlpatterns = [
     url(regex=r'^thread$',
         view=ThreadView.as_view(),
         name="thread"),
+
+    url(regex=r'^question$',
+        view=QuestionView.as_view(),
+        name="question"),
 
     url(regex=r'^comment$',
         view=CommentView.as_view(),

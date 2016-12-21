@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/style.css"/>
+{% endblock %}
+
+{% block content %}
+
+    <!--the question-->
+    <div class="row">
+        <div>
+            <div class="col-xs-1">
+                <a class="btn glyphicon glyphicon-chevron-up"></a>
+                <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
+                <a class="btn glyphicon glyphicon-trash text-danger"></a>
+                <a class="btn glyphicon glyphicon-lock text-danger"></a>
+
+
+                <h2 class="text-center">5</h2>
+                <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+
+            </div>
+            <div class="col-xs-10 col-sm-11  col-md-11">
+                <h2>Do you know what this building is?
+                    <a class="btn glyphicon glyphicon-edit text-success"></a>
+                </h2>
+
+                <!--Tags-->
+
+                <div>asked by <a href="#"><img src="{% static "images/akiba.png" %}" width="20" height="20"/>&nbsp;SomeUser</a>
+                    | 44 minutes ago in <a href="#" class="label label-primary">Science&Technology</a> <a
+                            href="#" class="label label-primary">Gaijin</a></p>
+                </div>
+
+            </div>
+            <div class="col-xs-10 col-sm-11  col-md-11">
+
+                <a href="#" class="thumbnail">
+                    <img src="{% static "images/akihabara.png" %}" alt="...">
+                </a>
+            </div>
+
+            <div class="col-xs-12    col-md-11 col-md-offset-1">
+
+
+                <p>Aliquam ultricies urna at congue convallis. Donec suscipit mi libero, a iaculis nisl
+                    hendrerit in. Nulla finibus, felis vitae porta molestie, ex libero sagittis est, quis
+                    blandit leo orci ac dolor. Nullam pretium nibh lacus, eget placerat sapien ultrices eu.
+                    Maecenas dapibus luctus placerat. Curabitur ut odio ac lacus rhoncus semper rhoncus ut elit.
+                    Donec at ligula et eros eleifend luctus eget a lacus. </p>
+                <p><a class="btn btn-info" href="#">answer</a> <a class="btn btn-primary" href="#">comment</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--End the question-->
+
+    <!--spacer-->
+    <div class="row">
+        <div class="col-xs-12    col-md-11 col-md-offset-1">
+            <hr>
+        </div>
+    </div>
+    <!--end spacer-->
+
+    <!--comment to the question-->
+    <div class="row">
+        <div class="col-xs-12 col-md-11 col-md-offset-1">
+            <a class="glyphicon glyphicon-chevron-up"></a>
+            <span class="text-danger"> 5 </span>
+            <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+            <a class="glyphicon glyphicon-trash text-danger"></a>
+            &nbsp; <a href="#">#2345</a> by <a href="#">TwoUser</a>
+            | 11 minutes ago
+
+            <div><p>My point of view is that this is really not important, what is important is that you can go
+                to a cat cafe in Akihabara and mediate about all the cool gadgets that you are going to buy<br>
+            </p>
+            </div>
+
+        </div>
+    </div>
+    <!--end comment to the question -->
+
+    <!--start answer-->
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-9 col-md-offset-1">
+            <div class=" panel panel-default">
+                <div class="panel-heading">
+
+
+                    <div><a class="glyphicon glyphicon-chevron-up"></a>
+                        <strong> 5 </strong>
+                        <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+                        <a class="glyphicon glyphicon-trash text-danger"></a>
+
+
+                        &nbsp; answer <a href="#">#1234</a>
+                        submitted 12 minutes ago
+
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <p>Lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit. Integer vehicula congue nisi ac mollis. Curabitur ante orci, dictum
+                        ultricies
+                        scelerisque sit amet, malesuada maximus lorem. Phasellus at diam quam.
+                    </p>
+                    <p>Lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit. Integer vehicula congue nisi ac mollis. Curabitur ante orci, dictum
+                        ultricies
+                        scelerisque sit amet, malesuada maximus lorem. Phasellus at diam quam.
+                    </p>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-2">
+            <a href="#" class="thumbnail text-center">
+                <img src="{% static "images/banzaitokyo.png" %}" alt="...">
+
+                <br>
+                BanzaiTokyo</a>
+
+            <a href="#" class="btn btn-default btn-block btn-success glyphicon glyphicon-ok text-success"></a>
+
+            <a href="#" class="btn btn-default btn-block btn-primary">comment</a>
+
+            </a>
+        </div>
+
+
+    </div>
+    <!--end answer-->
+
+    <!--spacer-->
+    <div class="row">
+        <div class="col-xs-12    col-md-11 col-md-offset-1">
+            <hr>
+        </div>
+    </div>
+    <!--end spacer-->
+
+    <!--second comment-->
+    <div class="row">
+
+        <div class="col-xs-12 col-md-11 col-md-offset-1">
+            <a class="glyphicon glyphicon-chevron-up"></a>
+            <span class="text-danger"> 5 </span>
+            <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+            <a class="glyphicon glyphicon-trash text-danger"></a>
+            &nbsp; <a href="#">#2345</a> by <a href="#">TwoUser</a>
+            | 11 minutes ago
+
+            <div><p>I am afraid you got it all wrong!</p>
+            </div>
+
+        </div>
+    </div>
+    <!--end second comment-->
+
+    <!--third comment-->
+    <div class="row">
+        <div class="col-xs-12 col-md-11 col-md-offset-1">
+            <a class="glyphicon glyphicon-chevron-up"></a>
+            <span class="text-danger"> 5 </span>
+            <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+            <a class="glyphicon glyphicon-trash text-danger"></a>
+            &nbsp; <a href="#">#3456</a> by <a href="#">OneUser</a>
+            | 9 minutes ago
+
+            <div><p>You're right, I am terribly sorry! I will check facts before I post next time.</p>
+            </div>
+
+        </div>
+    </div>
+    <!--end third comment-->
+
+{% endblock %}
+
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}

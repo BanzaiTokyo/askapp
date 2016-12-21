@@ -18,6 +18,13 @@ class ThreadView(View):
         }
         return render(request, 'thread.html', context)
 
+class QuestionView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'question.html', context)
+
 
 class CommentView(View):
     def get(self, request, *args, **kwargs):
