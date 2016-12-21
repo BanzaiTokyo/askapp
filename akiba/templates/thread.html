@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/style.css"/>
+{% endblock %}
+
+{% block content %}
+
+            <!--First Thread-->
+            <div class="row">
+                <div>
+                    <div class="col-xs-1">
+                        <a class="btn glyphicon glyphicon-chevron-up"></a>
+                        <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
+                        <a class="btn glyphicon glyphicon-trash text-danger"></a>
+                        <a class="btn glyphicon glyphicon-lock text-danger"></a>
+
+                        <h2 class="text-center">5</h2>
+                        <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+
+                    </div>
+                    <div class="col-xs-10 col-sm-11  col-md-11">
+                        <h2><a href="#"> Another very cool building is erected in Tokyo</a>
+                            <a class="btn glyphicon glyphicon-edit text-success"></a>
+                        </h2>
+
+                        <!--Tags-->
+
+                        <div>posted by <a href="#"><img src="{% static "images/akiba.png" %}" width="20" height="20"/>SomeUser</a>
+                            | 44 minutes ago in <a href="#" class="label label-primary">Science&Technology</a> <a
+                                    href="#" class="label label-primary">Gaijin</a></p>
+                        </div>
+
+                    </div>
+                    <div class="col-xs-10 col-sm-11  col-md-11">
+
+                        <a href="#" class="thumbnail">
+                            <img src="{% static "images/akihabara.png" %}" alt="...">
+                        </a>
+                    </div>
+
+                    <div class="col-xs-12    col-md-11 col-md-offset-1">
+
+
+                        <p>Aliquam ultricies urna at congue convallis. Donec suscipit mi libero, a iaculis nisl
+                            hendrerit in. Nulla finibus, felis vitae porta molestie, ex libero sagittis est, quis
+                            blandit leo orci ac dolor. Nullam pretium nibh lacus, eget placerat sapien ultrices eu.
+                            Maecenas dapibus luctus placerat. Curabitur ut odio ac lacus rhoncus semper rhoncus ut elit.
+                            Donec at ligula et eros eleifend luctus eget a lacus. </p>
+                        <p>Vestibulum finibus, eros non
+                            consectetur efficitur, arcu diam volutpat arcu, quis luctus augue arcu feugiat felis. Sed
+                            sit amet nibh quis sapien commodo rhoncus. Pellentesque congue lectus sed sapien mollis
+                            rutrum. Sed fringilla ex id eros consectetur porttitor. Vestibulum ante ipsum primis in
+                            faucibus orci luctus et ultrices posuere cubilia Curae; Praesent laoreet, erat sed tincidunt
+                            tempus, erat mauris hendrerit neque, pulvinar ullamcorper neque odio ac lorem. Donec sit
+                            amet lorem vitae arcu cursus lobortis. Integer tempus scelerisque diam non gravida. Nulla
+                            elementum porta massa eget malesuada.
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+            <!--End first Thread-->
+
+            <!--spacer-->
+            <div class="row">
+                <div class="col-xs-12    col-md-11 col-md-offset-1">
+                    <hr>
+                </div>
+            </div>
+            <!--end spacer-->
+
+            <!--start submit comment form-->
+            <div class="row">
+                <div class="col-xs-12    col-md-11 col-md-offset-1">
+                    <div class="form-group">
+                        <form>
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" rows="5" id="comment"></textarea><br>
+
+                            <button type="submit" class="btn btn-primary pull-right">Post comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--End submit comment form-->
+
+            <!--start first comment-->
+            <div class="row">
+                <div class="col-xs-12 col-md-11 col-md-offset-1">
+
+                    <a class="glyphicon glyphicon-chevron-up"></a>
+                    <span class="text-danger"> 5 </span>
+                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+                    <a class="glyphicon glyphicon-trash text-danger"></a>
+
+
+                    | <a href="#">#1234</a> by <a href="#">OneUser</a>
+                    | 12 minutes ago
+
+                    <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula congue nisi ac
+                        mollis. Curabitur ante orci, dictum ultricies scelerisque sit amet, malesuada maximus lorem.
+                        Phasellus
+                        at diam quam.<br>
+                        <a href="#">comment</a></p>
+                    </div>
+
+                    <!--Tags-->
+
+                </div>
+            </div>
+            <!--end first comment-->
+
+            <!--second comment-->
+            <div class="row">
+                <div class="col-xs-12 col-md-10 col-md-offset-2">
+                    <a class="glyphicon glyphicon-chevron-up"></a>
+                    <span class="text-danger"> 5 </span>
+                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+                    <a class="glyphicon glyphicon-trash text-danger"></a>
+                    | <a href="#">#2345</a> by <a href="#">TwoUser</a>
+                    | 11 minutes ago
+
+                    <div><p>I am afraid you got it all wrong!</br><a href="#">comment</a></p>
+                    </div>
+
+                </div>
+            </div>
+            <!--end second comment-->
+
+            <!--third comment-->
+            <div class="row">
+                <div class="col-xs-12 col-md-9 col-md-offset-3">
+                    <a class="glyphicon glyphicon-chevron-up"></a>
+                    <span class="text-danger"> 5 </span>
+                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+                    <a class="glyphicon glyphicon-trash text-danger"></a>
+                    | <a href="#">#3456</a> by <a href="#">OneUser</a>
+                    | 9 minutes ago
+
+                    <div><p>You're right, I am terribly sorry! I will check facts before I post next time.</br><a
+                            href="#">comment</a></p>
+                    </div>
+
+                </div>
+            </div>
+            <!--end third comment-->
+
+
+            <!--fourth comment at level one comment-->
+            <div class="row">
+                <div class="col-xs-12 col-md-11 col-md-offset-1">
+                    <a class="glyphicon glyphicon-chevron-up"></a>
+                    <span class="text-danger"> 5 </span>
+                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+                    <a class="glyphicon glyphicon-trash text-danger"></a>
+                    | <a href="#">#2345</a> by <a href="#">TwoUser</a>
+                    | 11 minutes ago
+
+                    <div><p>My point of view is that this is really not important, what is important is that you can go to a cat cafe in Akihabara and mediate about all the cool gadgets that you are going to buy</br><a href="#">comment</a></p>
+                    </div>
+
+                </div>
+            </div>
+            <!--end fourth comment at level one -->
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}

@@ -2,13 +2,16 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from akiba import settings
-from akiba.views import HomeView, AkibaRegistrationView
+from akiba.views import HomeView, ThreadView, AkibaRegistrationView
 
 
 urlpatterns = [
     url(regex=r'^$',
         view=HomeView.as_view(),
         name="index"),
+    url(regex=r'^thread$',
+        view=ThreadView.as_view(),
+        name="boot"),
 
     url(r'^accounts/register/$', view=AkibaRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),

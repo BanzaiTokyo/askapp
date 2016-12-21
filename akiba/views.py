@@ -11,6 +11,14 @@ class HomeView(View):
         }
         return render(request, 'index.html', context)
 
+class ThreadView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'thread.html', context)
+
+
 
 class AkibaRegistrationView(RegistrationView):
     form_class = RecaptchaRegistrationForm

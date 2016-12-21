@@ -1,37 +1,129 @@
+{% load bootstrap3 %}
 {% load i18n %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
-    <title>{% block title %}To be replaced by the title block{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block css %}
+
+    {% endblock %}
+    <title>
+        {% block title %}
+            To be replaced by the title block
+        {% endblock %}
+    </title>
 </head>
 
 <body>
-    <div id="header">
-    {% block header %}
-    <a href="{% url 'index' %}">{% trans "Home" %}</a> | 
 
-    {% if user.is_authenticated %}
-        {% trans "Logged in" %}: {{ user.username }} 
-        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> | 
-        <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
-    {% else %}
-       <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
-    {% endif %}
-    <hr />
-    {% endblock %}
-    </div>
+{#----------------header-------------------------#}
+{% block header %}
+    <nav class="navbar navbar-default">
+        <div class="container">
 
-    <div id="content">
-    {% block content %}{% endblock %}
-    </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">Akihabara.Tokyo</a>
+            </div>
 
-    <div id="footer">
-    {% block footer %}
-        <hr />
-    {% endblock %}
+
+            <div id="navbar" class="navbar-collapse collapse ">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Top</a></li>
+                    <li><a href="#">Recent</a></li>
+                    <li><a href="#">Submit</a></li>
+
+                </ul>
+
+
+                <div class="nav navbar-btn navbar-right">
+                    {% if user.is_authenticated %}
+                        {% trans "Logged in" %}: {{ user.username }}
+                        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> )
+                    {% else %}
+                        <a href="{% url 'auth_login' %}" class="btn btn-link">Login</a>
+                        <a href="{% url 'registration_register' %}"
+                           class="btn btn-primary">Register</a>
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{# --------------------- end header -------------------------#}
+
+
+<div class="container">
+
+    <div class="row">
+
+        {#--------------main column ----------------#}
+        <div class="col-md-9">
+
+            {% block content %}
+                this is the content block
+            {% endblock %}
+
+        </div>
+        {#--------------end main column ----------------#}
+
+
+        {#--------------right column ----------------#}
+        <div class="col-md-3 visible-md-block visible-lg">
+            {% block rightcolumn %}
+                this is right column block
+            {% endblock %}
+
+        </div>
+        {#--------------end right column ----------------#}
+
     </div>
+</div>
+
+
+<footer class="footer" style="background-color: #adadad">
+    <div class="container">
+
+        {% block footer %}
+
+
+            <div class="navbar-default">
+                <div class="col-sm-12 col-md-4">
+                    <a class="navbar-brand " href="#">&copy; 2016 Akihabara.Tokyo</a>
+                </div>
+            </div>
+            <div class=" col-sm-12 col-md-8">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#about">Contact us</a></li>
+
+                </ul>
+
+
+            </div>
+
+        {% endblock %}
+    </div>
+</footer>
 </body>
 
 </html>
