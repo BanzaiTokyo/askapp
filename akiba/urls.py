@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from akiba import settings
-from akiba.views import HomeView, NewRegisterView, NewLoginView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
+from akiba.views import HomeView, NewRegisterView, NewLoginView, ProfileEditView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
 
 
 urlpatterns = [
@@ -21,6 +21,10 @@ urlpatterns = [
     url(regex=r'^newlogin$',
         view=NewLoginView.as_view(),
         name="new_login"),
+
+    url(regex=r'^profileedit$',
+        view=ProfileEditView.as_view(),
+        name="profile_edit"),
 
     url(regex=r'^thread$',
         view=ThreadView.as_view(),

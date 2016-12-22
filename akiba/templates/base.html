@@ -1,6 +1,7 @@
 {% load bootstrap3 %}
 {% load i18n %}
 
+
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -15,8 +16,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% block css %}
-
+        <link rel="stylesheet" href="/static/style.css"/>
     {% endblock %}
+
     <title>
         {% block title %}
             To be replaced by the title block
@@ -45,8 +47,8 @@
 
             <div id="navbar" class="navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Top</a></li>
-                    <li><a href="#">Recent</a></li>
+                    <li><a href="{% url 'index' %}">Top</a></li>
+                    <li><a href="{% url 'recent' %}">Recent</a></li>
                     <li><a href="#">Submit</a></li>
 
                 </ul>

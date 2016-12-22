@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+
+{% block content %}
+
+    <h2>Edit profile:</h2>
+    <div class="row">
+        <p>&nbsp;</p>
+        <div class="col-md-6">
+            Username: <strong class="pull-right"><span>BanzaiTokyo</span></strong>
+        </div>
+
+        <div class="row">
+        </div>
+        <hr>
+
+        <form>
+            <div class="col-md-6">
+                <p>
+                    <small class="form-text text-muted">We do not require you to fill in this information, however we
+                        find that it helps to build a friendly community if people share a little information about
+                        themselves and their interests.
+                    </small>
+                </p>
+
+                <div class="form-group">
+                    <label for="exampleSelect1">Country:</label>
+                    <select class="form-control" id="exampleSelect1">
+                        <option>Andorra</option>
+                        <option>Amerika</option>
+                        <option>Rossiya</option>
+                        <option>Yugoslaviya</option>
+                        <option>Yaponiya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="email" class="form-control" id="city" aria-describedby="username"
+                           placeholder="Enter your city">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleTextarea">About you:</label>
+                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                </div>
+
+            </div>
+
+            {# right column #}
+            <div class="col-md-6">
+
+                <div>
+                    <p><strong>Avatar:</strong></p>
+                    <img src="{% static "images/banzaitokyo.png" %}"/>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputFile">To replace your current avatar:</label>
+                    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+
+                </div>
+                <p>
+                    <small id="fileHelp" class="form-text text-muted">Choosee an image file on your computer to upload
+                        and use as your avatar.
+                    </small>
+                </p>
+
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right">Save profile</button>
+
+
+    </form>
+
+
+
+{% endblock %}
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}

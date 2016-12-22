@@ -26,6 +26,13 @@ class NewLoginView(View):
         }
         return render(request, 'new-login.html', context)
 
+class ProfileEditView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'profile_edit.html', context)
+
 class ThreadView(View):
     def get(self, request, *args, **kwargs):
         context = {
