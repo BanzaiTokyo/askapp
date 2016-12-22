@@ -157,3 +157,7 @@ LOGIN_REDIRECT_URL = '/'
 #RECAPTCHA KEYS
 RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+
+BLACKLISTED_DOMAINS = ['yopmail.com', ]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
