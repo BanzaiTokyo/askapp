@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from registration.backends.hmac.views import RegistrationView
 from akiba.forms import RecaptchaRegistrationForm
-from settings import BLACKLISTED_DOMAINS
+from akiba.settings import BLACKLISTED_DOMAINS
 import logging
 
 
@@ -20,6 +20,13 @@ class NewRegisterView(View):
             'key1': "value",
         }
         return render(request, 'new-registration.html', context)
+
+class ThankyouView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'key1': "value",
+        }
+        return render(request, 'content.html', context)
 
 class NewLoginView(View):
     def get(self, request, *args, **kwargs):

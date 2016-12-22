@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from akiba import settings
-from akiba.views import HomeView, NewRegisterView, NewLoginView, ProfileEditView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
+from akiba.views import HomeView, NewRegisterView, NewLoginView, ProfileEditView, ThankyouView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
 
 
 urlpatterns = [
@@ -29,6 +29,10 @@ urlpatterns = [
     url(regex=r'^thread$',
         view=ThreadView.as_view(),
         name="thread"),
+
+    url(regex=r'^thankyou$',
+        view=ThankyouView.as_view(),
+        name="thankyou"),
 
     url(regex=r'^question$',
         view=QuestionView.as_view(),
