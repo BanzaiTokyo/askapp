@@ -17,7 +17,8 @@
         </div>
         <hr>
 
-        <form>
+        <form method="post" enctype="multipart/form-data">
+	        {% csrf_token %}
             <div class="col-md-6">
                 <p>
                     <small class="form-text text-muted">We do not require you to fill in this information, however we
@@ -27,24 +28,30 @@
                 </p>
 
                 <div class="form-group">
-                    <label for="exampleSelect1">Country:</label>
-                    <select class="form-control" id="exampleSelect1">
+	                {{ form.country.errors }}
+                    <label for="id_country">Country:</label>
+	                {{ form.country }}
+                    <!-- <select class="form-control" id="exampleSelect1">
                         <option>Andorra</option>
                         <option>Amerika</option>
                         <option>Rossiya</option>
                         <option>Yugoslaviya</option>
                         <option>Yaponiya</option>
-                    </select>
+                    </select>-->
                 </div>
                 <div class="form-group">
-                    <label for="city">City:</label>
-                    <input type="email" class="form-control" id="city" aria-describedby="username"
-                           placeholder="Enter your city">
+	                {{ form.city.errors }}
+                    <label for="id_city">City:</label>
+	                {{ form.city }}
+                    <!--<input type="email" class="form-control" id="city" aria-describedby="username"
+                           placeholder="Enter your city">-->
                 </div>
 
                 <div class="form-group">
+	                {{ form.about.errors }}
                     <label for="exampleTextarea">About you:</label>
-                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+	                {{ form.about }}
+                    <!-- <textarea class="form-control" id="exampleTextarea" rows="3"></textarea> -->
                 </div>
 
             </div>
@@ -53,16 +60,16 @@
             <div class="col-md-6">
 
                 <div>
+	                {{ form.avatar.errors }}
                     <p><strong>Avatar:</strong></p>
-                    <img src="{% static "images/banzaitokyo.png" %}"/>
+                    <img src="{% static user.profile.avatar.url %}" />
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputFile">To replace your current avatar:</label>
-                    <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-
+                    <label for="id_avatar">To replace your current avatar:</label>
+                    <input type="file" class="form-control-file" id="id_avatar" name="avatar" aria-describedby="fileHelp">
                 </div>
                 <p>
-                    <small id="fileHelp" class="form-text text-muted">Choosee an image file on your computer to upload
+                    <small id="fileHelp" class="form-text text-muted">Choose an image file on your computer to upload
                         and use as your avatar.
                     </small>
                 </p>

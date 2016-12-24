@@ -1,51 +1,23 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf.urls.static import static
 
-from akiba import settings
-from akiba.views import HomeView, NewRegisterView, NewLoginView, ProfileEditView, ThankyouView, ThreadView, QuestionView, CommentView, AkibaRegistrationView
+import settings
+import views
 
 
 urlpatterns = [
-    url(regex=r'^$',
-        view=HomeView.as_view(),
-        name="index"),
-
-    url(regex=r'^recent$',
-        view=HomeView.as_view(),
-        name="recent"),
-
-    url(regex=r'^newregister$',
-        view=NewRegisterView.as_view(),
-        name="new_register"),
-
-    url(regex=r'^newlogin$',
-        view=NewLoginView.as_view(),
-        name="new_login"),
-
-    url(regex=r'^profileedit$',
-        view=ProfileEditView.as_view(),
-        name="profile_edit"),
-
-    url(regex=r'^thread$',
-        view=ThreadView.as_view(),
-        name="thread"),
-
-    url(regex=r'^thankyou$',
-        view=ThankyouView.as_view(),
-        name="thankyou"),
-
-    url(regex=r'^question$',
-        view=QuestionView.as_view(),
-        name="question"),
-
-    url(regex=r'^comment$',
-        view=CommentView.as_view(),
-        name="comment"),
-
-    url(r'^accounts/register/$', view=AkibaRegistrationView.as_view()),
-
+    url(r'^$', views.HomeView.as_view(), name="index"),
+    url(r'^recent$', views.HomeView.as_view(), name="recent"),
+    url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
+    url(r'^newlogin$', views.NewLoginView.as_view(), name="new_login"),
+    url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
+    url(r'^thread$', views.ThreadView.as_view(), name="thread"),
+    url(r'^thankyou$', views.ThankyouView.as_view(), name="thankyou"),
+    url(r'^question$', views.QuestionView.as_view(), name="question"),
+    url(r'^comment$', views.CommentView.as_view(), name="comment"),
+    url(r'^accounts/register/$', views.AkibaRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
 ]
 
@@ -56,3 +28,4 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

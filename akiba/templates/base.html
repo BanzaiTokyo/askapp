@@ -1,12 +1,5 @@
 {% load bootstrap3 %}
 {% load i18n %}
-
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +7,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	{# Load CSS and JavaScript #}
+	<script src="/static/js/jquery.min.js"></script>
+	{% bootstrap_javascript %}
+	{% bootstrap_css %}
 
     {% block css %}
         <link rel="stylesheet" href="/static/style.css"/>
@@ -57,7 +55,7 @@
                 <div class="nav navbar-btn navbar-right">
                     {% if user.is_authenticated %}
                         {% trans "Logged in" %}: {{ user.username }}
-                        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> )
+                        (<a href="{% url 'auth_logout' %}?next=/">{% trans "Log out" %}</a> )
                     {% else %}
                         <a href="{% url 'auth_login' %}" class="btn btn-link">Login</a>
                         <a href="{% url 'registration_register' %}"

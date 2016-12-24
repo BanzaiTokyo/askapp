@@ -3,3 +3,5 @@ django-registration==2.2
 django-debug-toolbar
 django-recaptcha2
 django-bootstrap3
+django-countries
+Pillow

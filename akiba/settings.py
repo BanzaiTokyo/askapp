@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'snowpenguin.django.recaptcha2',
     'bootstrap3',
+    'django_countries',
     'akiba',
 )
 
@@ -76,7 +77,7 @@ ROOT_URLCONF = 'akiba.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(BASE_DIR) + '/templates/'],
+        'DIRS': [(BASE_DIR) + '/akiba/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +146,7 @@ USE_L10N = True
 USE_TZ = True
 
 # STATIC_ROOT='static'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "akiba/static")
 
 STATIC_URL = '/static/'
 
@@ -161,3 +162,8 @@ RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 BLACKLISTED_DOMAINS = ['yopmail.com', ]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'akiba/media')
+
+AVATAR_SIZE = (100, 100)
