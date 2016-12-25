@@ -1,22 +1,55 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
+
+
 {% block content %}
-    {% if user.is_authenticated %}
-        <p>You are already logged in.
-        </p>
-    {% else %}
-        <form method="post" action=".">
-            {% csrf_token %}
-            {{ form.as_p }}
 
-            <input type="submit" value="{% trans 'Log in' %}"/>
-            <input type="hidden" name="next" value="{{ next }}"/>
+
+    <ul class="nav nav-tabs">
+        <li ><a href="{% url 'registration_register' %}">Create an account</a></li>
+        <li class="active"><a data-toggle="tab">Login</a></li>
+    </ul>
+
+        <p>&nbsp;</p>
+
+
+    <div class="row col-md-6">
+    {% if not user.is_authenticated %}
+        <form method="post">
+	        {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="email" class="form-control" id="username" aria-describedby="username"
+                       placeholder="Enter your desired username">
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                {{ form.password.errors }}
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
         </form>
+		<p>Forgot password? <a href="{% url 'auth_password_reset' %}"> Reset it!</a></p>
+	{% endif %}
+    </div>
 
 
-        <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
-        <p>{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
-    {% endif %}
+{% endblock %}
+
+
+{% block rightcolumn %}
+    {#    <user class="is_a"></user>uthenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
 
 {% endblock %}

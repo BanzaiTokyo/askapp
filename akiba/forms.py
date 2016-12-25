@@ -1,11 +1,11 @@
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationFormTermsOfService
 from django import forms
 from .models import Profile
 
 
-class RecaptchaRegistrationForm(RegistrationForm):
+class RecaptchaRegistrationForm(RegistrationFormTermsOfService):
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
 
 form_control = {'class': 'form-control'}
