@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='thread',
             name='thumbnail',
-            field=models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/', null=True),
+            field=models.ImageField(upload_to='uploads/images/%Y/%m/%d', null=True),
         ),
     ]

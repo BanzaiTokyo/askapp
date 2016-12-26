@@ -4,8 +4,11 @@ from registration.backends.hmac.views import RegistrationView
 from django.conf import settings
 from akiba import forms, models
 from akiba.settings import BLACKLISTED_DOMAINS
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse_lazy
+import rules_light
+import auth_rules
 import logging
 
 
@@ -23,6 +26,15 @@ class HomeView(View):
             'key1': "value",
         }
         return render(request, 'index.html', context)
+
+
+class ProfileView(DetailView):
+    model = models.User
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        return context
 
 
 class NewRegisterView(View):
@@ -60,12 +72,14 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return profile
 
 
-class ThreadView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'thread.html', context)
+class ThreadView(DetailView):
+    model = models.Thread
+    template_name = 'thread.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ThreadView, self).get_context_data(**kwargs)
+        return context
+
 
 class QuestionView(View):
     def get(self, request, *args, **kwargs):
@@ -83,7 +97,6 @@ class CommentView(View):
         return render(request, 'comment.html', context)
 
 
-
 class AkibaRegistrationView(RegistrationView):
     form_class = forms.RecaptchaRegistrationForm
     template_name = 'registration_form.html'
@@ -97,3 +110,26 @@ class AkibaRegistrationView(RegistrationView):
             logging.debug('blacklisted email %s', user.email)
         else:
             super(AkibaRegistrationView, self).send_activation_email(user)
+
+
+class NewThreadView(LoginRequiredMixin, CreateView):
+    form_class = forms.NewThreadForm
+    template_name = 'new_thread.html'
+
+    def get_success_url(self):
+        return reverse_lazy('thread', args=(self.object.id,))
+
+
+@rules_light.class_decorator('akiba.thread.update')
+class EditThreadView(LoginRequiredMixin, UpdateView):
+    form_class = forms.EditThreadForm
+    model = models.Thread
+    template_name = 'new_thread.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EditThreadView, self).get_context_data(**kwargs)
+        context['hide_type'] = True
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('thread', args=(self.object.id,))

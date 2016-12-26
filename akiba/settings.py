@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 from django.core.exceptions import ImproperlyConfigured
 
-import sys
 
 print("system=->", sys.path)
 
@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'snowpenguin.django.recaptcha2',
     'bootstrap3',
     'django_countries',
+    'rules_light',
     'akiba',
 )
 
@@ -70,6 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rules_light.middleware.Middleware',
 )
 
 ROOT_URLCONF = 'akiba.urls'
@@ -85,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media',
             ],
         },
     },

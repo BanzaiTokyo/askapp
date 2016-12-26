@@ -52,11 +52,11 @@ class Migration(migrations.Migration):
                 ('thread_type', models.CharField(choices=[('QQ', 'Question'), ('DD', 'Discussion'), ('LL', 'Link')], default='DD', null=True, max_length=2)),
                 ('text', models.TextField(null=True)),
                 ('title', models.CharField(null=True, max_length=255)),
-                ('image', models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')),
+                ('image', models.ImageField(upload_to='uploads/images/%Y/%m/%d')),
                 ('score', models.IntegerField(default=0)),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
                 ('tags', models.ManyToManyField(to='akiba.Tag')),
-                ('link', models.TextField(null=True)),
+                ('link', models.URLField(null=True)),
             ],
         ),
         migrations.AddField(

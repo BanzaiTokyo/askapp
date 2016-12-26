@@ -5,3 +5,4 @@ django-recaptcha2
 django-bootstrap3
 django-countries
 Pillow
+django-rules-light

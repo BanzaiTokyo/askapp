@@ -155,16 +155,16 @@ class Thread(models.Model):
     text = models.TextField(null=True)
 
     # link field for the Threads of the type Link
-    link = models.TextField(null=True)
+    link = models.URLField(null=True, blank=True)
 
     # thread title can be null if the post is not a thread starter
     title = models.CharField(max_length=255, null=True)
 
     #image that illustrates the thread
-    image = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/')
+    image = models.ImageField(upload_to='uploads/images/%Y/%m/%d', null=True, blank=True)
 
     #smaller version of the image
-    thumbnail = models.FileField(upload_to='uploads/images/%Y/%m/%d/%H/%M/%S/', null=True)
+    thumbnail = models.ImageField(upload_to='uploads/images/%Y/%m/%d', null=True, blank=True)
 
     # the current score of the post. It is only calculated for thread posts (no parents)
     # that are not older than one week old
@@ -172,6 +172,21 @@ class Thread(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.prepare_images()
+        super(Thread, self).save()
+
+    def prepare_images(self):
+        if not self.id:
+            return
+        try:
+            this = Thread.objects.get(id=self.id)
+            if this.image != self.image:
+                this.image.delete(False)
+                this.thumbnail.delete(False)
+        except Exception as ex:
+            pass
 
 
 class Post(models.Model):

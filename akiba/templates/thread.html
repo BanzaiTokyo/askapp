@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
-{% load i18n %}
-
 {% block content %}
-
+{% load rules_light_tags %}
+{% rule 'akiba.thread.update' object as can_update %}
+{% rule 'akiba.post.create' object as can_reply %}
             <!--First Thread-->
             <div class="row">
                 <div>
@@ -18,44 +17,29 @@
 
                     </div>
                     <div class="col-xs-10 col-sm-11  col-md-11">
-                        <h2><a href="#"> Another very cool building is erected in Tokyo</a>
-                            <a class="btn glyphicon glyphicon-edit text-success"></a>
+                        <h2><a href="{% url 'thread' object.id %}"> {{ object.title }}</a>
+                            {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'edit_thread' object.id %}"></a>{% endif %}
                         </h2>
 
                         <!--Tags-->
 
-                        <div>posted by <a href="#"><img src="{% static "images/akiba.png" %}" width="20" height="20"/>&nbsp;SomeUser</a>
-                            | 44 minutes ago in <a href="#" class="label label-primary">Science&Technology</a> <a
+                        <div>posted by <a href="{% url 'profile' object.author.id %}"><img src="{{ object.author.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.author }}</a>
+                            | {{ object.created|timesince }} ago in <a href="#" class="label label-primary">Science&Technology</a> <a
                                     href="#" class="label label-primary">Gaijin</a></p>
                         </div>
 
                     </div>
+                    {% if object.image %}
                     <div class="col-xs-10 col-sm-11  col-md-11">
 
                         <a href="#" class="thumbnail">
-                            <img src="{% static "images/akihabara.png" %}" alt="...">
+                            <img src="{{ object.image }}" alt="...">
                         </a>
                     </div>
+                    {% endif %}
 
                     <div class="col-xs-12    col-md-11 col-md-offset-1">
-
-
-                        <p>Aliquam ultricies urna at congue convallis. Donec suscipit mi libero, a iaculis nisl
-                            hendrerit in. Nulla finibus, felis vitae porta molestie, ex libero sagittis est, quis
-                            blandit leo orci ac dolor. Nullam pretium nibh lacus, eget placerat sapien ultrices eu.
-                            Maecenas dapibus luctus placerat. Curabitur ut odio ac lacus rhoncus semper rhoncus ut elit.
-                            Donec at ligula et eros eleifend luctus eget a lacus. </p>
-                        <p>Vestibulum finibus, eros non
-                            consectetur efficitur, arcu diam volutpat arcu, quis luctus augue arcu feugiat felis. Sed
-                            sit amet nibh quis sapien commodo rhoncus. Pellentesque congue lectus sed sapien mollis
-                            rutrum. Sed fringilla ex id eros consectetur porttitor. Vestibulum ante ipsum primis in
-                            faucibus orci luctus et ultrices posuere cubilia Curae; Praesent laoreet, erat sed tincidunt
-                            tempus, erat mauris hendrerit neque, pulvinar ullamcorper neque odio ac lorem. Donec sit
-                            amet lorem vitae arcu cursus lobortis. Integer tempus scelerisque diam non gravida. Nulla
-                            elementum porta massa eget malesuada.
-                        </p>
-
-
+						{{ thread.text|safe }}
                     </div>
                 </div>
             </div>
@@ -68,12 +52,12 @@
                 </div>
             </div>
             <!--end spacer-->
-
+			{% if can_reply %}
             <!--start submit comment form-->
             <div class="row">
                 <div class="col-xs-12    col-md-11 col-md-offset-1">
                     <div class="form-group">
-                        <form>
+                        <form method="post">
                             <label for="comment">Comment:</label>
                             <textarea class="form-control" rows="5" id="comment"></textarea><br>
 
@@ -83,6 +67,7 @@
                 </div>
             </div>
             <!--End submit comment form-->
+			{% endif %}
 
             <!--start first comment-->
             <div class="row">
