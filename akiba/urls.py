@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^submit$', views.NewThreadView.as_view(), name="new_thread"),
     url(r'^thread/(?P<pk>\d+)/edit$', views.EditThreadView.as_view(), name="edit_thread"),
     url(r'^thread/(?P<thread_id>\d+)/reply$', views.ReplyThreadView.as_view(), name="reply_thread"),
+    url(r'^comment/(?P<post_id>\d+)/reply$', views.ReplyCommentView.as_view(), name="reply_comment"),
 ]
 
 # in debug mode launch debug_toolbar

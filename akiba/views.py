@@ -135,21 +135,34 @@ class EditThreadView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('thread', args=(self.object.id,))
 
 
-class ReplyThreadView(LoginRequiredMixin, CreateView):
+class ReplyMixin(LoginRequiredMixin, CreateView):
+    """
+    Common class for inline and standalone comment form
+    """
     form_class = forms.ReplyForm
     model = models.Post
-    template_name = 'index.html'
 
     def get_form(self, form_class=None):
-        thread_id = self.kwargs.get('thread_id')
-        self.thread = models.Thread.objects.get(pk=thread_id)
+        if not hasattr(self, 'thread'):
+            thread_id = self.kwargs.get('thread_id')
+            self.thread = models.Thread.objects.get(pk=thread_id)
         rules_light.require(self.request.user, 'akiba.post.create', self.thread)
-        return super(ReplyThreadView, self).get_form(form_class)
+        return super(ReplyMixin, self).get_form(form_class)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.thread = self.thread
-        return super(ReplyThreadView, self).form_valid(form)
+        return super(ReplyMixin, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'),))
+
+
+class ReplyThreadView(ReplyMixin):
+    """
+    Inline comment handler
+    """
+    template_name = 'index.html'
 
     def form_invalid(self, form):
         return redirect(self.get_success_url())
@@ -157,5 +170,24 @@ class ReplyThreadView(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         return redirect(self.get_success_url())
 
-    def get_success_url(self):
-        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'),))
+
+class ReplyCommentView(ReplyMixin):
+    """
+    Standalone comment handler
+    """
+    template_name = 'comment.html'
+
+    def get_form(self, form_class=None):
+        post_id = self.kwargs.get('post_id')
+        self.post = models.Post.objects.get(pk=post_id)
+        self.kwargs['thread_id'] = self.post.thread.id  # for get_success_url()
+        return super(ReplyCommentView, self).get_form(form_class)
+
+    def get_context_data(self, **kwargs):
+        context = {'object': self.post}
+        context.update(kwargs)
+        return super(ReplyCommentView, self).get_context_data(**context)
+
+    def form_valid(self, form):
+        form.instance.parent = self.post
+        return super(ReplyCommentView, self).form_valid(form)

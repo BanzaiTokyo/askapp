@@ -2,8 +2,6 @@
 {% load static %}
 {% load i18n %}
 
-
-
 {% block content %}
 
             <!--First Thread-->
@@ -17,19 +15,12 @@
                     </div>
 
                     <div class="col-xs-10 col-sm-11  col-md-11">
-                       #1234 | posted by <a href="#"><img src="{% static "images/akiba.png" %}" width="20" height="20"/>&nbsp;SomeUser</a>
-                            | 44 minutes ago on <a href="#">Another very cool building is erected in Tokyo</a></p>
+                       #{{ object.id }} | posted by <a href="{% url 'profile' object.user.id %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
+                            | {{ object.created|timesince }} ago on <a href="{% url 'thread' object.thread.id %}">{{ object.thread }}</a></p>
                     </div>
 
-
                     <div class="col-xs-10 col-sm-11  col-md-11">
-
-
-                        <p>Aliquam ultricies urna at congue convallis. Donec suscipit mi libero, a iaculis nisl
-                            hendrerit in. Nulla finibus, felis vitae porta molestie, ex libero sagittis est, quis
-                            blandit leo orci ac dolor. Nullam pretium nibh lacus, eget placerat sapien ultrices eu.
-                            Maecenas dapibus luctus placerat. Curabitur ut odio ac lacus rhoncus semper rhoncus ut elit.
-                            Donec at ligula et eros eleifend luctus eget a lacus. </p>
+						{{ object.text|safe }}
                     </div>
                 <!--End first Thread-->
             </div>
@@ -46,10 +37,12 @@
             <div class="row">
                 <div class="col-xs-12    col-md-11 col-md-offset-1">
                     <div class="form-group">
-                        <form>
+                        <form method="post">
+	                        {% csrf_token %}
                             <label for="comment">Comment:</label>
-                            <textarea class="form-control" rows="5" id="comment"></textarea><br>
-
+	                        {{ form.text }}
+	                        {{ form.text.errors }}
+	                        <br>
                             <button type="submit" class="btn btn-primary pull-right">Post comment</button>
                         </form>
                     </div>

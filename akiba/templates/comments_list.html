@@ -12,7 +12,7 @@
         | {{ node.created|timesince }} ago
 
         <div>{{ node.text|safe }}<br>
-            <a href="#">comment</a></p>
+            <a href="{% url 'reply_comment' node.id %}">comment</a></p>
         </div>
 
         <!--Tags-->
