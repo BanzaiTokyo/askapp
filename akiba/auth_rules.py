@@ -6,7 +6,7 @@ def can_edit_thread(user, rule, obj):
 
 
 def can_reply(user, rule, obj):
-    return True
+    return can_edit_thread(user, rule, obj) and not obj.hidden and not obj.closed
 
 rules_light.registry['akiba.thread.update'] = can_edit_thread
 rules_light.registry['akiba.post.create'] = can_reply

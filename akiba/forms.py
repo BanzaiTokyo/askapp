@@ -2,7 +2,7 @@ from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 from registration.forms import RegistrationFormTermsOfService
 from django import forms
-from .models import Profile, Thread
+from .models import Profile, Thread, Post
 
 
 class RecaptchaRegistrationForm(RegistrationFormTermsOfService):
@@ -39,3 +39,9 @@ class EditThreadForm(forms.ModelForm):
         widgets = {
             'image': AkibaClearableFileInput()
         }
+
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('text', )

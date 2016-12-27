@@ -9,6 +9,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
+from mptt.models import MPTTModel, TreeForeignKey
 
 from akiba import settings
 
@@ -135,7 +136,7 @@ class Thread(models.Model):
     sponsored = models.BooleanField(default=False) # hopefully one day there will be ponsored threads...
 
     # reference to the user who created the post
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add = True)
@@ -188,18 +189,27 @@ class Thread(models.Model):
         except Exception as ex:
             pass
 
+    @property
+    def comments(self):
+        if not hasattr(self, '_comments'):
+            self._comments = Post.objects.filter(thread=self)
+        return self._comments
 
-class Post(models.Model):
+
+class Post(MPTTModel):
     '''
     Post is a part of the discussion on the levels below Thread
     It can be comments, answers organized in several levels
     '''
 
     # defines the parent post. If the value is null, the post is a thread starter
-    parent = models.ForeignKey('self', null=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
 
     # the thread that the Post belongs to
-    thread_id = models.ForeignKey(Thread, null=True)
+    thread = models.ForeignKey(Thread)
+
+    # reference to the user who created the post
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add = True)
@@ -225,7 +235,7 @@ class Action(models.Model):
         ("sticky", 'Sticky'),
     )
 
-    taken_by = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     post = models.ForeignKey(Post, null=True)
 

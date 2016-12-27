@@ -133,3 +133,29 @@ class EditThreadView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('thread', args=(self.object.id,))
+
+
+class ReplyThreadView(LoginRequiredMixin, CreateView):
+    form_class = forms.ReplyForm
+    model = models.Post
+    template_name = 'index.html'
+
+    def get_form(self, form_class=None):
+        thread_id = self.kwargs.get('thread_id')
+        self.thread = models.Thread.objects.get(pk=thread_id)
+        rules_light.require(self.request.user, 'akiba.post.create', self.thread)
+        return super(ReplyThreadView, self).get_form(form_class)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.thread = self.thread
+        return super(ReplyThreadView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return redirect(self.get_success_url())
+
+    def get(self, request, *args, **kwargs):
+        return redirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'),))

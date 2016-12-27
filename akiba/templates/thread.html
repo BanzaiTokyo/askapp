@@ -23,7 +23,7 @@
 
                         <!--Tags-->
 
-                        <div>posted by <a href="{% url 'profile' object.author.id %}"><img src="{{ object.author.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.author }}</a>
+                        <div>posted by <a href="{% url 'profile' object.user.id %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
                             | {{ object.created|timesince }} ago in <a href="#" class="label label-primary">Science&Technology</a> <a
                                     href="#" class="label label-primary">Gaijin</a></p>
                         </div>
@@ -57,9 +57,10 @@
             <div class="row">
                 <div class="col-xs-12    col-md-11 col-md-offset-1">
                     <div class="form-group">
-                        <form method="post">
+                        <form method="post" action="{% url 'reply_thread' object.id %}">
+	                        {% csrf_token %}
                             <label for="comment">Comment:</label>
-                            <textarea class="form-control" rows="5" id="comment"></textarea><br>
+                            <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
 
                             <button type="submit" class="btn btn-primary pull-right">Post comment</button>
                         </form>
@@ -69,84 +70,7 @@
             <!--End submit comment form-->
 			{% endif %}
 
-            <!--start first comment-->
-            <div class="row">
-                <div class="col-xs-12 col-md-11 col-md-offset-1">
-
-                    <a class="glyphicon glyphicon-chevron-up"></a>
-                    <span class="text-danger"> 5 </span>
-                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
-                    <a class="glyphicon glyphicon-trash text-danger"></a>
-
-
-                    | <a href="#">#1234</a> by <a href="#">&nbsp;OneUser</a>
-                    | 12 minutes ago
-
-                    <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula congue nisi ac
-                        mollis. Curabitur ante orci, dictum ultricies scelerisque sit amet, malesuada maximus lorem.
-                        Phasellus
-                        at diam quam.<br>
-                        <a href="#">comment</a></p>
-                    </div>
-
-                    <!--Tags-->
-
-                </div>
-            </div>
-            <!--end first comment-->
-
-            <!--second comment-->
-            <div class="row">
-                <div class="col-xs-12 col-md-10 col-md-offset-2">
-                    <a class="glyphicon glyphicon-chevron-up"></a>
-                    <span class="text-danger"> 5 </span>
-                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
-                    <a class="glyphicon glyphicon-trash text-danger"></a>
-                    | <a href="#">#2345</a> by <a href="#">&nbsp;TwoUser</a>
-                    | 11 minutes ago
-
-                    <div><p>I am afraid you got it all wrong!</br><a href="#">comment</a></p>
-                    </div>
-
-                </div>
-            </div>
-            <!--end second comment-->
-
-            <!--third comment-->
-            <div class="row">
-                <div class="col-xs-12 col-md-9 col-md-offset-3">
-                    <a class="glyphicon glyphicon-chevron-up"></a>
-                    <span class="text-danger"> 5 </span>
-                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
-                    <a class="glyphicon glyphicon-trash text-danger"></a>
-                    | <a href="#">#3456</a> by <a href="#">&nbsp;OneUser</a>
-                    | 9 minutes ago
-
-                    <div><p>You're right, I am terribly sorry! I will check facts before I post next time.</br><a
-                            href="#">comment</a></p>
-                    </div>
-
-                </div>
-            </div>
-            <!--end third comment-->
-
-
-            <!--fourth comment at level one comment-->
-            <div class="row">
-                <div class="col-xs-12 col-md-11 col-md-offset-1">
-                    <a class="glyphicon glyphicon-chevron-up"></a>
-                    <span class="text-danger"> 5 </span>
-                    <a class="glyphicon glyphicon-chevron-down text-danger"></a>
-                    <a class="glyphicon glyphicon-trash text-danger"></a>
-                    | <a href="#">#2345</a> by <a href="#">&nbsp;TwoUser</a>
-                    | 11 minutes ago
-
-                    <div><p>My point of view is that this is really not important, what is important is that you can go to a cat cafe in Akihabara and mediate about all the cool gadgets that you are going to buy</br><a href="#">comment</a></p>
-                    </div>
-
-                </div>
-            </div>
-            <!--end fourth comment at level one -->
+			{% include "comments_list.html" with comments=object.comments only %}
 
 {% endblock %}
 

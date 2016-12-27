@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'django_countries',
     'rules_light',
+    'mptt',
     'akiba',
 )
 

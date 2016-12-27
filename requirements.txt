@@ -6,3 +6,4 @@ django-bootstrap3
 django-countries
 Pillow
 django-rules-light
+django-mptt

@@ -1,0 +1,25 @@
+{% load mptt_tags %}
+{% recursetree comments %}
+<div class="row">
+    <div class="col-xs-12 col-md-11 col-md-offset-{{ node.get_level|add:1 }}">
+
+        <a class="glyphicon glyphicon-chevron-up"></a>
+        <span class="text-danger"> 5 </span>
+        <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+        <a class="glyphicon glyphicon-trash text-danger"></a>
+
+        | <a href="#">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id %}">&nbsp;{{ node.user }}</a>
+        | {{ node.created|timesince }} ago
+
+        <div>{{ node.text|safe }}<br>
+            <a href="#">comment</a></p>
+        </div>
+
+        <!--Tags-->
+
+    </div>
+</div>
+{% if not node.is_leaf_node %}
+    {{ children }}
+{% endif %}
+{% endrecursetree %}
