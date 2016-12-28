@@ -7,19 +7,27 @@ import views
 
 
 urlpatterns = [
+    # system URLs
     url(r'^$', views.HomeView.as_view(), name="index"),
+    url(r'^admin/', include(admin.site.urls)),
+
+    # static templates
     url(r'^recent$', views.HomeView.as_view(), name="recent"),
     url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
     url(r'^newlogin$', views.NewLoginView.as_view(), name="new_login"),
-    url(r'^profile/(?P<pk>\d+)$', views.ProfileView.as_view(), name="profile"),
-    url(r'^thread/(?P<pk>\d+)$', views.ThreadView.as_view(), name="thread"),
     url(r'^thankyou$', views.ThankyouView.as_view(), name="thankyou"),
     url(r'^question$', views.QuestionView.as_view(), name="question"),
     url(r'^comment$', views.CommentView.as_view(), name="comment"),
+
+    # content pages
+    url(r'^profile/(?P<pk>\d+)$', views.ProfileView.as_view(), name="profile"),
+    url(r'^thread/(?P<pk>\d+)$', views.ThreadView.as_view(), name="thread"),
+    url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),
+
     url(r'^accounts/register/$', views.AkibaRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url(r'^admin/', include(admin.site.urls)),
 
+    # authenticated users
     url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
     url(r'^submit$', views.NewThreadView.as_view(), name="new_thread"),
     url(r'^thread/(?P<pk>\d+)/edit$', views.EditThreadView.as_view(), name="edit_thread"),

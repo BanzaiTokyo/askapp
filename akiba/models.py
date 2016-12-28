@@ -10,6 +10,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
+from django.template.defaultfilters import slugify
 
 from akiba import settings
 
@@ -109,7 +110,15 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=60, null=False)
+    name = models.CharField(max_length=60, null=False)
+    slug = models.SlugField(max_length=60, null=False)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Tag, self).save(*args, **kwargs)
 
 
 class Thread(models.Model):

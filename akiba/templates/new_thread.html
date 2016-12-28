@@ -30,6 +30,11 @@
 	            {{ form.text.errors }}
             </div>
             <div class="form-group">
+	            <label for="id_tags">Tags:</label>
+	            {{ form.tags }}
+	            {{ form.tags.errors }}
+            </div>
+            <div class="form-group">
 	            <label for="id_image">Image:</label>
 	            {% if form.image.value %}
 		            <img src="{{ MEDIA_URL }}{{ form.image.value }}" />

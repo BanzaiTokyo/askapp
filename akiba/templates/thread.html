@@ -24,8 +24,11 @@
                         <!--Tags-->
 
                         <div>posted by <a href="{% url 'profile' object.user.id %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
-                            | {{ object.created|timesince }} ago in <a href="#" class="label label-primary">Science&Technology</a> <a
-                                    href="#" class="label label-primary">Gaijin</a></p>
+                            | {{ object.created|timesince }} ago in
+	                        {% for tag in object.tags.all %}
+	                        <a href="{% url 'tag' tag.slug %}" class="label label-primary">{{ tag.name }}</a>
+	                        {% endfor %}
+	                        </p>
                         </div>
 
                     </div>

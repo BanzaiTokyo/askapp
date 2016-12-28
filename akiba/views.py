@@ -203,3 +203,11 @@ class DeleteCommentView(LoginRequiredMixin, View):
         post.deleted = True
         post.save()
         return redirect(reverse_lazy('thread', args=(post.thread.id, )))
+
+
+class TagView(DetailView):
+    """
+    Display threads by tag
+    """
+    template_name = 'index.html'
+    model = models.Tag

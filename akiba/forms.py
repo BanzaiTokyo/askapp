@@ -23,7 +23,7 @@ class ProfileForm(forms.ModelForm):
 class NewThreadForm(forms.ModelForm):
     class Meta:
         model = Thread
-        fields = ('thread_type', 'link', 'title', 'text', 'image')
+        fields = ('thread_type', 'link', 'title', 'text', 'tags', 'image')
 
 
 class AkibaClearableFileInput(forms.widgets.ClearableFileInput):
@@ -35,7 +35,7 @@ class AkibaClearableFileInput(forms.widgets.ClearableFileInput):
 class EditThreadForm(forms.ModelForm):
     class Meta:
         model = Thread
-        fields = ('link', 'title', 'text', 'image')
+        fields = ('link', 'title', 'text', 'tags', 'image')
         widgets = {
             'image': AkibaClearableFileInput()
         }
