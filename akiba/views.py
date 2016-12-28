@@ -191,3 +191,15 @@ class ReplyCommentView(ReplyMixin):
     def form_valid(self, form):
         form.instance.parent = self.post
         return super(ReplyCommentView, self).form_valid(form)
+
+
+class DeleteCommentView(LoginRequiredMixin, View):
+    """
+    Actually this is not a view, but just a request handler
+    """
+    def get(self, request, *args, **kwargs):
+        post = models.Post.objects.get(pk=kwargs['post_id'])
+        rules_light.require(self.request.user, 'akiba.post.delete', post)
+        post.deleted = True
+        post.save()
+        return redirect(reverse_lazy('thread', args=(post.thread.id, )))

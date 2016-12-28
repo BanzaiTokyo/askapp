@@ -220,6 +220,9 @@ class Post(MPTTModel):
     #in question Thread, the topic starter or the admin can select one of the answers as "the answer"
     the_answer = models.BooleanField(default=False)
 
+    # A post should be marked as deleted instead of physical deletion because it can has live descendant posts
+    deleted = models.BooleanField(default=False)
+
 
 class Action(models.Model):
     '''

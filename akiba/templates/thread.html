@@ -70,7 +70,7 @@
             <!--End submit comment form-->
 			{% endif %}
 
-			{% include "comments_list.html" with comments=object.comments only %}
+			{% include "comments_list.html" with comments=object.comments request=request only %}
 
 {% endblock %}
 
