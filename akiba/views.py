@@ -207,7 +207,7 @@ class DeleteCommentView(LoginRequiredMixin, View):
     """
     def get(self, request, *args, **kwargs):
         post = models.Post.objects.get(pk=kwargs['post_id'])
-        rules_light.require(self.request.user, 'akiba.post.delete', post)
+        rules_light.require(request.user, 'akiba.post.delete', post)
         post.deleted = True
         post.save()
         return redirect(reverse_lazy('thread', args=(post.thread.id, )))
@@ -223,3 +223,19 @@ class TagView(HomeView):
         except ObjectDoesNotExist:
             raise Http404
         return tag.thread_set.order_by('-created')[:10]
+
+
+class ThreadLikeView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        thread = models.Thread.objects.get(pk=kwargs['thread_id'])
+        rules_light.require(request.user, 'akiba.threadlike.create', thread)
+        models.ThreadLike.vote(thread, request.user, kwargs['verb'])
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id))))
+
+
+class PostLikeView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        post = models.Post.objects.get(pk=kwargs['post_id'])
+        rules_light.require(request.user, 'akiba.postlike.create', post)
+        models.PostLike.vote(post, request.user, kwargs['verb'])
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id))))

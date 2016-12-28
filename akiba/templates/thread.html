@@ -3,16 +3,17 @@
 {% load rules_light_tags %}
 {% rule 'akiba.thread.update' object as can_update %}
 {% rule 'akiba.post.create' object as can_reply %}
+{% rule 'akiba.threadlike.create' object as can_like_thread %}
             <!--First Thread-->
             <div class="row">
                 <div>
                     <div class="col-xs-1">
-                        <a class="btn glyphicon glyphicon-chevron-up"></a>
-                        <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
+                        <a class="btn glyphicon glyphicon-chevron-up" {% if can_like_thread %}href="{% url 'thread_like' object.id 'up' %}"{% endif %}></a>
+                        <a class="btn glyphicon glyphicon-chevron-down text-danger" {% if can_like_thread %}href="{% url 'thread_like' object.id 'down' %}"{% endif %}></a>
                         <a class="btn glyphicon glyphicon-trash text-danger"></a>
                         <a class="btn glyphicon glyphicon-lock text-danger"></a>
 
-                        <h2 class="text-center">{{ object.score }}</h2>
+                        <h2 class="text-center">{{ object.points }}</h2>
                         <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
 
                     </div>

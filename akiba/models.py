@@ -12,6 +12,7 @@ from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
 from django.template.defaultfilters import slugify
 import urlparse
+from django.core.exceptions import ObjectDoesNotExist
 
 from akiba import settings
 
@@ -216,6 +217,11 @@ class Thread(models.Model):
                 self._domain = hostname.netloc
         return self._domain
 
+    @property
+    def points(self):
+        result = self.threadlike_set.all().aggregate(models.Sum('points'))
+        return result.values()[0] or 0
+
 
 class Post(MPTTModel):
     '''
@@ -244,14 +250,10 @@ class Post(MPTTModel):
     # A post should be marked as deleted instead of physical deletion because it can has live descendant posts
     deleted = models.BooleanField(default=False)
 
-    def save(self):
-        if self.pk is None:
-            self.thread.num_comments += 1
-            self.thread.save()
-        elif self.deleted:
-            self.thread.num_comments -= 1
-            self.thread.save()
-        super(Post, self).save()
+    @property
+    def points(self):
+        result = self.postlike_set.all().aggregate(models.Sum('points'))
+        return result.values()[0] or 0
 
 
 @receiver(pre_delete, sender=Post)
@@ -298,11 +300,22 @@ class ThreadLike(models.Model):
     '''
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add=True)
 
-    points = models.IntegerField()
+    points = models.IntegerField(default=0)
+
+    @classmethod
+    def vote(cls, thread, user, verb):
+        points = 1 if verb == 'up' else -1
+        kwargs = {'thread': thread, 'user': user}
+        try:
+            obj = cls.objects.get(**kwargs)
+        except ObjectDoesNotExist:
+            obj = cls(points=points, **kwargs)
+            obj.save()
 
 
 class PostLike(models.Model):
@@ -311,8 +324,19 @@ class PostLike(models.Model):
     '''
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add=True)
 
-    points = models.IntegerField()
+    points = models.IntegerField(default=0)
+
+    @classmethod
+    def vote(cls, post, user, verb):
+        points = 1 if verb == 'up' else -1
+        kwargs = {'post': post, 'user': user}
+        try:
+            obj = cls.objects.get(**kwargs)
+        except ObjectDoesNotExist:
+            obj = cls(points=points, **kwargs)
+            obj.save()

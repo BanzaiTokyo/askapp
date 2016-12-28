@@ -2,14 +2,15 @@
 {% load rules_light_tags %}
 {% recursetree comments %}
 {% rule 'akiba.post.delete' node as can_delete_comment %}
+{% rule 'akiba.postlike.create' node as can_like_post %}
 <div class="row">
     <div class="col-xs-12 col-md-11 col-md-offset-{{ node.get_level|add:1 }}">
 		{% if node.deleted %}
 			deleted
         {% else %}
-        <a class="glyphicon glyphicon-chevron-up"></a>
-        <span class="text-danger"> 5 </span>
-        <a class="glyphicon glyphicon-chevron-down text-danger"></a>
+        <a class="btn glyphicon glyphicon-chevron-up" {% if can_like_post %}href="{% url 'post_like' node.id 'up' %}"{% endif %}></a>
+        <span class="text-danger"> {{ node.points }} </span>
+        <a class="btn glyphicon glyphicon-chevron-down text-danger" {% if can_like_post %}href="{% url 'post_like' node.id 'down' %}"{% endif %}></a>
         {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
 
         | <a href="#">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id %}">&nbsp;{{ node.user }}</a>

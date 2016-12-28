@@ -34,6 +34,9 @@ urlpatterns = [
     url(r'^thread/(?P<thread_id>\d+)/reply$', views.ReplyThreadView.as_view(), name="reply_thread"),
     url(r'^comment/(?P<post_id>\d+)/reply$', views.ReplyCommentView.as_view(), name="reply_comment"),
     url(r'^comment/(?P<post_id>\d+)/delete$', views.DeleteCommentView.as_view(), name="delete_comment"),
+
+    url(r'^thread/(?P<thread_id>\d+)/vote/(?P<verb>up|down)$', views.ThreadLikeView.as_view(), name="thread_like"),
+    url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),
 ]
 
 # in debug mode launch debug_toolbar

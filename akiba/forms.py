@@ -25,6 +25,15 @@ class NewThreadForm(forms.ModelForm):
         model = Thread
         fields = ('thread_type', 'link', 'title', 'text', 'tags', 'image')
 
+    def clean(self):
+        cleaned_data = super(NewThreadForm, self).clean()
+        link = cleaned_data.get("link")
+        thread_type = cleaned_data.get("thread_type")
+
+        if thread_type == 'LL' and not link:
+            msg = "This field is required"
+            self.add_error('link', msg)
+
 
 class AkibaClearableFileInput(forms.widgets.ClearableFileInput):
     template_with_initial = (
