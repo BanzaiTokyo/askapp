@@ -1,0 +1,3 @@
+{% for tag in tags %}
+<a href="{% url 'tag' tag.slug %}" class="label label-primary">{{ tag.name }}</a>
+{% endfor %}

@@ -8,7 +8,6 @@ import views
 
 urlpatterns = [
     # system URLs
-    url(r'^$', views.HomeView.as_view(), name="index"),
     url(r'^admin/', include(admin.site.urls)),
 
     # static templates
@@ -20,6 +19,7 @@ urlpatterns = [
     url(r'^comment$', views.CommentView.as_view(), name="comment"),
 
     # content pages
+    url(r'^$', views.HomeView.as_view(), name="index"),
     url(r'^profile/(?P<pk>\d+)$', views.ProfileView.as_view(), name="profile"),
     url(r'^thread/(?P<pk>\d+)$', views.ThreadView.as_view(), name="thread"),
     url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),

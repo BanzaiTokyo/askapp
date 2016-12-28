@@ -7,6 +7,9 @@ from akiba.settings import BLACKLISTED_DOMAINS
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse_lazy
+from django.db.models import ObjectDoesNotExist
+from django.http import Http404
+
 import rules_light
 import auth_rules
 import logging
@@ -21,9 +24,14 @@ class LoginRequiredMixin(object):
 
 
 class HomeView(View):
+    def get_threads(self):
+        return models.Thread.objects.all()[:10]
+
     def get(self, request, *args, **kwargs):
         context = {
-            'key1': "value",
+            'threads': self.get_threads(),
+            'tags': models.Tag.objects.all(),
+            'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5]
         }
         return render(request, 'index.html', context)
 
@@ -205,9 +213,13 @@ class DeleteCommentView(LoginRequiredMixin, View):
         return redirect(reverse_lazy('thread', args=(post.thread.id, )))
 
 
-class TagView(DetailView):
+class TagView(HomeView):
     """
     Display threads by tag
     """
-    template_name = 'index.html'
-    model = models.Tag
+    def get_threads(self):
+        try:
+            tag = models.Tag.objects.get(slug=self.kwargs['slug'])
+        except ObjectDoesNotExist:
+            raise Http404
+        return tag.thread_set.order_by('-created')[:10]

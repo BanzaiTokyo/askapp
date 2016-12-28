@@ -12,7 +12,7 @@
                         <a class="btn glyphicon glyphicon-trash text-danger"></a>
                         <a class="btn glyphicon glyphicon-lock text-danger"></a>
 
-                        <h2 class="text-center">5</h2>
+                        <h2 class="text-center">{{ object.score }}</h2>
                         <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
 
                     </div>
@@ -25,19 +25,13 @@
 
                         <div>posted by <a href="{% url 'profile' object.user.id %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
                             | {{ object.created|timesince }} ago in
-	                        {% for tag in object.tags.all %}
-	                        <a href="{% url 'tag' tag.slug %}" class="label label-primary">{{ tag.name }}</a>
-	                        {% endfor %}
-	                        </p>
+                            {% include 'tags_list.html' with tags=object.tags.all only %}
                         </div>
 
                     </div>
                     {% if object.image %}
-                    <div class="col-xs-10 col-sm-11  col-md-11">
-
-                        <a href="#" class="thumbnail">
-                            <img src="{{ object.image }}" alt="...">
-                        </a>
+                    <div class="col-xs-10 col-md-3">
+                        <img src="{{ object.image.url }}" alt="...">
                     </div>
                     {% endif %}
 

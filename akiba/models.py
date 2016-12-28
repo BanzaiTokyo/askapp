@@ -1,7 +1,7 @@
 import os
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django_countries.fields import CountryField
 from django.core.files.storage import FileSystemStorage
@@ -11,6 +11,7 @@ from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
 from django.template.defaultfilters import slugify
+import urlparse
 
 from akiba import settings
 
@@ -200,9 +201,20 @@ class Thread(models.Model):
 
     @property
     def comments(self):
-        if not hasattr(self, '_comments'):
-            self._comments = Post.objects.filter(thread=self)
-        return self._comments
+        return self.post_set.all()
+
+    @property
+    def num_comments(self):
+        return Post.objects.filter(thread=self, deleted=False).count()
+
+    @property
+    def domain(self):
+        if not hasattr(self, '_domain'):
+            self._domain = None
+            if self.link:
+                hostname = urlparse.urlparse(self.link)
+                self._domain = hostname.netloc
+        return self._domain
 
 
 class Post(MPTTModel):
@@ -221,7 +233,7 @@ class Post(MPTTModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     # atomatically added timestamp field when the record is created
-    created = models.DateTimeField(auto_now_add = True)
+    created = models.DateTimeField(auto_now_add=True)
 
     # post body with HTML markup
     text = models.TextField(null=True)
@@ -231,6 +243,22 @@ class Post(MPTTModel):
 
     # A post should be marked as deleted instead of physical deletion because it can has live descendant posts
     deleted = models.BooleanField(default=False)
+
+    def save(self):
+        if self.pk is None:
+            self.thread.num_comments += 1
+            self.thread.save()
+        elif self.deleted:
+            self.thread.num_comments -= 1
+            self.thread.save()
+        super(Post, self).save()
+
+
+@receiver(pre_delete, sender=Post)
+def _post_delete(sender, instance, **kwargs):
+    if not instance.deleted:
+        instance.thread.num_comments -= 1
+        instance.thread.save()
 
 
 class Action(models.Model):
