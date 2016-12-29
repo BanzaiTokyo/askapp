@@ -2,8 +2,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 
-import settings
-import views
+from akiba import settings
+from akiba import views
 
 
 urlpatterns = [

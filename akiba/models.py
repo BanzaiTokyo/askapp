@@ -11,7 +11,7 @@ from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
 from django.template.defaultfilters import slugify
-import urlparse
+import urllib.parse
 from django.core.exceptions import ObjectDoesNotExist
 
 from akiba import settings
@@ -213,7 +213,7 @@ class Thread(models.Model):
         if not hasattr(self, '_domain'):
             self._domain = None
             if self.link:
-                hostname = urlparse.urlparse(self.link)
+                hostname = urllib.parse(self.link)
                 self._domain = hostname.netloc
         return self._domain
 

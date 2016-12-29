@@ -164,7 +164,7 @@ RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
-BLACKLISTED_DOMAINS = ['yopmail.com', ]
+BLACKLISTED_DOMAINS = ['yopmail1.com', ]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = '/media/'

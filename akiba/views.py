@@ -11,7 +11,7 @@ from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 
 import rules_light
-import auth_rules
+import akiba.auth_rules
 import logging
 
 

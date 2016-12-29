@@ -1,5 +1,5 @@
 import rules_light
-from models import ThreadLike, PostLike
+from akiba.models import ThreadLike, PostLike
 
 def can_edit_thread(user, rule, thread):
     return user.is_staff or thread.user == user
