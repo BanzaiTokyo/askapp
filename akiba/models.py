@@ -138,7 +138,7 @@ class Thread(models.Model):
     )
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     # these fields are taken into account only if the post is thread starter
     hidden = models.BooleanField(default=False) # the thread is visible only to the staff and the author
