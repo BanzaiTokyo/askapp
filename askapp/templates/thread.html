@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 {% load rules_light_tags %}
-{% rule 'akiba.thread.update' object as can_update %}
-{% rule 'akiba.post.create' object as can_reply %}
-{% rule 'akiba.threadlike.create' object as can_like_thread %}
+{% rule 'askapp.thread.update' object as can_update %}
+{% rule 'askapp.post.create' object as can_reply %}
+{% rule 'askapp.threadlike.create' object as can_like_thread %}
             <!--First Thread-->
             <div class="row">
                 <div>

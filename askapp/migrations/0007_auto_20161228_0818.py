@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('akiba', '0006_post_deleted'),
+        ('askapp', '0006_post_deleted'),
     ]
 
     operations = [

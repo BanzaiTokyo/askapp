@@ -8,7 +8,7 @@ import mptt.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('akiba', '0004_auto_20161226_1858'),
+        ('askapp', '0004_auto_20161226_1858'),
     ]
 
     operations = [
@@ -39,6 +39,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='parent',
-            field=mptt.fields.TreeForeignKey(related_name='children', blank=True, to='akiba.Post', null=True),
+            field=mptt.fields.TreeForeignKey(related_name='children', blank=True, to='askapp.Post', null=True),
         ),
     ]

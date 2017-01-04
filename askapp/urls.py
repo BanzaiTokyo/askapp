@@ -2,8 +2,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 
-from akiba import settings
-from akiba import views
+from askapp import settings
+from askapp import views
 
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^thread/(?P<pk>\d+)$', views.ThreadView.as_view(), name="thread"),
     url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),
 
-    url(r'^accounts/register/$', views.AkibaRegistrationView.as_view()),
+    url(r'^accounts/register/$', views.AskappRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
     # authenticated users

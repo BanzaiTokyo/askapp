@@ -17,7 +17,7 @@ except:
     from urlparse import urlparse
 from django.core.exceptions import ObjectDoesNotExist
 
-from akiba import settings
+from askapp import settings
 
 
 class OverwriteStorage(FileSystemStorage):
@@ -33,23 +33,23 @@ def avatar_name_path(instance, filename):
     return new_path
 
 
-class AkibaImageFieldFile(ImageFieldFile):
+class AskappImageFieldFile(ImageFieldFile):
     @property
     def url(self):
         try:
-            result = super(AkibaImageFieldFile, self)._get_url()
+            result = super(AskappImageFieldFile, self)._get_url()
         except ValueError:
             result = settings.STATIC_URL + 'images/avatar.png'
         return result
 
 
-class AkibaImageField(models.ImageField):
-    attr_class = AkibaImageFieldFile
+class AskappImageField(models.ImageField):
+    attr_class = AskappImageFieldFile
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = AkibaImageField(storage=OverwriteStorage(), upload_to=avatar_name_path, blank=True)
+    avatar = AskappImageField(storage=OverwriteStorage(), upload_to=avatar_name_path, blank=True)
     country = CountryField(blank=True)
     city = models.CharField(max_length=50, blank=True)
     about = models.TextField(max_length=500, blank=True)

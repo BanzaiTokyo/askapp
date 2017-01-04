@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from registration.backends.hmac.views import RegistrationView
 from django.conf import settings
-from akiba import forms, models
-from akiba.settings import BLACKLISTED_DOMAINS
+from askapp import forms, models
+from askapp.settings import BLACKLISTED_DOMAINS
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse_lazy
@@ -11,7 +11,7 @@ from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 
 import rules_light
-import akiba.auth_rules
+import askapp.auth_rules
 import logging
 
 
@@ -117,7 +117,7 @@ class CommentView(View):
         return render(request, 'comment.html', context)
 
 
-class AkibaRegistrationView(RegistrationView):
+class AskappRegistrationView(RegistrationView):
     form_class = forms.RecaptchaRegistrationForm
     template_name = 'registration_form.html'
 
@@ -129,7 +129,7 @@ class AkibaRegistrationView(RegistrationView):
         if self.is_email_blacklisted(user.email):
             logging.debug('blacklisted email %s', user.email)
         else:
-            super(AkibaRegistrationView, self).send_activation_email(user)
+            super(AskappRegistrationView, self).send_activation_email(user)
 
 
 class NewThreadView(LoginRequiredMixin, CreateView):
@@ -140,7 +140,7 @@ class NewThreadView(LoginRequiredMixin, CreateView):
         return reverse_lazy('thread', args=(self.object.id,))
 
 
-@rules_light.class_decorator('akiba.thread.update')
+@rules_light.class_decorator('askapp.thread.update')
 class EditThreadView(LoginRequiredMixin, UpdateView):
     form_class = forms.EditThreadForm
     model = models.Thread
@@ -167,7 +167,7 @@ class ReplyMixin(LoginRequiredMixin, CreateView):
         if not hasattr(self, 'thread'):
             thread_id = self.kwargs.get('thread_id')
             self.thread = models.Thread.objects.get(pk=thread_id)
-        rules_light.require(self.request.user, 'akiba.post.create', self.thread)
+        rules_light.require(self.request.user, 'askapp.post.create', self.thread)
         return super(ReplyMixin, self).get_form(form_class)
 
     def form_valid(self, form):
@@ -220,7 +220,7 @@ class DeleteCommentView(LoginRequiredMixin, View):
     """
     def get(self, request, *args, **kwargs):
         post = models.Post.objects.get(pk=kwargs['post_id'])
-        rules_light.require(request.user, 'akiba.post.delete', post)
+        rules_light.require(request.user, 'askapp.post.delete', post)
         post.deleted = True
         post.save()
         return redirect(reverse_lazy('thread', args=(post.thread.id, )))
@@ -241,7 +241,7 @@ class TagView(HomeView):
 class ThreadLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         thread = models.Thread.objects.get(pk=kwargs['thread_id'])
-        rules_light.require(request.user, 'akiba.threadlike.create', thread)
+        rules_light.require(request.user, 'askapp.threadlike.create', thread)
         models.ThreadLike.vote(thread, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id))))
 
@@ -249,6 +249,6 @@ class ThreadLikeView(LoginRequiredMixin, View):
 class PostLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         post = models.Post.objects.get(pk=kwargs['post_id'])
-        rules_light.require(request.user, 'akiba.postlike.create', post)
+        rules_light.require(request.user, 'askapp.postlike.create', post)
         models.PostLike.vote(post, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id))))

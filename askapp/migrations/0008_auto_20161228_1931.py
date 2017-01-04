@@ -7,20 +7,20 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('akiba', '0007_auto_20161228_0818'),
+        ('askapp', '0007_auto_20161228_0818'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='postlike',
             name='post',
-            field=models.ForeignKey(default=1, to='akiba.Post'),
+            field=models.ForeignKey(default=1, to='askapp.Post'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='threadlike',
             name='thread',
-            field=models.ForeignKey(default=1, to='akiba.Thread'),
+            field=models.ForeignKey(default=1, to='askapp.Thread'),
             preserve_default=False,
         ),
         migrations.AlterField(

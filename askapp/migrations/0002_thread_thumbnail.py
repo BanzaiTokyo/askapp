@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('akiba', '0001_initial'),
+        ('askapp', '0001_initial'),
     ]
 
     operations = [

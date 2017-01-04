@@ -1,8 +1,8 @@
 {% load mptt_tags %}
 {% load rules_light_tags %}
 {% recursetree comments %}
-{% rule 'akiba.post.delete' node as can_delete_comment %}
-{% rule 'akiba.postlike.create' node as can_like_post %}
+{% rule 'askapp.post.delete' node as can_delete_comment %}
+{% rule 'askapp.postlike.create' node as can_like_post %}
 <div class="row">
     <div class="col-xs-12 col-md-11 col-md-offset-{{ node.get_level|add:1 }}">
 		{% if node.deleted %}

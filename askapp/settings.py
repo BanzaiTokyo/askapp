@@ -57,7 +57,7 @@ INSTALLED_APPS = (
     'django_countries',
     'rules_light',
     'mptt',
-    'akiba',
+    'askapp',
 )
 
 MIDDLEWARE = [
@@ -75,12 +75,12 @@ MIDDLEWARE_CLASSES = (
     'rules_light.middleware.Middleware',
 )
 
-ROOT_URLCONF = 'akiba.urls'
+ROOT_URLCONF = 'askapp.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(BASE_DIR) + '/akiba/templates/'],
+        'DIRS': [(BASE_DIR) + '/askapp/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'akiba.wsgi.application'
+WSGI_APPLICATION = 'askapp.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -151,7 +151,7 @@ USE_L10N = True
 USE_TZ = True
 
 # STATIC_ROOT='static'
-STATIC_ROOT = os.path.join(BASE_DIR, "akiba/static")
+STATIC_ROOT = os.path.join(BASE_DIR, "askapp/static")
 
 STATIC_URL = '/static/'
 
@@ -168,6 +168,6 @@ RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 BLACKLISTED_DOMAINS = ['yopmail1.com', ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'akiba/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
 
 AVATAR_SIZE = (100, 100)

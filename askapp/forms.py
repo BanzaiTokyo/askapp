@@ -37,7 +37,7 @@ class NewThreadForm(forms.ModelForm):
             del self.errors['link']
 
 
-class AkibaClearableFileInput(forms.widgets.ClearableFileInput):
+class AskappClearableFileInput(forms.widgets.ClearableFileInput):
     template_with_initial = (
         '%(clear_template)s<br />%(input_text)s: %(input)s'
     )
@@ -48,7 +48,7 @@ class EditThreadForm(forms.ModelForm):
         model = Thread
         fields = ('link', 'title', 'text', 'tags', 'image')
         widgets = {
-            'image': AkibaClearableFileInput()
+            'image': AskappClearableFileInput()
         }
 
     def clean(self):

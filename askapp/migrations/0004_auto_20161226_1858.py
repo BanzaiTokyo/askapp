@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('akiba', '0003_profile'),
+        ('askapp', '0003_profile'),
     ]
 
     operations = [
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='thread',
-            field=models.ForeignKey(default=1, to='akiba.Thread'),
+            field=models.ForeignKey(default=1, to='askapp.Thread'),
             preserve_default=False,
         ),
         migrations.AddField(

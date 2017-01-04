@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('parent', models.ForeignKey(to='akiba.Post', null=True)),
+                ('parent', models.ForeignKey(to='askapp.Post', null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('action_name', models.TextField(choices=[('update', 'Update'), ('close', 'Close'), ('sticky', 'Sticky')], default='update')),
                 ('old_text', models.TextField(null=True)),
                 ('old_title', models.TextField(null=True)),
-                ('post', models.ForeignKey(to='akiba.Post', null=True)),
+                ('post', models.ForeignKey(to='askapp.Post', null=True)),
                 ('taken_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
@@ -55,14 +55,14 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(upload_to='uploads/images/%Y/%m/%d')),
                 ('score', models.IntegerField(default=0)),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
-                ('tags', models.ManyToManyField(to='akiba.Tag')),
+                ('tags', models.ManyToManyField(to='askapp.Tag')),
                 ('link', models.URLField(null=True)),
             ],
         ),
         migrations.AddField(
             model_name='post',
             name='thread_id',
-            field=models.ForeignKey(to='akiba.Thread', null=True),
+            field=models.ForeignKey(to='askapp.Thread', null=True),
         ),
         migrations.AddField(
             model_name='post',
