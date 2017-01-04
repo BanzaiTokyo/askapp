@@ -79,6 +79,18 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
             return models.Profile.objects.model(user=self.request.user)
         return profile
 
+class ProfileDisplayView(LoginRequiredMixin, UpdateView):
+    form_class = forms.ProfileForm
+    template_name = 'profile_display.html'
+    success_url = reverse_lazy('profile_display')
+
+    def get_object(self, queryset=None):
+        try:
+            profile = self.request.user.profile
+        except:
+            return models.Profile.objects.model(user=self.request.user)
+        return profile
+
 
 class ThreadView(DetailView):
     model = models.Thread
