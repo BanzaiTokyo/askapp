@@ -8,17 +8,19 @@
     <div class="row col-md-6">
         <form method="post" enctype="multipart/form-data">
 	        {% csrf_token %}
-            {% if hide_type == None %}
+            {% if not form.instance.pk %}
             <div class="form-group">
 	            <label for="id_thread_type">Type:</label>
 	            {{ form.thread_type }}
             </div>
             {% endif %}
-            <div class="form-group" id="url_group"{% if form.thread_type.value != 'LL' %}style="display: none"{% endif %}>
+            {% if not form.instance.pk or form.instance.thread_type == 'LL' %}
+            <div class="form-group" id="url_group">
 	            <label for="id_link">URL:</label>
 	            {{ form.link }}
 	            {{ form.link.errors }}
             </div>
+            {% endif %}
             <div class="form-group">
 	            <label for="id_title">Title:</label>
 	            {{ form.title }}
@@ -54,6 +56,9 @@ $('#id_thread_type').on('change', function() {
 	else
 		$('#url_group').hide();
 });
+{% if not form.instance.pk %}
+$('#url_group').hide();
+{% endif %}
 </script>
 {% endblock %}
 

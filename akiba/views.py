@@ -137,6 +137,7 @@ class EditThreadView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditThreadView, self).get_context_data(**kwargs)
         context['hide_type'] = True
+        context['hide_link'] = self.object.thread_type != 'LL'
         return context
 
     def get_success_url(self):

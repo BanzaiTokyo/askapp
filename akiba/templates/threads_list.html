@@ -30,7 +30,7 @@
             <div class="col-xs-12    col-md-11">
             {% endif %}
                 <a href="{% url 'thread' thread.id %}">{{ thread.title }}</a>
-	            {% if thread.domain %}<span class="btn btn-sm disabled">{{ thread.domain }}</span>{% endif %}
+	            {% if thread.domain %}<a href="{{ thread.link }}" class="btn btn-sm">{{ thread.domain }}</a>{% endif %}
 
                 <div>
 	                {{ thread.text|safe|truncatechars_html:200 }}

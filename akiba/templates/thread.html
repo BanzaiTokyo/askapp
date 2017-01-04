@@ -19,6 +19,7 @@
                     </div>
                     <div class="col-xs-10 col-sm-11  col-md-11">
                         <h2><a href="{% url 'thread' object.id %}"> {{ object.title }}</a>
+	                        {% if thread.domain %}<a href="{{ thread.link }}" class="btn btn-sm">{{ thread.domain }}</a>{% endif %}
                             {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'edit_thread' object.id %}"></a>{% endif %}
                         </h2>
 

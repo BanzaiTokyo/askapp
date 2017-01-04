@@ -190,6 +190,7 @@ class Thread(models.Model):
 
     def save(self, *args, **kwargs):
         self.prepare_images()
+        self.update_link()
         super(Thread, self).save()
 
     def prepare_images(self):
@@ -202,6 +203,10 @@ class Thread(models.Model):
                 this.thumbnail.delete(False)
         except Exception as ex:
             pass
+
+    def update_link(self):
+        if self.thread_type != 'LL':
+            self.link = None
 
     @property
     def comments(self):

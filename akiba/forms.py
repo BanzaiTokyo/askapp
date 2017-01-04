@@ -30,9 +30,11 @@ class NewThreadForm(forms.ModelForm):
         link = cleaned_data.get("link")
         thread_type = cleaned_data.get("thread_type")
 
-        if thread_type == 'LL' and not link:
-            msg = "This field is required"
-            self.add_error('link', msg)
+        if thread_type == 'LL' and not link and not self.has_error('link'):
+                msg = "This field is required"
+                self.add_error('link', msg)
+        elif self.has_error('link') and thread_type != 'LL':
+            del self.errors['link']
 
 
 class AkibaClearableFileInput(forms.widgets.ClearableFileInput):
@@ -48,6 +50,13 @@ class EditThreadForm(forms.ModelForm):
         widgets = {
             'image': AkibaClearableFileInput()
         }
+
+    def clean(self):
+        cleaned_data = super(EditThreadForm, self).clean()
+        link = cleaned_data.get("link")
+        if self.instance.thread_type == 'LL' and not link and not self.has_error('link'):
+                msg = "This field is required"
+                self.add_error('link', msg)
 
 
 class ReplyForm(forms.ModelForm):
