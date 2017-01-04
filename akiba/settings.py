@@ -135,6 +135,7 @@ EMAIL_HOST = get_env_variable('EMAIL_HOST')
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -165,7 +166,6 @@ RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 BLACKLISTED_DOMAINS = ['yopmail1.com', ]
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'akiba/media')
