@@ -38,9 +38,6 @@ urlpatterns = [
     url(r'^thread/(?P<thread_id>\d+)/vote/(?P<verb>up|down)$', views.ThreadLikeView.as_view(), name="thread_like"),
     url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),
 
-    #temporaty pages
-    url(r'^profiledisplay$', views.ProfileDisplayView.as_view(), name="profile_edit"),
-
 ]
 
 # in debug mode launch debug_toolbar

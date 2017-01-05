@@ -38,10 +38,11 @@ class HomeView(View):
 
 class ProfileView(DetailView):
     model = models.User
-    template_name = 'index.html'
+    template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
+        context['threads'] = models.Thread.objects.filter(user=self.object).order_by('-created')[:10]
         return context
 
 
@@ -71,18 +72,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     form_class = forms.ProfileForm
     template_name = 'profile_edit.html'
     success_url = reverse_lazy('profile_edit')
-
-    def get_object(self, queryset=None):
-        try:
-            profile = self.request.user.profile
-        except:
-            return models.Profile.objects.model(user=self.request.user)
-        return profile
-
-class ProfileDisplayView(LoginRequiredMixin, UpdateView):
-    form_class = forms.ProfileForm
-    template_name = 'profile_display.html'
-    success_url = reverse_lazy('profile_display')
 
     def get_object(self, queryset=None):
         try:

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{% static object.profile.avatar.url %}">
+        </div>
+
+        <h3>{{ object.username }}</h3>
+        <p><img width="30" height="20" src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}{% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
+        <p>{{ object.profile.about }}</p>
+    </div>
+
+    <div class="row">
+        <h3>Recent threads by <strong>{{ object.username }}</strong></h3>
+		{% include 'threads_list.html' %}
+
+{% endblock %}
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}
