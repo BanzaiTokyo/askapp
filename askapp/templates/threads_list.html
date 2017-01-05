@@ -29,8 +29,12 @@
             {% else %}
             <div class="col-xs-12    col-md-11">
             {% endif %}
-                <a href="{% url 'thread' thread.id %}">{{ thread.title }}</a>
-	            {% if thread.domain %}<a href="{{ thread.link }}" class="btn btn-sm">{{ thread.domain }}</a>{% endif %}
+	            {% if thread.thread_type == 'LL' %}
+                    <a href="{{ thread.link }}">{{ thread.title }}</a>
+		        {% else %}
+                    <a href="{% url 'thread' thread.id %}">{{ thread.title }}</a>
+                {% endif %}
+	            {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
 
                 <div>
 	                {{ thread.text|safe|truncatechars_html:200 }}

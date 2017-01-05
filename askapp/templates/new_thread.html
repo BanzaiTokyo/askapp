@@ -56,9 +56,7 @@ $('#id_thread_type').on('change', function() {
 	else
 		$('#url_group').hide();
 });
-{% if not form.instance.pk %}
-$('#url_group').hide();
-{% endif %}
+$('#id_thread_type').triggerHandler('change');
 </script>
 {% endblock %}
 
