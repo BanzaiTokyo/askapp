@@ -54,6 +54,10 @@ class Profile(models.Model):
     city = models.CharField(max_length=50, blank=True)
     about = models.TextField(max_length=500, blank=True)
 
+    def __init__(self, *args, **kwargs):
+        super(Profile, self).__init__(*args, **kwargs)
+        self.__original_avatar = self.avatar
+
     def __unicode__(self):
         return self.user.username
 
@@ -85,8 +89,9 @@ class Profile(models.Model):
         self.avatar.save('%s.%s' % (os.path.splitext(suf.name)[0], 'jpg'), suf, save=False)
 
     def save(self, *args, **kwargs):
-        self.resize_avatar()
-        super(Profile, self).save()
+        if self.avatar != self.__original_avatar:
+            self.resize_avatar()
+        super(Profile, self).save(*args, **kwargs)
 
     def get_avatar(self):
         if self.avatar:
@@ -110,8 +115,6 @@ def save_user_profile(sender, instance, **kwargs):
         if instance.is_active:
             profile = create_user_profile(None, instance, True)
             instance.profile = profile
-    else:
-        profile.save()
 
 
 class Tag(models.Model):
