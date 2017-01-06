@@ -61,6 +61,10 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+    @property
+    def email(self):
+        return self.user.email
+
     def resize_avatar(self):
         # code from with some changes : http://www.yilmazhuseyin.com/blog/dev/create-thumbnails-imagefield-django/
         if not self.avatar:
