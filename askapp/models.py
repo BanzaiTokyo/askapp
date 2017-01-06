@@ -153,7 +153,7 @@ class Thread(models.Model):
     # these fields are taken into account only if the post is thread starter
     hidden = models.BooleanField(default=False) # the thread is visible only to the staff and the author
     closed = models.BooleanField(default=False) # noone can post comments / answers in this threa
-    sticky = models.DateField(null=True) # this thread will be sticky until the given date
+    sticky = models.DateField(null=True, blank=True) # this thread will be sticky until the given date
     sponsored = models.BooleanField(default=False) # hopefully one day there will be ponsored threads...
 
     # reference to the user who created the post
