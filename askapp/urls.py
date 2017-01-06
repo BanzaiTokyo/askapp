@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # static templates
-    url(r'^recent$', views.HomeView.as_view(), name="recent"),
     url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
     url(r'^newlogin$', views.NewLoginView.as_view(), name="new_login"),
     url(r'^thankyou$', views.ThankyouView.as_view(), name="thankyou"),
@@ -20,6 +19,7 @@ urlpatterns = [
 
     # content pages
     url(r'^$', views.HomeView.as_view(), name="index"),
+    url(r'^recent$', views.RecentThreadsView.as_view(), name="recent"),
     url(r'^profile/(?P<pk>\d+)$', views.ProfileView.as_view(), name="profile"),
     url(r'^thread/(?P<pk>\d+)$', views.ThreadView.as_view(), name="thread"),
     url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),

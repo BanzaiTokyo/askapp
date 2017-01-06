@@ -25,7 +25,7 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
-        return models.Thread.objects.all()[:10]
+        return models.Thread.objects.all().order_by('-score')
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -36,13 +36,18 @@ class HomeView(View):
         return render(request, 'index.html', context)
 
 
+class RecentThreadsView(HomeView):
+    def get_threads(self):
+        return models.Thread.objects.all().order_by('-created')
+
+
 class ProfileView(DetailView):
     model = models.User
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
-        context['threads'] = models.Thread.objects.filter(user=self.object).order_by('-created')[:10]
+        context['threads'] = models.Thread.objects.filter(user=self.object).order_by('-created')
         return context
 
 
@@ -224,7 +229,7 @@ class TagView(HomeView):
             tag = models.Tag.objects.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
-        return tag.thread_set.order_by('-created')[:10]
+        return tag.thread_set.order_by('-created')
 
 
 class ThreadLikeView(LoginRequiredMixin, View):

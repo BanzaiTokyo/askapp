@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'django_countries',
     'rules_light',
     'mptt',
+    'pagination_bootstrap',
     'askapp',
 )
 
@@ -73,6 +74,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'rules_light.middleware.Middleware',
+    'pagination_bootstrap.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'askapp.urls'
@@ -171,3 +173,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
 
 AVATAR_SIZE = (100, 100)
+
+PAGINATION_DEFAULT_PAGINATION = 10

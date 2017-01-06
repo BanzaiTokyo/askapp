@@ -7,3 +7,4 @@ django-countries
 Pillow
 django-rules-light
 django-mptt
+django-pagination-bootstrap
