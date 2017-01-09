@@ -1,86 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
-{% load rules_light_tags %}
-{% rule 'askapp.thread.update' object as can_update %}
-{% rule 'askapp.post.create' object as can_reply %}
-{% rule 'askapp.threadlike.create' object as can_like_thread %}
-<!--First Thread-->
-<div class="row">
-    <div>
-        <div class="col-xs-1">
-            <a class="btn glyphicon glyphicon-chevron-up" {% if can_like_thread %}href="{% url 'thread_like' object.id 'up' %}"{% endif %}></a>
-            <a class="btn glyphicon glyphicon-chevron-down text-danger" {% if can_like_thread %}href="{% url 'thread_like' object.id 'down' %}"{% endif %}></a>
-            <a class="btn glyphicon glyphicon-trash text-danger"></a>
-            <a class="btn glyphicon glyphicon-lock text-danger"></a>
+    {% load rules_light_tags %}
+    {% rule 'askapp.thread.update' object as can_update %}
+    {% rule 'askapp.post.create' object as can_reply %}
+    {% rule 'askapp.threadlike.create' object as can_like_thread %}
+    <!--First Thread-->
+    <div class="row">
+        <div>
+            <div class="col-xs-1">
+                <a class="btn glyphicon glyphicon-chevron-up"
+                   {% if can_like_thread %}href="{% url 'thread_like' object.id 'up' %}"{% endif %}></a>
+                <a class="btn glyphicon glyphicon-chevron-down text-danger"
+                   {% if can_like_thread %}href="{% url 'thread_like' object.id 'down' %}"{% endif %}></a>
+                <a class="btn glyphicon glyphicon-trash text-danger"></a>
+                <a class="btn glyphicon glyphicon-lock text-danger"></a>
 
-            <h2 class="text-center">{{ object.points }}</h2>
-            {% if object.thread_type == 'LL' %}
-            <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
-            {% elif object.thread_type == 'DD' %}
-            <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
-            {% elif object.thread_type == 'QQ' %}
-            <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
-            {% endif %}
-
-        </div>
-        <div class="col-xs-10 col-sm-11  col-md-11">
-            <h2>
-	            {% if object.thread_type == 'LL' %}
-                    <a href="{{ object.link }}">{{ object.title }}</a>
-		        {% else %}
-                    {{ object.title }}
+                <h2 class="text-center">{{ object.points }}</h2>
+                {% if object.thread_type == 'LL' %}
+                    <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+                {% elif object.thread_type == 'DD' %}
+                    <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
+                {% elif object.thread_type == 'QQ' %}
+                    <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
                 {% endif %}
-                {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
-                {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'edit_thread' object.id %}"></a>{% endif %}
-            </h2>
 
-            <!--Tags-->
-
-            <div>posted by <a href="{% url 'profile' object.user.id %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
-                | {{ object.created|timesince }} ago in
-                {% include 'tags_list.html' with tags=object.tags.all only %}
             </div>
+            <div class="col-xs-10 col-sm-11  col-md-11">
+                <h2>
+                    {% if object.thread_type == 'LL' %}
+                        <a href="{{ object.link }}">{{ object.title }}</a>
+                    {% else %}
+                        {{ object.title }}
+                    {% endif %}
+                    {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
+                    {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success"
+                                          href="{% url 'edit_thread' object.id %}"></a>{% endif %}
+                </h2>
 
-        </div>
-        {% if object.image %}
-        <div class="col-xs-10 col-md-3">
-            <img src="{{ object.image.url }}" alt="...">
-        </div>
-        {% endif %}
+                <!--Tags-->
 
+                <div>posted by <a href="{% url 'profile' object.user.id %}"><img
+                        src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
+                    | {{ object.created|timesince }} ago in
+                    {% include 'tags_list.html' with tags=object.tags.all only %}
+                </div>
+
+                    {% if object.image %}
+                        <br>
+                        <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;" alt="...">
+
+                    {% endif %}
+
+                    {{ thread.text|safe }}
+            </div>
+        </div>
+    </div>
+    <!--End first Thread-->
+
+    <!--spacer-->
+    <div class="row">
         <div class="col-xs-12    col-md-11 col-md-offset-1">
-			{{ thread.text|safe }}
+            <hr>
         </div>
     </div>
-</div>
-<!--End first Thread-->
+    <!--end spacer-->
+    {% if can_reply %}
+        <!--start submit comment form-->
+        <div class="row">
+            <div class="col-xs-12    col-md-11 col-md-offset-1">
+                <div class="form-group">
+                    <form method="post" action="{% url 'reply_thread' object.id %}">
+                        {% csrf_token %}
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
 
-<!--spacer-->
-<div class="row">
-    <div class="col-xs-12    col-md-11 col-md-offset-1">
-        <hr>
-    </div>
-</div>
-<!--end spacer-->
-{% if can_reply %}
-<!--start submit comment form-->
-<div class="row">
-    <div class="col-xs-12    col-md-11 col-md-offset-1">
-        <div class="form-group">
-            <form method="post" action="{% url 'reply_thread' object.id %}">
-                {% csrf_token %}
-                <label for="comment">Comment:</label>
-                <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
-
-                <button type="submit" class="btn btn-primary pull-right">Post comment</button>
-            </form>
+                        <button type="submit" class="btn btn-primary pull-right">Post comment</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<!--End submit comment form-->
-{% endif %}
+        <!--End submit comment form-->
+    {% endif %}
 
-{% include "comments_list.html" with comments=object.comments request=request only %}
+    {% include "comments_list.html" with comments=object.comments request=request only %}
 
 {% endblock %}
 
