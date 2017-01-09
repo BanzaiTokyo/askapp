@@ -15,6 +15,7 @@ try:
     from urllib.parse import urlparse
 except:
     from urlparse import urlparse
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from askapp import settings
@@ -131,6 +132,8 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Tag, self).save(*args, **kwargs)
+    def __str__( self ):
+        return "{0}".format( self.name)
 
 
 class Thread(models.Model):
@@ -192,7 +195,7 @@ class Thread(models.Model):
     # that are not older than one week old
     score = models.IntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
