@@ -45,6 +45,9 @@ class ProfileView(DetailView):
     model = models.User
     template_name = 'profile.html'
 
+    def get_context_object_name(self, obj):
+        return 'object'
+
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['threads'] = models.Thread.objects.filter(user=self.object).order_by('-created')
