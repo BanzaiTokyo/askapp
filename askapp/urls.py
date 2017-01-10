@@ -29,6 +29,7 @@ urlpatterns = [
 
     # authenticated users
     url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
+    url(r'^profile/(?P<pk>\d+)/edit$', views.AdminProfileEditView.as_view(), name="admin_profile_edit"),
     url(r'^submit$', views.NewThreadView.as_view(), name="new_thread"),
     url(r'^thread/(?P<pk>\d+)/edit$', views.EditThreadView.as_view(), name="edit_thread"),
     url(r'^thread/(?P<thread_id>\d+)/reply$', views.ReplyThreadView.as_view(), name="reply_thread"),

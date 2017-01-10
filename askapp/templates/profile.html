@@ -5,12 +5,17 @@
 
 
 {% block content %}
+{% load rules_light_tags %}
+{% rule 'askapp.profile.update' object as can_update %}
     <div class="row">
         <div class="col-md-6">
             <img src="{% static object.profile.avatar.url %}">
         </div>
 
-        <h3>{{ object.username }}</h3>
+        <h3>
+            {{ object.username }}
+            {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'admin_profile_edit' object.id %}"></a>{% endif %}
+        </h3>
         <p><img width="30" height="20" src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}{% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
         <p>{{ object.profile.about }}</p>
     </div>

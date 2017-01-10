@@ -108,16 +108,16 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.is_active:
+    if not instance.is_active:
+        if kwargs['update_fields'] and 'is_active' in kwargs['update_fields']:
+            # delete user threads and posts
+            pass
+    elif created:
         return Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    try:
-        profile = instance.profile
-    except:
-        if instance.is_active:
+    else:
+        try:
+            profile = instance.profile
+        except:
             profile = create_user_profile(None, instance, True)
             instance.profile = profile
 

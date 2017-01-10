@@ -86,6 +86,39 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return profile
 
 
+@rules_light.class_decorator('askapp.profile.update')
+class AdminProfileEditView(LoginRequiredMixin, UpdateView):
+    form_class = forms.ProfileForm
+    template_name = 'profile_edit.html'
+    model = models.Profile
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminProfileEditView, self).get_context_data(**kwargs)
+        context['admin_view'] = True
+        return context
+
+    def get_object(self, queryset=None):
+        user = models.User.objects.get(id=self.kwargs['pk'])
+        try:
+            profile = user.profile
+        except:
+            return models.Profile.objects.model(user=user)
+        return profile
+
+    def post(self, request, *args, **kwargs):
+        if 'block_user' in request._post:
+            user = models.User.objects.get(id=self.kwargs['pk'])
+            user.is_active = False
+            user.save(update_fields={'is_active': False})
+            self.object = user.profile
+            return redirect(self.get_success_url())
+        else:
+            return super(AdminProfileEditView, self).post(self, request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=(self.object.user.id,))
+
+
 class ThreadView(DetailView):
     model = models.Thread
     template_name = 'thread.html'

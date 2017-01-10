@@ -10,7 +10,7 @@
     <div class="row">
         <p>&nbsp;</p>
         <div class="col-md-6">
-            Username: <strong class="pull-right"><span>BanzaiTokyo</span></strong>
+            Username: <strong class="pull-right"><span>{{ object.user.username }}</span></strong>
         </div>
 
         <div class="row">
@@ -62,7 +62,7 @@
                 <div>
 	                {{ form.avatar.errors }}
                     <p><strong>Avatar:</strong></p>
-                    <img src="{% static user.profile.avatar.url %}" />
+                    <img src="{% static object.avatar.url %}" />
                 </div>
                 <div class="form-group">
                     <label for="id_avatar">To replace your current avatar:</label>
@@ -76,7 +76,6 @@
 
             </div>
             <button type="submit" class="btn btn-primary pull-right">Save profile</button>
-
 
         </form>
     </div>
