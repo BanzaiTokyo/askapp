@@ -14,11 +14,11 @@ def can_delete_comment(user, rule, post):
 
 
 def can_vote_thread(user, rule, thread):
-    return thread.user != user and ThreadLike.objects.filter(thread=thread, user=user).count() == 0
+    return user.is_active and thread.user != user and ThreadLike.objects.filter(thread=thread, user=user).count() == 0
 
 
 def can_vote_post(user, rule, post):
-    return post.user != user and PostLike.objects.filter(post=post, user=user).count() == 0
+    return user.is_active and post.user != user and PostLike.objects.filter(post=post, user=user).count() == 0
 
 def can_edit_profile(user, rule, user_object):
     return user.is_staff
