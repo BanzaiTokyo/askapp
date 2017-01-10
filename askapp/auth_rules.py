@@ -5,6 +5,10 @@ def can_edit_thread(user, rule, thread):
     return user.is_staff or thread.user == user
 
 
+def can_delete_thread(user, rule, thread):
+    return user.is_staff
+
+
 def can_reply(user, rule, thread):
     return can_edit_thread(user, rule, thread) and not thread.hidden and not thread.closed
 
@@ -25,6 +29,7 @@ def can_edit_profile(user, rule, user_object):
 
 
 rules_light.registry['askapp.thread.update'] = can_edit_thread
+rules_light.registry['askapp.thread.delete'] = can_delete_thread
 rules_light.registry['askapp.post.create'] = can_reply
 rules_light.registry['askapp.post.delete'] = can_delete_comment
 rules_light.registry['askapp.threadlike.create'] = can_vote_thread

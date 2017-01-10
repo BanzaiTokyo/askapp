@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^profile/(?P<pk>\d+)/edit$', views.AdminProfileEditView.as_view(), name="admin_profile_edit"),
     url(r'^submit$', views.NewThreadView.as_view(), name="new_thread"),
     url(r'^thread/(?P<pk>\d+)/edit$', views.EditThreadView.as_view(), name="edit_thread"),
+    url(r'^thread/(?P<pk>\d+)/delete$', views.DeleteThreadView.as_view(), name="delete_thread"),
     url(r'^thread/(?P<thread_id>\d+)/reply$', views.ReplyThreadView.as_view(), name="reply_thread"),
     url(r'^comment/(?P<post_id>\d+)/reply$', views.ReplyCommentView.as_view(), name="reply_comment"),
     url(r'^comment/(?P<post_id>\d+)/delete$', views.DeleteCommentView.as_view(), name="delete_comment"),

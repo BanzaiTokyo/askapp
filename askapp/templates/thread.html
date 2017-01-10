@@ -2,6 +2,7 @@
 {% block content %}
     {% load rules_light_tags %}
     {% rule 'askapp.thread.update' object as can_update %}
+    {% rule 'askapp.thread.delete' object as can_delete %}
     {% rule 'askapp.post.create' object as can_reply %}
     {% rule 'askapp.threadlike.create' object as can_like_thread %}
     <!--First Thread-->
@@ -12,8 +13,8 @@
                    {% if can_like_thread %}href="{% url 'thread_like' object.id 'up' %}"{% endif %}></a>
                 <a class="btn glyphicon glyphicon-chevron-down text-danger"
                    {% if can_like_thread %}href="{% url 'thread_like' object.id 'down' %}"{% endif %}></a>
-                <a class="btn glyphicon glyphicon-trash text-danger"></a>
-                <a class="btn glyphicon glyphicon-lock text-danger"></a>
+                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id %}"></a>
+                <a class="btn glyphicon glyphicon-lock text-danger"></a>{% endif %}
 
                 <h2 class="text-center">{{ object.points }}</h2>
                 {% if object.thread_type == 'LL' %}

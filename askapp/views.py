@@ -25,7 +25,7 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
-        return models.Thread.objects.all().order_by('-score')
+        return models.Thread.objects.filter(deleted=False).order_by('-score')
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -50,7 +50,7 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
-        context['threads'] = models.Thread.objects.filter(user=self.object).order_by('-created')
+        context['threads'] = models.Thread.objects.filter(user=self.object, deleted=False).order_by('-created')
         return context
 
 
@@ -184,6 +184,20 @@ class EditThreadView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('thread', args=(self.object.id,))
+
+
+@rules_light.class_decorator('askapp.thread.delete')
+class DeleteThreadView(LoginRequiredMixin, UpdateView):
+    success_url = reverse_lazy('index')
+    model = models.Thread
+    fields = ['deleted']
+    template_name = 'thread_delete.html'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.deleted = True
+        instance.delete_reason = self.request.POST.get('reason', '')
+        return super(DeleteThreadView, self).form_valid(form)
 
 
 class ReplyMixin(LoginRequiredMixin, CreateView):

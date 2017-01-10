@@ -17,6 +17,7 @@ except:
     from urlparse import urlparse
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import model_to_dict
 
 from askapp import settings
 
@@ -158,6 +159,7 @@ class Thread(models.Model):
     closed = models.BooleanField(default=False) # noone can post comments / answers in this threa
     sticky = models.DateField(null=True, blank=True) # this thread will be sticky until the given date
     sponsored = models.BooleanField(default=False) # hopefully one day there will be ponsored threads...
+    deleted = models.BooleanField(default=False) # the thread is marked as deleted, usually on user blocking
 
     # reference to the user who created the post
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
@@ -195,6 +197,10 @@ class Thread(models.Model):
     # that are not older than one week old
     score = models.IntegerField(default=0)
 
+    def __init__(self, *args, **kwargs):
+        super(Thread, self).__init__(*args, **kwargs)
+        self._old = model_to_dict(self, fields=['id', 'hidden', 'closed', 'sticky', 'sponsored', 'deleted', 'text', 'title'])
+
     def __str__(self):
         return self.title
 
@@ -202,6 +208,7 @@ class Thread(models.Model):
         self.prepare_images()
         self.update_link()
         super(Thread, self).save()
+        AuditThread.audit(self)
 
     def prepare_images(self):
         if not self.id:
@@ -358,3 +365,44 @@ class PostLike(models.Model):
         except ObjectDoesNotExist:
             obj = cls(points=points, **kwargs)
             obj.save()
+
+
+class AuditThread(models.Model):
+    TYPES_OF_ACTION = (
+        ("update", 'Update'),
+        ("close", 'Close'),
+        ("sticky", 'Sticky'),
+        ("hide", 'Hide'),
+        ("delete", 'Delete'),
+    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    thread = models.ForeignKey(Thread, on_delete=models.DO_NOTHING)
+    action = models.TextField(null=False, choices=TYPES_OF_ACTION, default="update")
+    created = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(null=True)
+
+    @classmethod
+    def audit(cls, instance):
+        if not instance._old['id']:
+            return
+        content = None
+        if instance._old['deleted'] != instance.deleted:
+            action = 'delete'
+            content = instance.delete_reason
+        elif instance._old['hidden'] != instance.hidden:
+            action = 'hide'
+        elif instance._old['sticky'] != instance.sticky:
+            action = 'sticky'
+        elif instance._old['closed'] != instance.closed:
+            action = 'close'
+        elif instance._old['title'] != instance.title:
+            action = 'update'
+            content = instance._old['title']
+        elif instance._old['text'] != instance.text:
+            action = 'update'
+            content = instance._old['text']
+        else:
+            return
+        audit = cls(user=instance.modified_by, thread=instance, action=action, content=content)
+        audit.save()

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+            <!--First Thread-->
+            <div class="row">
+                    <div class="col-xs-10 col-sm-11  col-md-11">
+                        <h2>{{ object.title }}</h2>
+                    </div>
+
+                    <div class="col-xs-10 col-sm-11  col-md-11">
+						{{ object.text|safe }}
+                    </div>
+                <!--End first Thread-->
+            </div>
+
+            <!--spacer-->
+            <div class="row">
+                <div class="col-xs-12    col-md-11 col-md-offset-1">
+                    <hr>
+                </div>
+            </div>
+            <!--end spacer-->
+
+            <!--start submit comment form-->
+            <div class="row">
+                <div class="col-xs-12    col-md-11 col-md-offset-1">
+                    <div class="form-group">
+                        <form method="post">
+	                        {% csrf_token %}
+                            <label for="comment">Reason:</label>
+	                        <input type="text" name="reason" />
+	                        <br>
+                            <button type="submit" class="btn btn-primary pull-right">Delete thread</button>
+                            <a href="{% url 'thread' object.id %}" class="btn pull-right">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--End submit comment form-->
+
+
+{% endblock %}
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}

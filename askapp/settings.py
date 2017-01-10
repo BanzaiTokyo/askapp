@@ -75,6 +75,7 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'rules_light.middleware.Middleware',
     'pagination_bootstrap.middleware.PaginationMiddleware',
+    'askapp.middleware.WhodidMiddleware',
 )
 
 ROOT_URLCONF = 'askapp.urls'
