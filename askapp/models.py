@@ -281,11 +281,11 @@ class Post(MPTTModel):
         return result.values()[0] or 0
 
 
-@receiver(pre_delete, sender=Post)
-def _post_delete(sender, instance, **kwargs):
-    if not instance.deleted:
-        instance.thread.num_comments -= 1
-        instance.thread.save()
+# @receiver(pre_delete, sender=Post)
+# def _post_delete(sender, instance, **kwargs):
+#     if not instance.deleted:
+#         instance.thread.num_comments -= 1
+#         instance.thread.save()
 
 
 class Action(models.Model):
