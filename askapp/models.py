@@ -384,7 +384,7 @@ class AuditThread(models.Model):
 
     @classmethod
     def audit(cls, instance):
-        if not instance._old['id']:
+        if not instance._old['id'] or not hasattr(instance, 'modified_by'):
             return
         content = None
         if instance._old['deleted'] != instance.deleted:
