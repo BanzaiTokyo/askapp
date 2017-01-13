@@ -377,7 +377,7 @@ class AuditThread(models.Model):
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-    thread = models.ForeignKey(Thread, on_delete=models.DO_NOTHING)
+    thread = models.ForeignKey(Thread)
     action = models.TextField(null=False, choices=TYPES_OF_ACTION, default="update")
     created = models.DateTimeField(auto_now_add=True)
     content = models.TextField(null=True)
