@@ -200,6 +200,15 @@ class DeleteThreadView(LoginRequiredMixin, UpdateView):
         return super(DeleteThreadView, self).form_valid(form)
 
 
+class LockThreadView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        thread = models.Thread.objects.get(pk=kwargs['thread_id'])
+        rules_light.require(request.user, 'askapp.thread.update', thread)
+        thread.closed = not thread.closed
+        thread.save()
+        return redirect(reverse_lazy('thread', args=(thread.id, )))
+
+
 class ReplyMixin(LoginRequiredMixin, CreateView):
     """
     Common class for inline and standalone comment form
