@@ -40,8 +40,10 @@ class AskappImageFieldFile(ImageFieldFile):
     def url(self):
         try:
             result = super(AskappImageFieldFile, self)._get_url()
+            if not os.path.isfile(self.path):
+                raise ValueError
         except ValueError:
-            result = settings.STATIC_URL + 'images/avatar.png'
+            result = settings.DEFAULT_AVATAR_URL if hasattr(settings, 'DEFAULT_AVATAR_URL') else ''
         return result
 
 

@@ -36,7 +36,7 @@
 	            {% for user in users %}
                 <li class="list-group-item">
                     <a href="{% url 'profile' user.id %}">
-                        <img src="{{ user.profile.avatar.url }}" alt="banzaitokyo avatar" width="20" height="20"/>
+                        <img src="{{ user.profile.avatar.url }}" alt="" width="20" height="20"/>
                         {{ user.username }}</a>
                 </li>
 	            {% endfor %}

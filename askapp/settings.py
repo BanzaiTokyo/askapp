@@ -174,5 +174,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
 
 AVATAR_SIZE = (100, 100)
+DEFAULT_AVATAR_URL = STATIC_URL + 'images/avatar.png'
 
 PAGINATION_DEFAULT_PAGINATION = 10
