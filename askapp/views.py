@@ -95,6 +95,11 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
     template_name = 'profile_edit.html'
     model = models.Profile
 
+    def get_initial(self):
+        params = super(AdminProfileEditView, self).get_initial()
+        params['is_active'] = self.object.user.is_active
+        return params
+
     def get_context_data(self, **kwargs):
         context = super(AdminProfileEditView, self).get_context_data(**kwargs)
         context['admin_view'] = True
@@ -119,6 +124,9 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
             return super(AdminProfileEditView, self).post(self, request, *args, **kwargs)
 
     def get_success_url(self):
+        # profile saved, work with is_active
+        self.object.user.is_active = self.request.POST.get('is_active', 'off') == 'on'
+        self.object.user.save(update_fields=['is_active'])
         return reverse_lazy('profile', args=(self.object.user.id,))
 
 

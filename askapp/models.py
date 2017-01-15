@@ -112,7 +112,8 @@ def create_user_profile(sender, instance, created, **kwargs):
     if not instance.is_active:
         if kwargs['update_fields'] and 'is_active' in kwargs['update_fields']:
             # delete user threads and posts
-            pass
+            Post.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
+            Thread.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
     elif created:
         return Profile.objects.create(user=instance)
     else:
