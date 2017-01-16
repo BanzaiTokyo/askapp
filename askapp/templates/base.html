@@ -55,9 +55,9 @@
                 <div class="nav navbar-btn navbar-right">
                     {% if user.is_authenticated %}
                         {% trans "Logged in" %}: {{ user.username }}
-                        (<a href="{% url 'auth_logout' %}?next=/">{% trans "Log out" %}</a> )
+                        (<a href="{% url 'auth_logout' %}?next={{request.path}}">{% trans "Log out" %}</a> )
                     {% else %}
-                        <a href="{% url 'auth_login' %}" class="btn btn-link">Login</a>
+                        <a href="{% url 'auth_login' %}?next={{request.path}}" class="btn btn-link">Login</a>
                         <a href="{% url 'registration_register' %}"
                            class="btn btn-primary">Register</a>
                     {% endif %}

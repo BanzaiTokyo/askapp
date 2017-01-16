@@ -147,12 +147,13 @@ class QuestionView(View):
         return render(request, 'question.html', context)
 
 
-class CommentView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'comment.html', context)
+class CommentView(CreateView):
+    model = models.Post
+    template_name = 'comment.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentView, self).get_context_data(**kwargs)
+        return context
 
 
 class AskappRegistrationView(RegistrationView):
@@ -217,7 +218,7 @@ class LockThreadView(LoginRequiredMixin, View):
         return redirect(reverse_lazy('thread', args=(thread.id, )))
 
 
-class ReplyMixin(LoginRequiredMixin, CreateView):
+class ReplyMixin(CreateView):
     """
     Common class for inline and standalone comment form
     """
@@ -228,7 +229,8 @@ class ReplyMixin(LoginRequiredMixin, CreateView):
         if not hasattr(self, 'thread'):
             thread_id = self.kwargs.get('thread_id')
             self.thread = models.Thread.objects.get(pk=thread_id)
-        rules_light.require(self.request.user, 'askapp.post.create', self.thread)
+        if self.request.method == 'POST':
+            rules_light.require(self.request.user, 'askapp.post.create', self.thread)
         return super(ReplyMixin, self).get_form(form_class)
 
     def form_valid(self, form):
