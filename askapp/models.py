@@ -205,7 +205,7 @@ class Thread(models.Model):
         self._old = model_to_dict(self, fields=['id', 'hidden', 'closed', 'sticky', 'sponsored', 'deleted', 'text', 'title'])
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
     def save(self, *args, **kwargs):
         self.prepare_images()
@@ -282,14 +282,6 @@ class Post(MPTTModel):
     def points(self):
         result = self.postlike_set.all().aggregate(models.Sum('points'))
         return result.values()[0] or 0
-
-
-# @receiver(pre_delete, sender=Post)
-# def _post_delete(sender, instance, **kwargs):
-#     if not instance.deleted:
-#         instance.thread.num_comments -= 1
-#         instance.thread.save()
-
 
 class Action(models.Model):
     '''
