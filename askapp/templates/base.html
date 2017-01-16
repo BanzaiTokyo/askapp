@@ -23,6 +23,7 @@
             To be replaced by the title block
         {% endblock %}
     </title>
+
 </head>
 
 <body>
@@ -109,13 +110,13 @@
 
             <div class="navbar-default">
                 <div class="col-sm-12 col-md-4">
-                    <a class="navbar-brand " href="#">&copy; 2016 Akihabara.Tokyo</a>
+                    <a class="navbar-brand " href="{% url 'index' %}">&copy; 2016 Akihabara.Tokyo</a>
                 </div>
             </div>
             <div class=" col-sm-12 col-md-8">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#about">Contact us</a></li>
+                    <li><a href="{% url 'recent' %}">Recent</a></li>
+                    <li><a href="{% url 'new_thread' %}">Submit</a></li>
 
                 </ul>
 

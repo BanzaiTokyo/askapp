@@ -1,63 +1,69 @@
 {% load pagination_tags %}
 {% autopaginate threads %}
-{% for thread in threads %}
-	{% if forloop.counter0 %}
-    <!--spacer-->
-    <hr>
-    <!--end spacer-->
-	{% endif %}
-    <!--Thread-->
-    <div class="row">
-        <div>
-            <div class="col-xs-1">
-                <a class="btn glyphicon glyphicon-chevron-up"></a>
-                <h2 class="text-center">{{ thread.points }}</h2>
-	            {% if thread.thread_type == 'LL' %}
-                <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
-	            {% elif thread.thread_type == 'DD' %}
-                <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
-	            {% elif thread.thread_type == 'QQ' %}
-                <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
-	            {% endif %}
-            </div>
 
-            {% if thread.image %}
+{% for thread in threads %}
+
+    {% if forloop.counter0 %}
+        <!--spacer-->
+        <hr>
+        <!--end spacer-->
+    {% endif %}
+
+    {#  Thread #}
+    <div class="row">
+    <div>
+        <div class="col-xs-1">
+            <a class="btn glyphicon glyphicon-chevron-up"></a>
+            <h2 class="text-center">{{ thread.points }}</h2>
+            {% if thread.thread_type == 'LL' %}
+                <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+            {% elif thread.thread_type == 'DD' %}
+                <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
+            {% elif thread.thread_type == 'QQ' %}
+                <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+            {% endif %}
+        </div>
+
+        {% if thread.image %}
             <div class="col-xs-10 col-sm-11  col-md-3">
                 <a href="{% url 'thread' thread.id %}" class="thumbnail">
                     <img src="{{ thread.image.url }}" alt="...">
                 </a>
             </div>
             <div class="col-xs-12    col-md-8">
-            {% else %}
+        {% else %}
             <div class="col-xs-12    col-md-11">
-            {% endif %}
-	            {% if thread.thread_type == 'LL' %}
-                    <a href="{{ thread.link }}">{{ thread.title }}</a>
-		        {% else %}
-                    <a href="{% url 'thread' thread.id %}">{{ thread.title }}</a>
-                {% endif %}
-	            {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
+        {% endif %}
+        {% if thread.thread_type == 'LL' %}
+            <a href="{{ thread.link }}">{{ thread.title }}</a>
+        {% else %}
+            <a href="{% url 'thread' thread.id %}">{{ thread.title }}</a>
+        {% endif %}
+        {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
 
-                <div>
-	                {{ thread.text|safe|truncatechars_html:200 }}
-                </div>
+        <div>
+            {{ thread.text|safe|truncatechars_html:200 }}
+        </div>
 
-                <!--Tags-->
-                <div>
-	                <p>{% include 'tags_list.html' with tags=thread.tags.all only %}</p>
-                </div>
-                <div><p>posted by <a href="{% url 'profile' thread.user.id %}"><img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
-                    | {{ thread.created|timesince }} ago | <a href="{% url 'thread' thread.id %}">{{ thread.num_comments }} comment{{ thread.num_comments|pluralize }} </a></p></div>
-            </div>
+        <!--Tags-->
+        <div>
+            <p>{% include 'tags_list.html' with tags=thread.tags.all only %}</p>
+        </div>
+        <div><p>posted by <a href="{% url 'profile' thread.user.id %}"><img src="{{ thread.user.profile.avatar.url }}"
+                                                                            width="20"
+                                                                            height="20"/>&nbsp;{{ thread.user }}</a>
+            | {{ thread.created|timesince }} ago | <a href="{% url 'thread' thread.id %}">{{ thread.num_comments }}
+                comment{{ thread.num_comments|pluralize }} </a></p></div>
+        </div>
         </div>
     </div>
     <!--End Thread-->
 {% endfor %}
 <!--pagination-->
 <!--.pagination-lg or .pagination-sm for additional sizes.-->
-<div class="col-sm-6 col-md-5 col-lg-4 col-sm-offset-4 col-md-offset-5">
+<div class="text-center">
     <nav aria-label="Page navigation ">
-	    {% paginate %}
+        {% paginate %}
     </nav>
 </div>
 <!--end pagination-->

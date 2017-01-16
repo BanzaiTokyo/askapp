@@ -3,7 +3,11 @@
 {% block title %}Error 404{% endblock %}
 
 {% block content %}
-    Unfortunately the page you were trying to open could not be found.
+    <h2>Error 404</h2>
+<p>    Unfortunately the page you were trying to open could not be found.</p>
+    <p>You might want to open our <a href="{% url 'index' %}">homepage</a>.</p>
 {% endblock %}
+
 {% block rightcolumn %}
 {% endblock %}
+
