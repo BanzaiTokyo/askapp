@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}Comment #{{ object.id }} posted on {{ object.thread.title }}{% endblock %}
+
 {% block content %}
     {% load rules_light_tags %}
     {% rule 'askapp.post.create' object.thread as can_reply %}
