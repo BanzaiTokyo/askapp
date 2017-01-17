@@ -37,7 +37,7 @@
 	                        <input type="text" name="reason" />
 	                        <br>
                             <button type="submit" class="btn btn-primary pull-right">Delete thread</button>
-                            <a href="{% url 'thread' object.id %}" class="btn pull-right">Cancel</a>
+                            <a href="{% url 'thread' object.id object.title|slugify %}" class="btn pull-right">Cancel</a>
                         </form>
                     </div>
                 </div>

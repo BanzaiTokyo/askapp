@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404
+from django.template.defaultfilters import slugify
 
 import rules_light
 import askapp.auth_rules
@@ -180,7 +181,7 @@ class ThreadMixin(object):
         return kwargs
 
     def get_success_url(self):
-        return reverse_lazy('thread', args=(self.object.id,))
+        return reverse_lazy('thread', args=(self.object.id, slugify(self.object.title)))
 
 
 class NewThreadView(LoginRequiredMixin, ThreadMixin, CreateView):
@@ -217,7 +218,7 @@ class LockThreadView(LoginRequiredMixin, View):
         rules_light.require(request.user, 'askapp.thread.update', thread)
         thread.closed = not thread.closed
         thread.save()
-        return redirect(reverse_lazy('thread', args=(thread.id, )))
+        return redirect(reverse_lazy('thread', args=(thread.id, slugify(thread.title))))
 
 
 class ReplyMixin(CreateView):
@@ -241,7 +242,7 @@ class ReplyMixin(CreateView):
         return super(ReplyMixin, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'),))
+        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'), slugify(self.thread.title)))
 
 
 class ReplyThreadView(ReplyMixin):
@@ -288,7 +289,7 @@ class DeleteCommentView(LoginRequiredMixin, View):
         rules_light.require(request.user, 'askapp.post.delete', post)
         post.deleted = True
         post.save()
-        return redirect(reverse_lazy('thread', args=(post.thread.id, )))
+        return redirect(reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title))))
 
 
 class TagView(HomeView):
@@ -308,7 +309,7 @@ class ThreadLikeView(LoginRequiredMixin, View):
         thread = models.Thread.objects.get(pk=kwargs['thread_id'])
         rules_light.require(request.user, 'askapp.threadlike.create', thread)
         models.ThreadLike.vote(thread, request.user, kwargs['verb'])
-        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id))))
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
 
 
 class PostLikeView(LoginRequiredMixin, View):
@@ -316,4 +317,4 @@ class PostLikeView(LoginRequiredMixin, View):
         post = models.Post.objects.get(pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.postlike.create', post)
         models.PostLike.vote(post, request.user, kwargs['verb'])
-        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id))))
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))

@@ -14,15 +14,15 @@
         <div>
             <div class="col-xs-1">
                 <a class="btn glyphicon glyphicon-chevron-up"
-                   {% if can_like_thread %}href="{% url 'thread_like' object.id 'up' %}"{% endif %}></a>
+                   {% if can_like_thread %}href="{% url 'thread_like' object.id object.title|slugify 'up' %}"{% endif %}></a>
                 <a class="btn glyphicon glyphicon-chevron-down text-danger"
-                   {% if can_like_thread %}href="{% url 'thread_like' object.id 'down' %}"{% endif %}></a>
-                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id %}"></a>{% endif %}
+                   {% if can_like_thread %}href="{% url 'thread_like' object.id object.title|slugify 'down' %}"{% endif %}></a>
+                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
-                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread" href="{% url 'lock_thread' object.id 'unlock' %}"></a>
+                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread" href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"></a>
                     {% else %}
-                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread" href="{% url 'lock_thread' object.id 'lock' %}"></a>
+                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread" href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"></a>
                     {% endif %}
                 {% endif %}
 
@@ -45,7 +45,7 @@
                     {% endif %}
                     {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
                     {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success"
-                                          href="{% url 'edit_thread' object.id %}"></a>{% endif %}
+                                          href="{% url 'edit_thread' object.id object.title|slugify %}"></a>{% endif %}
                 </h2>
 
                 <!--Tags-->
@@ -80,7 +80,7 @@
         <div class="row">
             <div class="col-xs-12    col-md-11 col-md-offset-1">
                 <div class="form-group">
-                    <form method="post" action="{% url 'reply_thread' object.id %}">
+                    <form method="post" action="{% url 'reply_thread' object.id object.title|slugify %}">
                         {% csrf_token %}
                         <label for="comment">Comment:</label>
                         <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
