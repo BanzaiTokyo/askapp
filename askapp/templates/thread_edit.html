@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Submit new thread{% endblock %}
+{% block title %}{% if not form.instance.pk %}Submit new thread{% else %}Edit thread{% endif %}{% endblock %}
 
 
 
@@ -10,13 +10,13 @@
     <div class="row col-md-6">
         <form method="post" enctype="multipart/form-data">
 	        {% csrf_token %}
-            {% if not form.instance.pk %}
+            {% if not form.instance.pk or admin_view %}
             <div class="form-group">
 	            <label for="id_thread_type">Type:</label>
 	            {{ form.thread_type }}
             </div>
             {% endif %}
-            {% if not form.instance.pk or form.instance.thread_type == 'LL' %}
+            {% if not form.instance.pk or admin_view or form.instance.thread_type == 'LL' %}
             <div class="form-group" id="url_group">
 	            <label for="id_link">URL:</label>
 	            {{ form.link }}
@@ -51,6 +51,7 @@
         </form>
     </div>
 
+{% if not form.instance.pk or admin_view %}
 <script>
 $('#id_thread_type').on('change', function() {
 	if ($(this).val() == 'LL')
@@ -60,6 +61,7 @@ $('#id_thread_type').on('change', function() {
 });
 $('#id_thread_type').triggerHandler('change');
 </script>
+{% endif %}
 {% endblock %}
 
 

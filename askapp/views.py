@@ -171,28 +171,30 @@ class AskappRegistrationView(RegistrationView):
             super(AskappRegistrationView, self).send_activation_email(user)
 
 
-class NewThreadView(LoginRequiredMixin, CreateView):
-    form_class = forms.NewThreadForm
-    template_name = 'new_thread.html'
+class ThreadMixin(object):
+    form_class = forms.ThreadForm
+    template_name = 'thread_edit.html'
+    def get_form_kwargs(self):
+        kwargs = super(ThreadMixin, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_success_url(self):
         return reverse_lazy('thread', args=(self.object.id,))
+
+
+class NewThreadView(LoginRequiredMixin, ThreadMixin, CreateView):
+    pass
 
 
 @rules_light.class_decorator('askapp.thread.update')
-class EditThreadView(LoginRequiredMixin, UpdateView):
-    form_class = forms.EditThreadForm
+class EditThreadView(LoginRequiredMixin, ThreadMixin, UpdateView):
     model = models.Thread
-    template_name = 'new_thread.html'
 
     def get_context_data(self, **kwargs):
         context = super(EditThreadView, self).get_context_data(**kwargs)
-        context['hide_type'] = True
-        context['hide_link'] = self.object.thread_type != 'LL'
+        context['admin_view'] = self.request.user.is_staff
         return context
-
-    def get_success_url(self):
-        return reverse_lazy('thread', args=(self.object.id,))
 
 
 @rules_light.class_decorator('askapp.thread.delete')
