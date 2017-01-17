@@ -1,3 +1,7 @@
 {% for tag in tags %}
-<a href="{% url 'tag' tag.slug %}" class="label label-primary">{{ tag.name }}</a>
+
+    <span style="line-height: 170%">
+        <a href="{% url 'tag' tag.slug %}" class="label label-primary">{{ tag.name }}</a>
+    </span>
+
 {% endfor %}

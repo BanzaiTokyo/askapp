@@ -31,15 +31,21 @@
                 </a>
             </div>
             <div class="col-xs-12    col-md-8">
+
         {% else %}
             <div class="col-xs-12    col-md-11">
         {% endif %}
+
         {% if thread.thread_type == 'LL' %}
             <a href="{{ thread.link }}">{{ thread.title }}</a>
+
         {% else %}
             <a href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.title }}</a>
         {% endif %}
-        {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
+
+        {% if thread.domain %}
+            <span class="small">{{ thread.domain }}</span>
+        {% endif %}
 
         <div>
             {{ thread.text|safe|truncatechars_html:200 }}
@@ -47,20 +53,23 @@
 
         <!--Tags-->
         <div>
-            <p>{% include 'tags_list.html' with tags=thread.tags.all only %}</p>
+            {% include 'tags_list.html' with tags=thread.tags.all only %}
         </div>
+
         <div><p>posted by <a href="{% url 'profile' thread.user.id %}"><img src="{{ thread.user.profile.avatar.url }}"
                                                                             width="20"
                                                                             height="20"/>&nbsp;{{ thread.user }}</a>
-            | {{ thread.created|timesince }} ago | <a href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.num_comments }}
-                comment{{ thread.num_comments|pluralize }} </a></p></div>
+            | {{ thread.created|timesince }} ago | <a
+                    href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.num_comments }}
+                comment{{ thread.num_comments|pluralize }} </a></p>
+        </div>
         </div>
         </div>
     </div>
     <!--End Thread-->
 {% endfor %}
+
 <!--pagination-->
-<!--.pagination-lg or .pagination-sm for additional sizes.-->
 <div class="text-center">
     <nav aria-label="Page navigation ">
         {% paginate %}
