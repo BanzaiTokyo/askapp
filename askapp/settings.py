@@ -15,7 +15,6 @@ import os
 import sys
 from django.core.exceptions import ImproperlyConfigured
 
-
 print("system=->", sys.path)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -51,6 +50,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'debug_toolbar',
     'snowpenguin.django.recaptcha2',
     'bootstrap3',
@@ -76,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'rules_light.middleware.Middleware',
     'pagination_bootstrap.middleware.PaginationMiddleware',
     'askapp.middleware.WhodidMiddleware',
+
 )
 
 ROOT_URLCONF = 'askapp.urls'
@@ -92,6 +93,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.media',
+                'askapp.context_processors.site_processor',
             ],
         },
     },
@@ -138,7 +140,7 @@ EMAIL_HOST = get_env_variable('EMAIL_HOST')
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -160,14 +162,16 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth.User'
 
-#the url where the user will be redirected after they log in
+# the url where the user will be redirected after they log in
 LOGIN_REDIRECT_URL = '/'
 
-#RECAPTCHA KEYS
+# RECAPTCHA KEYS
 RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
+# List of domains that are not allowed to have email account on
+# Confirmation email will silently fail to be sent
 BLACKLISTED_DOMAINS = ['yopmail1.com', ]
 
 MEDIA_URL = '/media/'
@@ -176,4 +180,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
 AVATAR_SIZE = (100, 100)
 DEFAULT_AVATAR_URL = STATIC_URL + 'images/avatar.png'
 
+# number of threads per page
 PAGINATION_DEFAULT_PAGINATION = 10
+
+# setting used by Django “sites” framework
+SITE_ID = 1
