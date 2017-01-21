@@ -18,7 +18,9 @@
     <div>
         <div class="col-xs-1">
             <a class="btn glyphicon glyphicon-chevron-up"></a>
+            {% if home_page %}
             <h2 class="text-center">{{ thread.points }}</h2>
+            {% endif %}
             {% if thread.thread_type == 'LL' %}
                 <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
             {% elif thread.thread_type == 'DD' %}

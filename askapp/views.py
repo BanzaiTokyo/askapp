@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import resolve
 
 import rules_light
 import askapp.auth_rules
@@ -32,7 +33,8 @@ class HomeView(View):
         context = {
             'threads': self.get_threads(),
             'tags': models.Tag.objects.all(),
-            'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5]
+            'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5],
+            'home_page': resolve(request.path_info).url_name == 'index'
         }
         return render(request, 'index.html', context)
 
