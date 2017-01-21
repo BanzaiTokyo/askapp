@@ -183,5 +183,5 @@ DEFAULT_AVATAR_URL = STATIC_URL + 'images/avatar.png'
 # number of threads per page
 PAGINATION_DEFAULT_PAGINATION = 10
 
-# setting used by Django “sites” framework
+# setting used by Django "sites" framework
 SITE_ID = 1
