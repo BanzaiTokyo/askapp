@@ -11,7 +11,7 @@
     <div class="row">
         <p>&nbsp;</p>
         <div class="col-md-6">
-            Username: <strong class="pull-right"><span>{{ object.user.username }}</span></strong>
+            Username: <strong class="pull-right"><a href="{% url 'profile' object.user.id object.user|slugify %}">{{ object.user.username }}</a></strong>
         </div>
 
         <div class="row">

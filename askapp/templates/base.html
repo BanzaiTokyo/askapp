@@ -56,7 +56,7 @@
 
                 <div class="nav navbar-btn navbar-right">
                     {% if user.is_authenticated %}
-                        {% trans "Logged in" %}: {{ user.username }}
+                        {% trans "Logged in" %}: <a href="{% url 'profile_edit' %}">{{ user.username }}</a>
                         (<a href="{% url 'auth_logout' %}?next={{ request.path }}">{% trans "Log out" %}</a> )
                     {% else %}
                         <a href="{% url 'auth_login' %}?next={{ request.path }}" class="btn btn-link">Login</a>
