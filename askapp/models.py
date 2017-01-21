@@ -18,7 +18,7 @@ except:
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
-
+import rules_light
 from askapp import settings
 
 
@@ -334,9 +334,12 @@ class ThreadLike(models.Model):
         kwargs = {'thread': thread, 'user': user}
         try:
             obj = cls.objects.get(**kwargs)
+            if not rules_light.registry['askapp.threadlike.%s' % verb](user, None, obj):
+                return
         except ObjectDoesNotExist:
-            obj = cls(points=points, **kwargs)
-            obj.save()
+            obj = cls(points=0, **kwargs)
+        obj.points += points
+        obj.save()
 
 
 class PostLike(models.Model):
@@ -358,9 +361,12 @@ class PostLike(models.Model):
         kwargs = {'post': post, 'user': user}
         try:
             obj = cls.objects.get(**kwargs)
+            if not rules_light.registry['askapp.postlike.%s' % verb](user, None, obj):
+                return
         except ObjectDoesNotExist:
-            obj = cls(points=points, **kwargs)
-            obj.save()
+            obj = cls(points=0, **kwargs)
+        obj.points += points
+        obj.save()
 
 
 class AuditThread(models.Model):

@@ -310,7 +310,7 @@ class TagView(HomeView):
 class ThreadLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         thread = models.Thread.objects.get(pk=kwargs['thread_id'])
-        rules_light.require(request.user, 'askapp.threadlike.create', thread)
+        rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
         models.ThreadLike.vote(thread, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
 
@@ -318,6 +318,6 @@ class ThreadLikeView(LoginRequiredMixin, View):
 class PostLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         post = models.Post.objects.get(pk=kwargs['post_id'])
-        rules_light.require(request.user, 'askapp.postlike.create', post)
+        rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
         models.PostLike.vote(post, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))

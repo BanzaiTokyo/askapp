@@ -8,15 +8,17 @@
     {% rule 'askapp.thread.update' object as can_update %}
     {% rule 'askapp.thread.delete' object as can_delete %}
     {% rule 'askapp.post.create' object as can_reply %}
-    {% rule 'askapp.threadlike.create' object as can_like_thread %}
+    {% rule 'askapp.threadlike.up' object as can_like_thread %}
+    {% rule 'askapp.threadlike.down' object as can_dislike_thread %}
     <!--First Thread-->
     <div class="row">
         <div>
             <div class="col-xs-1">
                 <a class="btn glyphicon glyphicon-chevron-up"
                    {% if can_like_thread %}href="{% url 'thread_like' object.id object.title|slugify 'up' %}"{% endif %}></a>
+                {% if can_dislike_thread %}
                 <a class="btn glyphicon glyphicon-chevron-down text-danger"
-                   {% if can_like_thread %}href="{% url 'thread_like' object.id object.title|slugify 'down' %}"{% endif %}></a>
+                   href="{% url 'thread_like' object.id object.title|slugify 'down' %}"></a>{% endif %}
                 {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
