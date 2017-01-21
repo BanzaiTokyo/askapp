@@ -26,7 +26,7 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
-        return models.Thread.objects.filter(deleted=False).order_by('-score')
+        return models.Thread.objects.filter(deleted=False).order_by('-score')[:10]
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -52,6 +52,7 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['threads'] = models.Thread.objects.filter(user=self.object, deleted=False).order_by('-created')
+        context['per_page'] = settings.PAGINATION_THREADS_PER_PROFILE
         return context
 
 

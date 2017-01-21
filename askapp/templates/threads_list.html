@@ -1,5 +1,9 @@
 {% load pagination_tags %}
-{% autopaginate threads %}
+{% if not per_page %}
+  {% autopaginate threads %}
+{% else %}
+  {% autopaginate threads per_page %}
+{% endif %}
 
 {% for thread in threads %}
 
