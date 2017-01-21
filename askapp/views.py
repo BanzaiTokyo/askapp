@@ -39,7 +39,7 @@ class HomeView(View):
 
 class RecentThreadsView(HomeView):
     def get_threads(self):
-        return models.Thread.objects.all().order_by('-created')
+        return models.Thread.objects.filter(deleted=False).order_by('-created')
 
 
 class ProfileView(DetailView):
