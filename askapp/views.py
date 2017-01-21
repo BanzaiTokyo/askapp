@@ -295,6 +295,14 @@ class DeleteCommentView(LoginRequiredMixin, View):
         return redirect(reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title))))
 
 
+class DeleteCommentTreeView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        rules_light.require(request.user, 'askapp.post.delete_all', None)
+        post = models.Post.objects.get(pk=kwargs['post_id'])
+        post.get_descendants(include_self=True).update(deleted=1)
+        return redirect(reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title))))
+
+
 class TagView(HomeView):
     """
     Display threads by tag

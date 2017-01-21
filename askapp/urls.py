@@ -35,8 +35,9 @@ urlpatterns = [
     url(r'^thread/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))/delete$', views.DeleteThreadView.as_view(), name="delete_thread"),
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/(?P<action>lock|unlock)', views.LockThreadView.as_view(), name="lock_thread"),
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/reply$', views.ReplyThreadView.as_view(), name="reply_thread"),
-    url(r'^comment/(?P<post_id>\d+)', views.ReplyCommentView.as_view(), name="reply_comment"),
+    url(r'^comment/(?P<post_id>\d+)$', views.ReplyCommentView.as_view(), name="reply_comment"),
     url(r'^comment/(?P<post_id>\d+)/delete$', views.DeleteCommentView.as_view(), name="delete_comment"),
+    url(r'^comment/(?P<post_id>\d+)/delete_all$', views.DeleteCommentTreeView.as_view(), name="delete_comment_tree"),
 
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/vote/(?P<verb>up|down)$', views.ThreadLikeView.as_view(), name="thread_like"),
     url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),

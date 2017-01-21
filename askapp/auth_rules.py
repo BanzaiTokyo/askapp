@@ -17,6 +17,10 @@ def can_delete_comment(user, rule, post):
     return user.is_staff or post.user == user
 
 
+def can_delete_comment_tree(user, rule, post):
+    return user.is_staff
+
+
 def can_like_thread(user, rule, thread):
     return user.is_active and thread.user != user and ThreadLike.objects.filter(thread=thread, user=user).count() == 0 \
             or user.is_staff
@@ -42,6 +46,7 @@ rules_light.registry['askapp.thread.update'] = can_edit_thread
 rules_light.registry['askapp.thread.delete'] = can_delete_thread
 rules_light.registry['askapp.post.create'] = can_reply
 rules_light.registry['askapp.post.delete'] = can_delete_comment
+rules_light.registry['askapp.post.delete_all'] = can_delete_comment_tree
 rules_light.registry['askapp.threadlike.up'] = can_like_thread
 rules_light.registry['askapp.threadlike.down'] = can_dislike_thread
 rules_light.registry['askapp.postlike.up'] = can_like_post
