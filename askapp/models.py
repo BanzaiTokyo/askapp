@@ -247,8 +247,8 @@ class Thread(models.Model):
 
     @property
     def points(self):
-        result = self.threadlike_set.all().aggregate(models.Sum('points'))
-        return result.values()[0] or 0
+        result = self.threadlike_set.all().aggregate(sum=models.Sum('points'))['sum']
+        return result or 0
 
 
 class Post(MPTTModel):
@@ -280,8 +280,9 @@ class Post(MPTTModel):
 
     @property
     def points(self):
-        result = self.postlike_set.all().aggregate(models.Sum('points'))
-        return result.values()[0] or 0
+        result = self.postlike_set.all().aggregate(sum=models.Sum('points'))['sum']
+        return result or 0
+
 
 class Action(models.Model):
     '''
