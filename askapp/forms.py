@@ -38,15 +38,18 @@ class ThreadForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(ThreadForm, self).__init__(*args, **kwargs)
-        self.user = user
+        if self.instance and not self.instance.id:
+            self.instance.user = user
+        elif not user.is_staff:
+            self.fields.pop('thread_type')
 
     def clean(self):
         cleaned_data = super(ThreadForm, self).clean()
         link = cleaned_data.get("link")
         thread_type = cleaned_data.get("thread_type")
 
-        if thread_type and self.initial.get('thread_type', thread_type) != thread_type and not self.user.is_staff and not self.has_error('title'):
-            self.add_error('title', 'You are not allowed to change the thread type')
+        #if thread_type and self.initial.get('thread_type', thread_type) != thread_type and not self.user.is_staff and not self.has_error('title'):
+        #    self.add_error('title', 'You are not allowed to change the thread type')
 
         if thread_type == 'LL' and not link and not self.has_error('link'):
                 msg = "This field is required"
