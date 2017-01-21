@@ -13,7 +13,7 @@
         <a class="btn glyphicon glyphicon-chevron-down text-danger" {% if can_like_post %}href="{% url 'post_like' node.id 'down' %}"{% endif %}></a>
         {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
 
-        | <a href="{% url 'reply_comment' node.id %}">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id %}">&nbsp;{{ node.user }}</a>
+        | <a href="{% url 'reply_comment' node.id %}">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
         | {{ node.created|timesince }} ago
 
         <div>{{ node.text|safe }}<br>

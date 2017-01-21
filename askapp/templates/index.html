@@ -35,7 +35,7 @@
             <ul class="list-group">
 	            {% for user in users %}
                 <li class="list-group-item">
-                    <a href="{% url 'profile' user.id %}">
+                    <a href="{% url 'profile' user.id user|slugify %}">
                         <img src="{{ user.profile.avatar.url }}" alt="" width="20" height="20"/>
                         {{ user.username }}</a>
                 </li>

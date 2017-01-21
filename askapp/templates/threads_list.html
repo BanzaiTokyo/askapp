@@ -56,9 +56,8 @@
             {% include 'tags_list.html' with tags=thread.tags.all only %}
         </div>
 
-        <div><p>posted by <a href="{% url 'profile' thread.user.id %}"><img src="{{ thread.user.profile.avatar.url }}"
-                                                                            width="20"
-                                                                            height="20"/>&nbsp;{{ thread.user }}</a>
+        <div><p>posted by <a href="{% url 'profile' thread.user.id  thread.user|slugify %}">
+          <img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
             | {{ thread.created|timesince }} ago | <a
                     href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.num_comments }}
                 comment{{ thread.num_comments|pluralize }} </a></p>

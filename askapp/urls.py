@@ -19,7 +19,7 @@ urlpatterns = [
     # content pages
     url(r'^$', views.HomeView.as_view(), name="index"),
     url(r'^recent$', views.RecentThreadsView.as_view(), name="recent"),
-    url(r'^profile/(?P<pk>\d+)$', views.ProfileView.as_view(), name="profile"),
+    url(r'^profile/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))?/$', views.ProfileView.as_view(), name="profile"),
     url(r'^thread/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))?/$', views.ThreadView.as_view(), name="thread"),
     url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),
     #url(r'^comment/(?P<post_id>\d+)$', views.CommentView.as_view(), name="comment"),

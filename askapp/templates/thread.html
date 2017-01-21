@@ -50,7 +50,7 @@
 
                 <!--Tags-->
 
-                <div>posted by <a href="{% url 'profile' object.user.id %}"><img
+                <div>posted by <a href="{% url 'profile' object.user.id object.user|slugify %}"><img
                         src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
                     | {{ object.created|timesince }} ago in
                     {% include 'tags_list.html' with tags=object.tags.all only %}
