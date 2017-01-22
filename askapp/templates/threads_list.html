@@ -1,4 +1,5 @@
 {% load pagination_tags %}
+{% load rules_light_tags %}
 {% if not per_page %}
   {% autopaginate threads %}
 {% else %}
@@ -17,10 +18,14 @@
     <div class="row">
     <div>
         <div class="col-xs-1">
-            <a class="btn glyphicon glyphicon-chevron-up"></a>
+            {% rule 'askapp.threadlike.up' thread as can_like_thread %}
+            {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
+            {% include 'thread_like_button.html' with object=thread %}
             {% if home_page %}
             <h2 class="text-center">{{ thread.points }}</h2>
             {% endif %}
+            {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
+               href="{% url 'thread_like' thread.id thread.title|slugify 'down' %}"></a>{% endif %}
             {% if thread.thread_type == 'LL' %}
                 <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
             {% elif thread.thread_type == 'DD' %}

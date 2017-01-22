@@ -14,10 +14,8 @@
     <div class="row">
         <div>
             <div class="col-xs-1">
-                <a class="btn glyphicon glyphicon-chevron-up"
-                   {% if can_like_thread %}href="{% url 'thread_like' object.id object.title|slugify 'up' %}"{% endif %}></a>
-                {% if can_dislike_thread %}
-                <a class="btn glyphicon glyphicon-chevron-down text-danger"
+                {% include 'thread_like_button.html' with object=object %}
+                {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
                    href="{% url 'thread_like' object.id object.title|slugify 'down' %}"></a>{% endif %}
                 {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
                 {% if can_update %}
