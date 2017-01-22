@@ -3,6 +3,7 @@ from django.views.generic import View
 from registration.backends.hmac.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
+from askapp.score_calcuator import calculate_scores
 from askapp.settings import BLACKLISTED_DOMAINS
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -27,6 +28,7 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
+        calculate_scores()
         return models.Thread.objects.filter(deleted=False).order_by('-score')[:10]
 
     def get(self, request, *args, **kwargs):
