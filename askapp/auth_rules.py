@@ -10,7 +10,7 @@ def can_delete_thread(user, rule, thread):
 
 
 def can_reply(user, rule, thread):
-    return not thread.hidden and not thread.closed and not thread.deleted
+    return user.is_active and not thread.hidden and not thread.closed and not thread.deleted
 
 
 def can_delete_comment(user, rule, post):
