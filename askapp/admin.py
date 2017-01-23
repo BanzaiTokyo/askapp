@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ('title', 'num_comments')
+    list_display = ('title', 'score', 'num_points', 'num_comments')
     exclude = ('thumbnail', )
 
 

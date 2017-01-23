@@ -1,4 +1,5 @@
 import os
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete
@@ -198,7 +199,7 @@ class Thread(models.Model):
 
     # the current score of the post. It is only calculated for thread posts (no parents)
     # that are not older than one week old
-    score = models.IntegerField(default=0)
+    score = models.DecimalField(default=0, decimal_places=3, max_digits=6)
 
     def __init__(self, *args, **kwargs):
         super(Thread, self).__init__(*args, **kwargs)
@@ -235,6 +236,14 @@ class Thread(models.Model):
     @property
     def num_comments(self):
         return Post.objects.filter(thread=self, deleted=False).count()
+
+    @property
+    def num_points(self):
+        likes = ThreadLike.objects.filter(thread=self)
+        points = 0
+        for like in likes:
+            points += like.points
+        return points
 
     @property
     def domain(self):
