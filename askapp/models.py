@@ -199,7 +199,7 @@ class Thread(models.Model):
 
     # the current score of the post. It is only calculated for thread posts (no parents)
     # that are not older than one week old
-    score = models.DecimalField(default=0, decimal_places=3, max_digits=6)
+    score = models.IntegerField(default=0)
 
     def __init__(self, *args, **kwargs):
         super(Thread, self).__init__(*args, **kwargs)
