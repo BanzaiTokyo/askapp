@@ -16,13 +16,16 @@
             <div class="col-xs-1">
                 {% include 'thread_like_button.html' with object=object %}
                 {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
-                   href="{% url 'thread_like' object.id object.title|slugify 'down' %}"></a>{% endif %}
-                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger" href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
+                                              href="{% url 'thread_like' object.id object.title|slugify 'down' %}"></a>{% endif %}
+                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger"
+                                      href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
-                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread" href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"></a>
+                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread"
+                           href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"></a>
                     {% else %}
-                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread" href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"></a>
+                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread"
+                           href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"></a>
                     {% endif %}
                 {% endif %}
 
@@ -52,17 +55,21 @@
 
                 <div>posted by <a href="{% url 'profile' object.user.id object.user|slugify %}"><img
                         src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
-                    | {{ object.created|timesince }} ago in
-                    {% include 'tags_list.html' with tags=object.tags.all only %}
-                </div>
-
-                    {% if object.image %}
-                        <br>
-                        <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;" alt="...">
-
+                    | {{ object.created|timesince }} ago
+                    {% if object.tags.all %}
+                        in
+                        {% include 'tags_list.html' with tags=object.tags.all only %}
                     {% endif %}
 
-                    {{ thread.text|safe }}
+                </div>
+
+                {% if object.image %}
+                    <br>
+                    <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;" alt="...">
+
+                {% endif %}
+
+                {{ thread.text|safe }}
             </div>
         </div>
     </div>
