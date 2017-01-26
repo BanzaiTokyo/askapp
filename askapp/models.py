@@ -259,6 +259,10 @@ class Thread(models.Model):
         result = self.threadlike_set.all().aggregate(sum=models.Sum('points'))['sum']
         return result or 0
 
+    @property
+    def author(self):
+        return self.user.username
+
 
 class Post(MPTTModel):
     '''
@@ -291,6 +295,10 @@ class Post(MPTTModel):
     def points(self):
         result = self.postlike_set.all().aggregate(sum=models.Sum('points'))['sum']
         return result or 0
+
+    @property
+    def author(self):
+        return self.user.username
 
 
 class Action(models.Model):

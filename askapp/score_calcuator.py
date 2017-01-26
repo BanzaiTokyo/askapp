@@ -33,9 +33,6 @@ def calculate_scores():
             age_in_hours = 1
 
         score = ((points) / pow(age_in_hours, 1.8)) * 1E+7
-        print(score, " ", int(score))
         current_thread.score = int(score)
-        print("score: ", current_thread.score, ", points: ", points, " ", current_thread.title)
 
         current_thread.save()
-        # print("score: ", current_thread.score, "age: ", age_in_hours)

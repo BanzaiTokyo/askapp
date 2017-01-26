@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from askapp.models import Profile, Thread, Tag
+from askapp.models import Profile, Thread, Tag, Post
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -14,9 +14,15 @@ class UserAdmin(BaseUserAdmin):
 
 
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ('title', 'score', 'num_points', 'num_comments')
+    list_display = ('created', 'author', 'title', 'score', 'num_points', 'num_comments')
+    list_display_links = ('title',)
+    ordering = ('-created',)
     exclude = ('thumbnail', )
 
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('created', 'text', 'author')
+    list_display_links = ('text',)
+    ordering = ('-created',)
 
 class TagAdmin(admin.ModelAdmin):
     exclude = ('slug', )
@@ -24,5 +30,7 @@ class TagAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
 admin.site.register(Thread, ThreadAdmin)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Tag, TagAdmin)
