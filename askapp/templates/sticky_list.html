@@ -1,0 +1,90 @@
+{% load pagination_tags %}
+{% load rules_light_tags %}
+{% if not per_page %}
+    {% autopaginate threads %}
+{% else %}
+    {% autopaginate threads per_page %}
+{% endif %}
+
+{% for thread in sticky %}
+
+    {% if forloop.counter0 %}
+        <!--spacer-->
+        <hr>
+        <!--end spacer-->
+    {% endif %}
+
+      {#  Thread #}
+    <div class="row ">
+    <div >
+        <div class="col-xs-1">
+            {% rule 'askapp.threadlike.up' thread as can_like_thread %}
+            {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
+            {% include 'thread_like_button.html' with object=thread %}
+            {% if home_page %}
+                <h2 class="text-center">{{ thread.points }}</h2>
+            {% endif %}
+            {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
+                                          href="{% url 'thread_like' thread.id thread.title|slugify 'down' %}"></a>{% endif %}
+            {% if thread.thread_type == 'LL' %}
+                <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+            {% elif thread.thread_type == 'DD' %}
+                <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
+            {% elif thread.thread_type == 'QQ' %}
+                <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+            {% endif %}
+        </div>
+
+        {% if thread.image %}
+            <div class="col-xs-10 col-sm-11  col-md-3 ">
+                <a href="{% url 'thread' thread.id thread.title|slugify %}" class="thumbnail">
+                    <img src="{{ thread.image.url }}" alt="...">
+                </a>
+            </div>
+            <div class="col-xs-12    col-md-8 bs-callout bs-callout-success bg-success">
+
+        {% else %}
+            <div class="col-xs-12    col-md-11 bs-callout bs-callout-success bg-success">
+        {% endif %}
+
+        {% if thread.thread_type == 'LL' %}
+            <a href="{{ thread.link }}">{{ thread.title }}</a>
+
+        {% else %}
+            <a href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.title }}</a>
+        {% endif %}
+
+        {% if thread.domain %}
+            <span class="small">{{ thread.domain }}</span>
+        {% endif %}
+
+        <div>
+            {{ thread.text|safe|truncatechars_html:200 }}
+        </div>
+
+        <!--Tags-->
+        <div>
+            {% include 'tags_list.html' with tags=thread.tags.all only %}
+        </div>
+
+        <div><p>posted by <a href="{% url 'profile' thread.user.id  thread.user|slugify %}">
+            <img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
+            | {{ thread.created|timesince }} ago | <a
+                    href="{% url 'thread' thread.id thread.title|slugify %}">{{ thread.num_comments }}
+                comment{{ thread.num_comments|pluralize }} </a></p>
+        </div>
+        </div>
+        </div>
+    </div>
+    <!--End Thread-->
+
+
+{% endfor %}
+
+<!--pagination-->
+<div class="text-center">
+    <nav aria-label="Page navigation ">
+        {% paginate %}
+    </nav>
+</div>
+<!--end pagination-->
