@@ -12,6 +12,9 @@ from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import resolve
+from django.db.models import Q
+
+from datetime import datetime
 
 import rules_light
 import askapp.auth_rules
@@ -28,10 +31,10 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
-        return models.Thread.objects.filter(deleted=False,  sticky=None).order_by('-score')[:10]
+        return models.Thread.objects.filter( Q(sticky=None)  | Q(sticky__lte=datetime.now()), deleted=False).order_by('-score')[:10]
 
     def get_sticky(self):
-        return models.Thread.objects.filter(deleted=False, sticky__isnull=False)
+        return models.Thread.objects.filter(deleted=False, sticky__isnull=False, sticky__gte=datetime.now())
 
 
     def get(self, request, *args, **kwargs):

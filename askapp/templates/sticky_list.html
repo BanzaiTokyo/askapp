@@ -1,18 +1,7 @@
-{% load pagination_tags %}
 {% load rules_light_tags %}
-{% if not per_page %}
-    {% autopaginate threads %}
-{% else %}
-    {% autopaginate threads per_page %}
-{% endif %}
 
 {% for thread in sticky %}
 
-    {% if forloop.counter0 %}
-        <!--spacer-->
-        <hr>
-        <!--end spacer-->
-    {% endif %}
 
       {#  Thread #}
     <div class="row ">
@@ -77,14 +66,6 @@
         </div>
     </div>
     <!--End Thread-->
-
+<hr>
 
 {% endfor %}
-
-<!--pagination-->
-<div class="text-center">
-    <nav aria-label="Page navigation ">
-        {% paginate %}
-    </nav>
-</div>
-<!--end pagination-->
