@@ -300,6 +300,8 @@ class Post(MPTTModel):
     def author(self):
         return self.user.username
 
+    def __str__(self):
+        return str(self.id)
 
 class Action(models.Model):
     '''
