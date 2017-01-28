@@ -19,7 +19,7 @@
 
     {#  Thread #}
     <div class="row">
-      <div class="col-xs-1 {% if thread.sticky %}mt-20 pt-10{% endif %}">
+      <div class="col-xs-1 {% if thread.sticky %}mt-15{% endif %}">
           {% rule 'askapp.threadlike.up' thread as can_like_thread %}
           {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
           {% include 'thread_like_button.html' with object=thread %}
