@@ -51,6 +51,7 @@
         </form>
     </div>
 
+{{ form.media }}
 {% if not form.instance.pk or admin_view %}
 <script>
 $('#id_thread_type').on('change', function() {

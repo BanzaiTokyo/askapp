@@ -20,6 +20,7 @@ except:
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
 import rules_light
+from markdownx.models import MarkdownxField
 from askapp import settings
 
 
@@ -183,7 +184,7 @@ class Thread(models.Model):
     )
 
     # thread body with HTML markup
-    text = models.TextField(null=True)
+    text = MarkdownxField(null=True)
 
     # link field for the Threads of the type Link
     link = models.URLField(null=True, blank=True)
@@ -283,7 +284,7 @@ class Post(MPTTModel):
     created = models.DateTimeField(auto_now_add=True)
 
     # post body with HTML markup
-    text = models.TextField(null=True)
+    text = MarkdownxField(null=True)
 
     #in question Thread, the topic starter or the admin can select one of the answers as "the answer"
     the_answer = models.BooleanField(default=False)

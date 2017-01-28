@@ -3,9 +3,9 @@
 {% load i18n %}
 
 {% block content %}
-    {% include 'sticky_list.html' %}
+  {% include 'threads_list.html' with threads=sticky sticky=True %}
 
-	{% include 'threads_list.html' %}
+	{% include 'threads_list.html' with threads=threads sticky=False %}
 {% endblock %}
 
 {% block rightcolumn %}

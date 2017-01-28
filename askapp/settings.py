@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'rules_light',
     'mptt',
     'pagination_bootstrap',
+    'markdownx',
     'askapp',
 )
 
@@ -186,3 +187,8 @@ PAGINATION_THREADS_PER_PROFILE = 3
 
 # setting used by Django "sites" framework
 SITE_ID = 1
+
+# Markdown extensions
+MARKDOWNX_MARKDOWN_EXTENSIONS = ['markdown.extensions.nl2br', ]
+MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {}
+

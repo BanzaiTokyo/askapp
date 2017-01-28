@@ -9,6 +9,7 @@ from askapp import views
 urlpatterns = [
     # system URLs
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^markdownx/', include('markdownx.urls')),
 
     # static templates
     url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),

@@ -4,6 +4,7 @@
 
 
 {% block content %}
+    {% load askapp_filters %}
     {% load rules_light_tags %}
     {% rule 'askapp.thread.update' object as can_update %}
     {% rule 'askapp.thread.delete' object as can_delete %}
@@ -69,7 +70,7 @@
 
                 {% endif %}
 
-                {{ thread.text|safe }}
+                {{ thread.text|markdownify }}
             </div>
         </div>
     </div>
