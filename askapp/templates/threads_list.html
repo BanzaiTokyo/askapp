@@ -19,7 +19,7 @@
 
     {#  Thread #}
     <div class="row">
-      <div class="col-xs-1 {% if thread.sticky %}mt-15{% endif %}">
+      <div class="col-xs-1 {% if sticky and thread.sticky %}mt-15{% endif %}">
           {% rule 'askapp.threadlike.up' thread as can_like_thread %}
           {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
           {% include 'thread_like_button.html' with object=thread %}
@@ -37,7 +37,7 @@
           {% endif %}
       </div>
 
-      <div class="col-xs-10 col-sm-11 {% if thread.sticky %}bs-callout bs-callout-success bg-success{% endif %}">
+      <div class="col-xs-10 col-sm-11 {% if sticky and thread.sticky %}bs-callout bs-callout-success bg-success{% endif %}">
       {% if thread.image %}
         <div class="col-xs-10 col-sm-11  col-md-3">
             <a href="{% url 'thread' thread.id thread.title|slugify %}" class="thumbnail">
