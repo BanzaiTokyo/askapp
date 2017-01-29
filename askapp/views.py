@@ -40,14 +40,15 @@ class HomeView(View):
     def get(self, request, *args, **kwargs):
 
         calculate_scores()
-
         context = {
-            'threads': self.get_threads(),
-            'sticky': self.get_sticky(),
-            'tags': models.Tag.objects.all(),
-            'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5],
             'home_page': resolve(request.path_info).url_name == 'index'
         }
+        context.update({
+            'threads': self.get_threads(),
+            'sticky': self.get_sticky() if context['home_page'] or getattr(self.request, 'page') == 1 else [],
+            'tags': models.Tag.objects.all(),
+            'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5],
+        })
         return render(request, 'index.html', context)
 
 
