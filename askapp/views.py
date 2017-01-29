@@ -31,7 +31,7 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
-        return models.Thread.objects.filter( Q(sticky=None)  | Q(sticky__lte=datetime.now()), deleted=False).order_by('-score')[:10]
+        return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')[:10]
 
     def get_sticky(self):
         return models.Thread.objects.filter(deleted=False, sticky__isnull=False, sticky__gte=datetime.now())
