@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from registration.backends.hmac.views import RegistrationView
 from django.conf import settings
@@ -123,7 +123,7 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_object(self, queryset=None):
-        user = models.User.objects.get(id=self.kwargs['pk'])
+        user = get_object_or_404(models.User, id=self.kwargs['pk'])
         try:
             profile = user.profile
         except:
@@ -132,7 +132,7 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         if 'block_user' in request._post:
-            user = models.User.objects.get(id=self.kwargs['pk'])
+            user = get_object_or_404(models.User, id=self.kwargs['pk'])
             user.is_active = False
             user.save(update_fields={'is_active': False})
             self.object = user.profile
@@ -230,7 +230,7 @@ class DeleteThreadView(LoginRequiredMixin, UpdateView):
 
 class LockThreadView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        thread = models.Thread.objects.get(pk=kwargs['thread_id'])
+        thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
         rules_light.require(request.user, 'askapp.thread.update', thread)
         thread.closed = not thread.closed
         thread.save()
@@ -247,7 +247,7 @@ class ReplyMixin(CreateView):
     def get_form(self, form_class=None):
         if not hasattr(self, 'thread'):
             thread_id = self.kwargs.get('thread_id')
-            self.thread = models.Thread.objects.get(pk=thread_id)
+            self.thread = get_object_or_404(models.Thread, pk=thread_id)
         if self.request.method == 'POST':
             rules_light.require(self.request.user, 'askapp.post.create', self.thread)
         return super(ReplyMixin, self).get_form(form_class)
@@ -282,7 +282,7 @@ class ReplyCommentView(ReplyMixin):
 
     def get_form(self, form_class=None):
         post_id = self.kwargs.get('post_id')
-        self.post = models.Post.objects.get(pk=post_id)
+        self.post = get_object_or_404(models.Post, pk=post_id)
         self.kwargs['thread_id'] = self.post.thread.id  # for get_success_url()
         return super(ReplyCommentView, self).get_form(form_class)
 
@@ -301,7 +301,7 @@ class DeleteCommentView(LoginRequiredMixin, View):
     Actually this is not a view, but just a request handler
     """
     def get(self, request, *args, **kwargs):
-        post = models.Post.objects.get(pk=kwargs['post_id'])
+        post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.post.delete', post)
         post.deleted = True
         post.save()
@@ -311,7 +311,7 @@ class DeleteCommentView(LoginRequiredMixin, View):
 class DeleteCommentTreeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         rules_light.require(request.user, 'askapp.post.delete_all', None)
-        post = models.Post.objects.get(pk=kwargs['post_id'])
+        post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         post.get_descendants(include_self=True).update(deleted=1)
         return redirect(reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title))))
 
@@ -322,7 +322,7 @@ class TagView(HomeView):
     """
     def get_threads(self):
         try:
-            tag = models.Tag.objects.get(slug=self.kwargs['slug'])
+            tag = get_object_or_404(models.Tag, slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
             raise Http404
         return tag.thread_set.order_by('-created')
@@ -330,7 +330,7 @@ class TagView(HomeView):
 
 class ThreadLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        thread = models.Thread.objects.get(pk=kwargs['thread_id'])
+        thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
         rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
         models.ThreadLike.vote(thread, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
@@ -338,7 +338,7 @@ class ThreadLikeView(LoginRequiredMixin, View):
 
 class PostLikeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        post = models.Post.objects.get(pk=kwargs['post_id'])
+        post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
         models.PostLike.vote(post, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
