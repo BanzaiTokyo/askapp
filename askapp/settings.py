@@ -44,6 +44,7 @@ ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 INSTALLED_APPS = (
+    'askapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +60,6 @@ INSTALLED_APPS = (
     'mptt',
     'pagination_bootstrap',
     'markdownx',
-    'askapp',
 )
 
 MIDDLEWARE = [
@@ -183,6 +183,7 @@ DEFAULT_AVATAR_URL = STATIC_URL + 'images/avatar.png'
 
 # number of threads per page
 PAGINATION_DEFAULT_PAGINATION = 10
+PAGINATION_DEFAULT_WINDOW = 3
 PAGINATION_THREADS_PER_PROFILE = 3
 
 # setting used by Django "sites" framework

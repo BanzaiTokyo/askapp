@@ -1,0 +1,30 @@
+{% if is_paginated %}
+{% load i18n %}
+{% load askapp_filters %}
+
+<ul class="pagination">
+{% if page_obj.has_previous %}
+  <li><a href="?page={{ page_obj.previous_page_number }}{{ getvars }}{{ hashtag }}">&laquo;</a></li>
+{% else %}
+  <li class="disabled"><a href="#" onclick="javascript: return false;">&laquo;</a></li>
+{% endif %}
+{% for page in pages %}
+  {% if page %}
+    {% ifequal page page_obj.number %}
+  <li class="active"><a href="#" onclick="javascript: return false;">{{ page }}</a></li>
+    {% else %}
+  <li {% if page != 1 and page != pages|last %}class="item{{ forloop.counter|farfrom:pages }}"{% endif %}>
+    <a href="?page={{ page }}{{ getvars }}{{ hashtag }}">{{ page }}</a>
+  </li>
+    {% endifequal %}
+  {% else %}
+  <li class="disabled"><a href="#" onclick="javascript: return false;">...</a></li>
+  {% endif %}
+{% endfor %}
+{% if page_obj.has_next %}
+  <li><a href="?page={{ page_obj.next_page_number }}{{ getvars }}{{ hashtag }}">&raquo;</a></li>
+{% else %}
+  <li class="disabled"><a href="#" onclick="javascript: return false;">&raquo;</a></li>
+{% endif %}
+</ul>
+{% endif %}

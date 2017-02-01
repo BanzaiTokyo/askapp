@@ -94,3 +94,18 @@ body {
 .mt-15 {
  margin-top: 15px;
 }
+@media (max-width: 640px) {
+.pagination .item6, .pagination .item5 {
+    display: none;
+}
+}
+@media (max-width: 480px) {
+.pagination .item4 {
+    display: none;
+}
+}
+@media (max-width: 430px) {
+.pagination .item3, .pagination .item2 {
+    display: none;
+}
+}
