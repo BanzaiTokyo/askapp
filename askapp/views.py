@@ -54,7 +54,10 @@ class HomeView(View):
 
 class RecentThreadsView(HomeView):
     def get_threads(self):
-        return models.Thread.objects.filter(deleted=False).order_by('-created')
+        if getattr(self.request, 'page') == 1:
+            return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-created')
+        else:
+            return models.Thread.objects.filter(deleted=False).order_by('-created')
 
 
 class ProfileView(DetailView):

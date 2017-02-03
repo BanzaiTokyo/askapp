@@ -161,9 +161,9 @@ class Thread(models.Model):
 
     # these fields are taken into account only if the post is thread starter
     hidden = models.BooleanField(default=False) # the thread is visible only to the staff and the author
-    closed = models.BooleanField(default=False) # noone can post comments / answers in this threa
+    closed = models.BooleanField(default=False) # noone can post comments / answers in this thread
     sticky = models.DateField(null=True, blank=True) # this thread will be sticky until the given date
-    sponsored = models.BooleanField(default=False) # hopefully one day there will be ponsored threads...
+    featured = models.BooleanField(default=False) # hopefully one day there will be sponsored threads...
     deleted = models.BooleanField(default=False) # the thread is marked as deleted, usually on user blocking
 
     # reference to the user who created the post
@@ -207,7 +207,7 @@ class Thread(models.Model):
         self._old = model_to_dict(self, fields=['id', 'hidden', 'closed', 'sticky', 'sponsored', 'deleted', 'text', 'title'])
 
     def __str__(self):
-        return str(self.title).encode('utf-8')
+        return self.title.encode('utf-8')
 
     def save(self, *args, **kwargs):
         self.prepare_images()
