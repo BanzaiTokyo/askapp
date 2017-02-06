@@ -10,6 +10,9 @@ body {
     margin-bottom: 60px;
 }
 
+img {
+    max-width: 100%;
+}
 .footer {
     position: absolute;
     bottom: 0;
