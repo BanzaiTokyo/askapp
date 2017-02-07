@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% load askapp_filters %}
+
+{% block description %}{{ object.text|markdownify_noimages|striptags|escapejs|truncatechars_html:200 }}{% endblock %}
 
 {% block title %}Comment #{{ object.id }} posted on {{ object.thread.title }}{% endblock %}
+
+
 
 {% block content %}
     {% load rules_light_tags %}

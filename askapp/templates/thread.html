@@ -1,7 +1,15 @@
+
 {% extends "base.html" %}
 
-{% block title %}{{ object.title }}{% endblock %}
+{% load askapp_filters %}
 
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block description %}
+    {{ object.text|markdownify_noimages|striptags|escapejs|truncatechars_html:200 }}
+{% endblock %}
 
 {% block content %}
     {% load askapp_filters %}
