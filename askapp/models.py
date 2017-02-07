@@ -207,8 +207,8 @@ class Thread(models.Model):
         super(Thread, self).__init__(*args, **kwargs)
         self._old = model_to_dict(self, fields=['id', 'hidden', 'closed', 'sticky', 'sponsored', 'deleted', 'text', 'title'])
 
-    def __str__(self):
-        return str(self.title.encode('utf-8'))
+    def __unicode__(self):
+        return self.title
 
     def save(self, *args, **kwargs):
         self.prepare_images()
