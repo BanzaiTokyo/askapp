@@ -9,8 +9,13 @@ def can_delete_thread(user, rule, thread):
     return user.is_staff
 
 
-def can_reply(user, rule, thread):
+def can_reply_thread(user, rule, thread):
     return user.is_active and not thread.hidden and not thread.closed and not thread.deleted
+
+
+def can_reply_post(user, rule, post):
+    return can_reply_thread(user, rule, post.thread) and (post.thread.thread_type != post.thread.QUESTION or
+                                                          post.get_level() == 0)
 
 
 def can_delete_comment(user, rule, post):
@@ -38,13 +43,20 @@ def can_dislike_post(user, rule, post):
     return user.is_staff
 
 
+def can_accept_answer(user, rule, post):
+    return can_reply_thread(user, rule, post.thread) and (user.is_staff or post.thread.user == user) \
+            and not post.thread.answered and post.get_level() == 0
+
+
 def can_edit_profile(user, rule, user_object):
     return user.is_staff
 
 
 rules_light.registry['askapp.thread.update'] = can_edit_thread
 rules_light.registry['askapp.thread.delete'] = can_delete_thread
-rules_light.registry['askapp.post.create'] = can_reply
+rules_light.registry['askapp.post.create'] = can_reply_thread
+rules_light.registry['askapp.post.reply'] = can_reply_post
+rules_light.registry['askapp.post.accept'] = can_accept_answer
 rules_light.registry['askapp.post.delete'] = can_delete_comment
 rules_light.registry['askapp.post.delete_all'] = can_delete_comment_tree
 rules_light.registry['askapp.threadlike.up'] = can_like_thread

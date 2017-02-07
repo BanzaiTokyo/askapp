@@ -152,10 +152,13 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
 
 class ThreadView(DetailView):
     model = models.Thread
-    template_name = 'thread.html'
+
+    def get_template_names(self):
+        return 'thread_question.html' if self.object.thread_type == self.object.QUESTION else 'thread.html'
 
     def get_context_data(self, **kwargs):
         context = super(ThreadView, self).get_context_data(**kwargs)
+        print(context['object'].answers)
         return context
 
 
@@ -253,6 +256,8 @@ class ReplyMixin(CreateView):
             self.thread = get_object_or_404(models.Thread, pk=thread_id)
         if self.request.method == 'POST':
             rules_light.require(self.request.user, 'askapp.post.create', self.thread)
+            if hasattr(self, 'post_object'):
+                rules_light.require(self.request.user, 'askapp.post.reply', self.post_object)
         return super(ReplyMixin, self).get_form(form_class)
 
     def form_valid(self, form):
@@ -261,7 +266,10 @@ class ReplyMixin(CreateView):
         return super(ReplyMixin, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'), slugify(self.thread.title)))
+        if not self.kwargs.get('slug'):
+            thread = models.Thread.objects.get(pk=self.kwargs.get('thread_id'))
+            self.kwargs['slug'] = slugify(thread.title)
+        return reverse_lazy('thread', args=(self.kwargs.get('thread_id'), self.kwargs.get('slug')))
 
 
 class ReplyThreadView(ReplyMixin):
@@ -285,17 +293,17 @@ class ReplyCommentView(ReplyMixin):
 
     def get_form(self, form_class=None):
         post_id = self.kwargs.get('post_id')
-        self.post = get_object_or_404(models.Post, pk=post_id)
-        self.kwargs['thread_id'] = self.post.thread.id  # for get_success_url()
+        self.post_object = get_object_or_404(models.Post, pk=post_id)
+        self.kwargs['thread_id'] = self.post_object.thread.id  # for get_success_url()
         return super(ReplyCommentView, self).get_form(form_class)
 
     def get_context_data(self, **kwargs):
-        context = {'object': self.post}
+        context = {'object': self.post_object}
         context.update(kwargs)
         return super(ReplyCommentView, self).get_context_data(**context)
 
     def form_valid(self, form):
-        form.instance.parent = self.post
+        form.instance.parent = self.post_object
         return super(ReplyCommentView, self).form_valid(form)
 
 
@@ -344,4 +352,11 @@ class PostLikeView(LoginRequiredMixin, View):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
         models.PostLike.vote(post, request.user, kwargs['verb'])
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
+
+class AcceptAnswerView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        post = get_object_or_404(models.Post, pk=kwargs['post_id'])
+        rules_light.require(request.user, 'askapp.post.accept', post)
+        post.accept()
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))

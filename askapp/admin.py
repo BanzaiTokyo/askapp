@@ -16,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ('created', 'author', 'title', 'score', 'num_points', 'num_comments')
+    list_display = ('created', 'author', 'title', 'score', 'points', 'num_comments')
     list_display_links = ('title',)
     ordering = ('-created',)
     exclude = ('thumbnail', )

@@ -59,9 +59,10 @@ class ThreadForm(forms.ModelForm):
 
 
 class ReplyForm(forms.ModelForm):
+    is_answer = forms.BooleanField(required=False)
     class Meta:
         model = Post
-        fields = ('text', )
+        fields = ('text', 'is_answer')
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }

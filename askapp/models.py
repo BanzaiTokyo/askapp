@@ -16,6 +16,7 @@ try:
     from urllib.parse import urlparse
 except:
     from urlparse import urlparse
+from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
@@ -232,19 +233,19 @@ class Thread(models.Model):
 
     @property
     def comments(self):
-        return self.post_set.all()
+        params = {'is_answer': False}
+        if self.thread_type == self.QUESTION:
+            params['deleted'] = False
+        return self.post_set.filter(**params)
+
+    @property
+    def answers(self):
+        x = self.post_set.filter(is_answer=True, deleted=False)
+        return x
 
     @property
     def num_comments(self):
-        return Post.objects.filter(thread=self, deleted=False).count()
-
-    @property
-    def num_points(self):
-        likes = ThreadLike.objects.filter(thread=self)
-        points = 0
-        for like in likes:
-            points += like.points
-        return points
+        return self.post_set.filter(deleted=False).count()
 
     @property
     def domain(self):
@@ -263,6 +264,10 @@ class Thread(models.Model):
     @property
     def author(self):
         return self.user.username
+
+    @property
+    def answered(self):
+        return self.answers.filter(accepted__isnull=False).count() > 0
 
 
 class Post(MPTTModel):
@@ -286,11 +291,17 @@ class Post(MPTTModel):
     # post body with HTML markup
     text = MarkdownxField(null=True)
 
-    #in question Thread, the topic starter or the admin can select one of the answers as "the answer"
-    the_answer = models.BooleanField(default=False)
+    #in question Thread this distinguish answers from comments
+    is_answer = models.BooleanField(default=False)
+
+    #the topic starter or the admin selected this post as "the accepted answer"
+    accepted = models.DateTimeField(null=True)
 
     # A post should be marked as deleted instead of physical deletion because it can has live descendant posts
     deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
 
     @property
     def points(self):
@@ -301,8 +312,14 @@ class Post(MPTTModel):
     def author(self):
         return self.user.username
 
-    def __str__(self):
-        return str(self.id)
+    @property
+    def comments(self):
+        return self.get_children().filter(deleted=False)
+
+    def accept(self):
+        self.accepted = datetime.utcnow()
+        self.save()
+
 
 class Action(models.Model):
     '''

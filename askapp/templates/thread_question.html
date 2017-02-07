@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+
+{% block content %}
+    {% load askapp_filters %}
+    {% load rules_light_tags %}
+    {% rule 'askapp.thread.update' object as can_update %}
+    {% rule 'askapp.thread.delete' object as can_delete %}
+    {% rule 'askapp.post.create' object as can_reply %}
+    {% rule 'askapp.threadlike.up' object as can_like_thread %}
+    {% rule 'askapp.threadlike.down' object as can_dislike_thread %}
+    <!--First Thread-->
+    <div class="row">
+        <div>
+            <div class="col-xs-1">
+                {% include 'thread_like_button.html' with object=object %}
+                {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
+                                              href="{% url 'thread_like' object.id object.title|slugify 'down' %}"></a>{% endif %}
+                {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger"
+                                      href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
+                {% if can_update %}
+                    {% if object.closed %}
+                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread"
+                           href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"></a>
+                    {% else %}
+                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread"
+                           href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"></a>
+                    {% endif %}
+                {% endif %}
+
+                <h2 class="text-center">{{ object.points }}</h2>
+                <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+
+            </div>
+            <div class="col-xs-10 col-sm-11  col-md-11">
+                <h2>
+                    {{ object.title }}
+                    {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success"
+                                          href="{% url 'edit_thread' object.id object.title|slugify %}"></a>{% endif %}
+                </h2>
+
+                <!--Tags-->
+
+                <div>posted by <a href="{% url 'profile' object.user.id object.user|slugify %}"><img
+                        src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
+                    | {{ object.created|timesince }} ago
+                    {% if object.tags.all %}
+                        in
+                        {% include 'tags_list.html' with tags=object.tags.all only %}
+                    {% endif %}
+
+                </div>
+
+                {% if object.image %}
+                    <br>
+                    <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;" alt="...">
+
+                {% endif %}
+
+                {{ thread.text|markdownify }}
+            </div>
+            {% include "comments_list_qst.html" with comments=object.comments request=request only %}
+        </div>
+    </div>
+    <!--End first Thread-->
+
+    <!--spacer-->
+    <div class="row">
+        <div class="col-xs-12    col-md-11 col-md-offset-1">
+            <hr>
+        </div>
+    </div>
+    <!--end spacer-->
+    {% if can_reply %}
+        <!--start submit comment form-->
+        <div class="row">
+            <div class="col-xs-12    col-md-11 col-md-offset-1">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#" data-toggle="tab">Answer</a></li>
+                  <li><a href="#" data-toggle="tab">Comment</a></li>
+                </ul>
+                <div class="form-group">
+                    <form method="post" action="{% url 'reply_thread' object.id object.title|slugify %}" id="reply_form">
+                        {% csrf_token %}
+                        <label for="comment">Answer:</label>
+                        <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
+                        <input name="is_answer" value="1" style="display: none" />
+                        <button type="submit" class="btn btn-primary pull-right">Post answer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--End submit comment form-->
+    {% endif %}
+
+    {% for answer in object.answers %}
+      {% rule 'askapp.postlike.up' answer as can_like_post %}
+      {% rule 'askapp.postlike.down' answer as can_dislike_post %}
+      {% rule 'askapp.post.delete' answer as can_delete_answer %}
+      {% rule 'askapp.post.delete_all' answer as can_delete_comment_tree %}
+      {% rule 'askapp.post.reply' answer as can_reply_answer %}
+      {% rule 'askapp.post.accept' answer as can_accept_answer %}
+      <div class="row">
+          <div class="col-xs-12 col-md-12">
+          {% if answer.deleted %}
+            deleted
+          {% else %}
+              {% if answer.accepted %}+{% endif %}
+              {% if can_like_post %}
+                <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'post_like' answer.id 'up' %}"></a>
+              {% elif request.user.is_active %}
+                <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
+              {% else %}
+                <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'post_like' answer.id 'up' %}"></a>
+              {% endif %}
+              <span class="text-danger"> {{ answer.points }} </span>
+              {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger" href="{% url 'post_like' answer.id 'down' %}"></a>{% endif %}
+              {% if can_delete_comment %}<a href="{% url 'delete_comment' answer.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
+              {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' answer.id %}" title="Delete this comment and all its children"> <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
+
+              | <a href="{% url 'reply_comment' answer.id %}">#{{ answer.id }}</a> by <a href="{% url 'profile' answer.user.id answer.user|slugify %}">&nbsp;{{ answer.user }}</a>
+              | {{ answer.created|timesince }} ago
+
+              <div>{{ answer.text|safe }}
+                {% if can_reply_answer %}
+                  <br><a href="{% url 'reply_comment' answer.id %}">comment</a>
+                {% endif %}
+                {% if can_accept_answer %}
+                  <br><a href="{% url 'accept_answer' answer.id %}">accept as the answer</a>
+                {% endif %}
+              </div>
+
+              {% include "comments_list_qst.html" with comments=answer.comments request=request only %}
+
+              <!--Tags-->
+          {% endif %}
+          </div>
+      </div>
+    {% endfor %}
+<script>
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  if ($('input[name=is_answer]').length) {
+    $('input[name=is_answer]').remove();
+    $('#reply_form label').text('Comment:');
+    $('#reply_form button').text('Post comment');
+  }
+  else {
+    $('#reply_form').append('<input name="is_answer" value="1" style="display: none" />');
+    $('#reply_form label').text('Answer:');
+    $('#reply_form button').text('Post answer');
+  }
+});
+</script>
+{% endblock %}
+
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}
