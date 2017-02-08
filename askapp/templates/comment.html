@@ -4,7 +4,7 @@
 
 {% block content %}
     {% load rules_light_tags %}
-    {% rule 'askapp.post.create' object.thread as can_reply %}
+    {% rule 'askapp.post.reply' object as can_reply %}
 
             <!--First Thread-->
             <div class="row">
@@ -49,7 +49,7 @@
                             <button type="submit" class="btn btn-primary pull-right">Post comment</button>
                         </form>
                     </div>
-                    {% else %}
+                    {% elif not user.is_active %}
                         <a href="{% url 'auth_login' %}?next={{request.path}}">Login</a> or <a href="{% url 'register' %}">Register</a> to post a comment
                     {% endif %}
                 </div>
