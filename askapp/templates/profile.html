@@ -17,7 +17,9 @@
             {{ object.username }}
             {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'admin_profile_edit' object.id %}"></a>{% endif %}
         </h3>
+        {% if object.profile.country %}
         <p><img width="30" height="20" src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}{% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
+        {% endif %}
         <p>{{ object.profile.about }}</p>
     </div>
 
