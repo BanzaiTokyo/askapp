@@ -10,7 +10,7 @@ class RecaptchaRegistrationForm(RegistrationFormTermsOfService):
 
 form_control = {'class': 'form-control'}
 class ProfileForm(forms.ModelForm):
-    is_active = forms.BooleanField()
+    is_active = forms.BooleanField(required=False)
     class Meta:
         model = Profile
         fields = ('avatar', 'country', 'city', 'about')
