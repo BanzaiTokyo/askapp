@@ -14,6 +14,10 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, )
 
+class CustomUserAdmin(UserAdmin):
+    list_display = ('username', 'first_name', 'last_name', 'email', 'id',)
+
+
 
 class ThreadAdmin(admin.ModelAdmin):
     list_display = ('created', 'author', 'title', 'score', 'points', 'num_comments')
@@ -37,7 +41,7 @@ class TagAdmin(admin.ModelAdmin):
 
 
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(Thread, ThreadAdmin)
 admin.site.register(Post, PostAdmin)

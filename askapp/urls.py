@@ -38,7 +38,7 @@ urlpatterns = [
         name="lock_thread"),
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/reply$', views.ReplyThreadView.as_view(),
         name="reply_thread"),
-    url(r'^comment/(?P<post_id>\d+)$', views.ReplyCommentView.as_view(), name="reply_comment"),
+    url(r'^comment/(?P<post_id>\d+)$', views.ReplyCommentView.as_view(), name="comment_page"),
     url(r'^comment/(?P<post_id>\d+)/delete$', views.DeleteCommentView.as_view(), name="delete_comment"),
     url(r'^comment/(?P<post_id>\d+)/delete_all$', views.DeleteCommentTreeView.as_view(), name="delete_comment_tree"),
 

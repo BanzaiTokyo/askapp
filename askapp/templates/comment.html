@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% load askapp_filters %}
+{% load i18n %}
+
 
 {% block description %}{{ object.text|markdownify_noimages|striptags|escapejs|truncatechars_html:200 }}{% endblock %}
 
-{% block title %}Comment #{{ object.id }} posted on {{ object.thread.title }}{% endblock %}
+{% block title %}
+    {% trans "Comment #" %}
+    {{ object.id }} {% trans "posted on" %} {{ object.thread.title }}
+{% endblock %}
 
 
 
@@ -11,68 +16,76 @@
     {% load rules_light_tags %}
     {% rule 'askapp.post.reply' object as can_reply %}
 
-            <!--First Thread-->
-            <div class="row">
-                    <div class="col-xs-1">
-                        <a class="btn glyphicon glyphicon-chevron-up"></a>
-                        <h2 class="text-center text-danger">{{ object.points }}</h2>
-                        <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
-                        <a class="btn glyphicon glyphicon-trash text-danger"></a>
+    <!--First Thread-->
+    <div class="row">
+        <div class="col-xs-1">
+            <a class="btn glyphicon glyphicon-chevron-up"></a>
+            <h2 class="text-center text-danger">{{ object.points }}</h2>
+            <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
+            <a class="btn glyphicon glyphicon-trash text-danger"></a>
 
-                    </div>
+        </div>
 
-                    <div class="col-xs-10 col-sm-11  col-md-11">
-                       #{{ object.id }} | posted by <a href="{% url 'profile' object.user.id object.user|slugify %}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
-                            | {{ object.created|timesince }} ago on <a href="{% url 'thread' object.thread.id object.thread.title|slugify%}">{{ object.thread }}</a></p>
-                    </div>
+        <div class="col-xs-10 col-sm-11  col-md-11">
+            {% url 'profile' object.user.id object.user|slugify as profile_url %}
+            {% url 'thread' object.thread.id object.thread.title|slugify as tread_url %}
+            {% blocktrans with object_id=object.id avatar=object.user.profile.avatar.url username=object.user timesince=object.created|timesince thread=object.thread.title|truncatechars:60%}
+                #{{ object_id }} | posted by <a href="{{ profile_url }}"><img
+                    src="{{ avatar }}" width="20" height="20"/>&nbsp;{{ username }}</a>
+                |
 
-                    <div class="col-xs-10 col-sm-11  col-md-11">
-						{{ object.text|safe }}
-                    </div>
-                <!--End first Thread-->
-            </div>
+                {{ time_since }} ago on
+             <a href="{{ thread_url }}">{{ thread }}</a></p>
+            {% endblocktrans %}
+        </div>
 
-            <!--spacer-->
-            <div class="row">
-                <div class="col-xs-12    col-md-11 col-md-offset-1">
-                    <hr>
+
+
+
+        <div class="col-xs-10 col-sm-11  col-md-11">
+            {{ object.text|safe }}
+        </div>
+        <!--End first Thread-->
+    </div>
+
+    <!--spacer-->
+    <div class="row">
+        <div class="col-xs-12    col-md-11 col-md-offset-1">
+            <hr>
+        </div>
+    </div>
+    <!--end spacer-->
+
+    <!--start submit comment form-->
+    <div class="row">
+        <div class="col-xs-12    col-md-11 col-md-offset-1">
+            {% if can_reply %}
+                <div class="form-group">
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="comment">Comment:</label>
+                        {{ form.text }}
+                        {{ form.text.errors }}
+                        <br>
+                        <button type="submit" class="btn btn-primary pull-right">{% trans "Post comment" %}</button>
+                    </form>
                 </div>
-            </div>
-            <!--end spacer-->
-
-            <!--start submit comment form-->
-            <div class="row">
-                <div class="col-xs-12    col-md-11 col-md-offset-1">
-                    {% if can_reply %}
-                    <div class="form-group">
-                        <form method="post">
-	                        {% csrf_token %}
-                            <label for="comment">Comment:</label>
-	                        {{ form.text }}
-	                        {{ form.text.errors }}
-	                        <br>
-                            <button type="submit" class="btn btn-primary pull-right">Post comment</button>
-                        </form>
-                    </div>
-                    {% elif not user.is_active %}
-                        <a href="{% url 'auth_login' %}?next={{request.path}}">Login</a> or <a href="{% url 'register' %}">Register</a> to post a comment
-                    {% endif %}
-                </div>
-            </div>
-            <!--End submit comment form-->
+            {% elif not user.is_active %}
+                {% url 'auth_login' as url_auth_login %}
+                {% url 'register' as url_register%}
+                {% blocktrans with request_path=request.path%}
+                <a href="{{ url_auth_login }}?next={{request_path }}">Login</a> or
+                <a href="{{ url_register }}">Register</a> to post a comment
+                {% endblocktrans %}
+            {% endif %}
+        </div>
+    </div>
+    <!--End submit comment form-->
 
 
 {% endblock %}
 
 
 {% block rightcolumn %}
-    {#    {% if user.is_authenticated %}#}
-    {#        <p>You are already logged in.#}
-    {#        </p>#}
-    {#    {% else %}#}
-    {#        <p>You are not logged in?!</p>#}
-    {#    {% endif %}#}
-
-
 
 {% endblock %}

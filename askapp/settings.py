@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import sys
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import ugettext_lazy as _
 
 print("system=->", sys.path)
 
@@ -62,12 +63,10 @@ INSTALLED_APPS = (
     'markdownx',
 )
 
-MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -95,6 +94,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.media',
                 'askapp.context_processors.site_processor',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -143,18 +143,32 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.8/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
+
+
+USE_TZ = True
+
+# =================== Internationalization
+# inspired by the following tutorial:
+# http://www.marinamele.com/taskbuster-django-tutorial/internationalization-localization-languages-time-zones
 
 USE_I18N = True
 
-USE_L10N = True
+LANGUAGE_CODE = 'en'
 
-USE_TZ = True
+LANGUAGES = (
+    ('en', _('English')),
+    ('fr', _('French')),
+)
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'askapp/locale'),
+)
+
+# after adding new messages to templates run >>> python manage.py makemessages -l fr
+# when the messages in the .po file are translated, run >>> python manage.py compilemessages -l fr
+# =================== End Internationalization
+
 
 # STATIC_ROOT='static'
 STATIC_ROOT = os.path.join(BASE_DIR, "askapp/static")
