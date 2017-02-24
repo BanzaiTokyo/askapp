@@ -3,11 +3,15 @@
 {% load i18n %}
 
 
-{% block title %}{{ object.username }}'s user profile{% endblock %}
+{% block title %}
+    {% blocktrans with username=object.username %}
+        {{ username }}'s user profile
+    {% endblocktrans %}
+{% endblock %}
 
 {% block content %}
-{% load rules_light_tags %}
-{% rule 'askapp.profile.update' object as can_update %}
+    {% load rules_light_tags %}
+    {% rule 'askapp.profile.update' object as can_update %}
     <div class="row">
         <div class="col-md-6">
             <img src="{% static object.profile.avatar.url %}">
@@ -15,29 +19,29 @@
 
         <h3>
             {{ object.username }}
-            {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success" href="{% url 'admin_profile_edit' object.id %}"></a>{% endif %}
+            {% if can_update %}
+                <a class="btn glyphicon glyphicon-edit text-success" href="{% url 'admin_profile_edit' object.id %}"
+                   title="{% trans "Edit profile" %}"></a>{% endif %}
         </h3>
+
         {% if object.profile.country %}
-        <p><img width="30" height="20" src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}{% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
+            <p><img width="30" height="20"
+                    src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}
+                {% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
         {% endif %}
         <p>{{ object.profile.about }}</p>
     </div>
 
     <div class="row">
-        <h3>Recent threads by <strong>{{ object.username }}</strong></h3>
-		{% include 'threads_list.html' %}
+        <h3>
+            {% blocktrans with username=object.username %}Recent threads by
+                <strong>{{ username }}</strong>{% endblocktrans %}
+        </h3>
+        {% include 'threads_list.html' %}
     </div>
 {% endblock %}
 
 
 {% block rightcolumn %}
-    {#    {% if user.is_authenticated %}#}
-    {#        <p>You are already logged in.#}
-    {#        </p>#}
-    {#    {% else %}#}
-    {#        <p>You are not logged in?!</p>#}
-    {#    {% endif %}#}
-
-
 
 {% endblock %}

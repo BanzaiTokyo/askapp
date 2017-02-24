@@ -120,12 +120,12 @@
               {% if can_delete_comment %}<a href="{% url 'delete_comment' answer.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
               {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' answer.id %}" title="Delete this comment and all its children"> <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
 
-              | <a href="{% url 'reply_comment' answer.id %}">#{{ answer.id }}</a> by <a href="{% url 'profile' answer.user.id answer.user|slugify %}">&nbsp;{{ answer.user }}</a>
+              | <a href="{% url 'comment_page' answer.id %}">#{{ answer.id }}</a> by <a href="{% url 'profile' answer.user.id answer.user|slugify %}">&nbsp;{{ answer.user }}</a>
               | {{ answer.created|timesince }} ago
 
               <div>{{ answer.text|safe }}
                 {% if can_reply_answer %}
-                  <br><a href="{% url 'reply_comment' answer.id %}">comment</a>
+                  <br><a href="{% url 'comment_page' answer.id %}">comment</a>
                 {% endif %}
                 {% if can_accept_answer %}
                   <br><a href="{% url 'accept_answer' answer.id %}">accept as the answer</a>

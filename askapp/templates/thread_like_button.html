@@ -1,7 +1,8 @@
+
 {% if can_like_thread %}
-  <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'thread_like' object.id object.title|slugify 'up' %}"></a>
+  <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'thread_like' object.id object.title|slugify 'up' %}" title="{% trans "Upvote" %}"></a>
 {% elif user.is_active %}
-  <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
+  <a class="btn glyphicon glyphicon-chevron-up disabled" title="{% trans "Upvote" %}"></a>
 {% else %}
-  <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'thread_like' object.id object.title|slugify 'up' %}"></a>
+  <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'thread_like' object.id object.title|slugify 'up' %}" title="{% trans "Upvote" %}"></a>
 {% endif %}

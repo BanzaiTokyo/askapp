@@ -5,10 +5,8 @@
 {% block content %}
     <h2>{% trans "Error 404" %}</h2>
     {% url 'index' as index_url %}
-    {% blocktrans %}
-        <p>Unfortunately the page you were trying to open could not be found.</p>
-        <p>You might want to open our <a href="{{ index_url }}">homepage</a>.</p>
-    {% endblocktrans %}
+    {% blocktrans %}<p>Unfortunately the page you were trying to open could not be found.</p>
+        <p>You might want to open our <a href="{{ index_url }}">homepage</a>.</p>{% endblocktrans %}
 {% endblock %}
 
 {% block rightcolumn %}

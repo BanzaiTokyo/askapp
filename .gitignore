@@ -94,3 +94,5 @@ ENV/
 
 
 _config.yml
+/askapp/templates/development/
+askapp/plot.py

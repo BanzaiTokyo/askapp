@@ -11,7 +11,6 @@
 {% endblock %}
 
 
-
 {% block content %}
     {% load rules_light_tags %}
     {% rule 'askapp.post.reply' object as can_reply %}
@@ -19,27 +18,25 @@
     <!--First Thread-->
     <div class="row">
         <div class="col-xs-1">
-            <a class="btn glyphicon glyphicon-chevron-up"></a>
+            <a class="btn glyphicon glyphicon-chevron-up" title="{% trans "Upvote" %}"></a>
             <h2 class="text-center text-danger">{{ object.points }}</h2>
-            <a class="btn glyphicon glyphicon-chevron-down text-danger"></a>
-            <a class="btn glyphicon glyphicon-trash text-danger"></a>
+            <a class="btn glyphicon glyphicon-chevron-down text-danger" title="{% trans "Downvote" %}"></a>
+            <a class="btn glyphicon glyphicon-trash text-danger" title="{% trans "Delete comment" %}"></a>
 
         </div>
 
         <div class="col-xs-10 col-sm-11  col-md-11">
-            {% url 'profile' object.user.id object.user|slugify as profile_url %}
-            {% url 'thread' object.thread.id object.thread.title|slugify as tread_url %}
-            {% blocktrans with object_id=object.id avatar=object.user.profile.avatar.url username=object.user timesince=object.created|timesince thread=object.thread.title|truncatechars:60%}
-                #{{ object_id }} | posted by <a href="{{ profile_url }}"><img
-                    src="{{ avatar }}" width="20" height="20"/>&nbsp;{{ username }}</a>
-                |
 
-                {{ time_since }} ago on
-             <a href="{{ thread_url }}">{{ thread }}</a></p>
+{# Example: #12649 | posted by <avatar> BarbaraEbara | 6 days ago on Sumo crowns new Grand Champion#}
+            {% url 'profile' object.user.id object.user|slugify as url_profile %}
+            {% url 'thread' object.thread.id object.thread.title|slugify as url_thread %}
+            {% blocktrans with object_id=object.id avatar=object.user.profile.avatar.url username=object.user time_since=object.created|timesince thread=object.thread.title|truncatechars:60 %}
+                #{{ object_id }} | posted by
+                <a href="{{ url_profile }}"><img src="{{ avatar }}" width="20" height="20"/>&nbsp;{{ username }}</a>  |
+                {{ time_since }} ago on <a href="{{ url_thread }}">{{ thread }}</a></p>
             {% endblocktrans %}
+
         </div>
-
-
 
 
         <div class="col-xs-10 col-sm-11  col-md-11">
@@ -71,12 +68,16 @@
                     </form>
                 </div>
             {% elif not user.is_active %}
+
+
+                {# Example: Login or register to post a comment#}
                 {% url 'auth_login' as url_auth_login %}
-                {% url 'register' as url_register%}
-                {% blocktrans with request_path=request.path%}
-                <a href="{{ url_auth_login }}?next={{request_path }}">Login</a> or
-                <a href="{{ url_register }}">Register</a> to post a comment
+                {% url 'register' as url_register %}
+                {% blocktrans with request_path=request.path %}
+                    <a href="{{ url_auth_login }}?next={{ request_path }}">Login</a> or
+                    <a href="{{ url_register }}">Register</a> to post a comment
                 {% endblocktrans %}
+
             {% endif %}
         </div>
     </div>

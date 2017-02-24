@@ -1,27 +1,33 @@
 {% load mptt_tags %}
 {% load rules_light_tags %}
+{% load i18n %}
+
 {% recursetree comments %}
-{% rule 'askapp.postlike.up' node as can_like_post %}
-{% rule 'askapp.postlike.down' node as can_dislike_post %}
-{% rule 'askapp.post.delete' node as can_delete_comment %}
-<div class="row">
-    <div class="col-xs-12 col-md-11 col-md-offset-1">
-      {% if can_like_post %}
-        <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'post_like' node.id 'up' %}"></a>
-      {% elif request.user.is_active %}
-        <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
-      {% else %}
-        <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'post_like' node.id 'up' %}"></a>
-      {% endif %}
-      <span class="text-danger"> {{ node.points }} </span>
-      {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger" href="{% url 'post_like' node.id 'down' %}"></a>{% endif %}
-      {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
+    {% rule 'askapp.postlike.up' node as can_like_post %}
+    {% rule 'askapp.postlike.down' node as can_dislike_post %}
+    {% rule 'askapp.post.delete' node as can_delete_comment %}
+    <div class="row">
+        <div class="col-xs-12 col-md-11 col-md-offset-1">
+            {% if can_like_post %}
+                <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'post_like' node.id 'up' %}"></a>
+            {% elif request.user.is_active %}
+                <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
+            {% else %}
+                <a class="btn glyphicon glyphicon-chevron-up "
+                   href="{% url 'auth_login' %}?next={% url 'post_like' node.id 'up' %}"></a>
+            {% endif %}
+            <span class="text-danger"> {{ node.points }} </span>
+            {% if can_dislike_post %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
+                                        href="{% url 'post_like' node.id 'down' %}"></a>{% endif %}
+            {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}"
+                                          class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
 
-      | <a href="{% url 'reply_comment' node.id %}">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
-      | {{ node.created|timesince }} ago
+            | <a href="{% url 'comment_page' node.id %}">#{{ node.id }}</a> by <a
+                href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
+            | {{ node.created|timesince }} ago
 
-      <div>{{ node.text|safe }}<br>
-      </div>
+            <div>{{ node.text|safe }}<br>
+            </div>
+        </div>
     </div>
-</div>
 {% endrecursetree %}

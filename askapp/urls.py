@@ -12,10 +12,10 @@ urlpatterns = [
     url(r'^markdownx/', include('markdownx.urls')),
 
     # static templates
-    url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
-    url(r'^newlogin$', views.NewLoginView.as_view(), name="new_login"),
-    url(r'^thankyou$', views.ThankyouView.as_view(), name="thankyou"),
-    url(r'^question$', views.QuestionView.as_view(), name="question"),
+    # url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
+    # url(r'^newlogin$', views.NewLoginView.as_view(), name="new_login"),
+    # url(r'^thankyou$', views.ThankyouView.as_view(), name="thankyou"),
+    # url(r'^question$', views.QuestionView.as_view(), name="question"),
 
     # content pages
     url(r'^$', views.HomeView.as_view(), name="index"),

@@ -74,26 +74,26 @@ class ProfileView(DetailView):
         return context
 
 
-class NewRegisterView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'new-registration.html', context)
+# class NewRegisterView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'key1': "value",
+#         }
+#         return render(request, 'new-registration.html', context)
+#
+# class ThankyouView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'key1': "value",
+#         }
+#         return render(request, 'content.html', context)
 
-class ThankyouView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'content.html', context)
-
-class NewLoginView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'new-login.html', context)
+# class NewLoginView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'key1': "value",
+#         }
+#         return render(request, 'new-login.html', context)
 
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
@@ -162,12 +162,12 @@ class ThreadView(DetailView):
         return context
 
 
-class QuestionView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'key1': "value",
-        }
-        return render(request, 'question.html', context)
+# class QuestionView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'key1': "value",
+#         }
+#         return render(request, 'question.html', context)
 
 
 class CommentView(CreateView):

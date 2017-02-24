@@ -9,12 +9,6 @@
 {% endblock %}
 
 {% block rightcolumn %}
-    {#    {% if user.is_authenticated %}#}
-    {#        <p>You are already logged in.#}
-    {#        </p>#}
-    {#    {% else %}#}
-    {#        <p>You are not logged in?!</p>#}
-    {#    {% endif %}#}
 
     <div>
         <h4>About</h4>
@@ -23,7 +17,8 @@
     </div>
 
     <hr>
-    <div><h4>Our categories:</h4>
+
+    <div><h4>{% trans "Our categories:" %}</h4>
         <p>
 	        {% include 'tags_list.html' with tags=tags only %}
         </p>
@@ -32,7 +27,7 @@
 
     <hr />
     <div>
-	    <h4>Recently registered users:</h4>
+	    <h4>{% trans "Recently registered users:" %}</h4>
         <div>
             <ul class="list-group">
 	            {% for user in users %}
