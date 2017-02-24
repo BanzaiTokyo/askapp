@@ -1,3 +1,4 @@
+{% load i18n %}
 
 {% if can_like_thread %}
   <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'thread_like' object.id object.title|slugify 'up' %}" title="{% trans "Upvote" %}"></a>

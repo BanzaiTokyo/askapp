@@ -63,7 +63,7 @@
                     {% endif %}
                     {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
                     {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success"
-                                          href="{% url 'edit_thread' object.id object.title|slugify %}"></a>{% endif %}
+                                          href="{% url 'edit_thread' object.id object.title|slugify %}" title="{% trans "Edit thread" %}"></a>{% endif %}
                 </h2>
 
                 <!--Tags-->
