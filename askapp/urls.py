@@ -10,6 +10,7 @@ urlpatterns = [
     # system URLs
     url(r'^admin/', include(admin.site.urls)),
     url(r'^markdownx/', include('markdownx.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 
     # static templates
     # url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),

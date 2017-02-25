@@ -76,14 +76,11 @@
             {% url 'profile' thread.user.id thread.user|slugify as url_profile %}
             {% url 'thread' thread.id thread.title|slugify as url_thread %}
 
-            {% blocktrans with avatar_url=object.user.profile.avatar.url user=thread.user time_since=thread.created|timesince num_comments=thread.num_comments pluralize=thread.num_comments|pluralize%}
+                <p>{% trans "posted by" %} <a href="{{ url_profile }}">
+                    <img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
+                    | {% blocktrans with time_since=thread.created|timesince %}{{ time_since }} ago{% endblocktrans %} |
+<a href="{{ url_thread }}">{% blocktrans count num_comments=thread.num_comments %}1 comment{% plural %}{{ num_comments }} comments{% endblocktrans %}</a></p>
 
-                <p>posted by <a href="{{ url_profile }}">
-                    <img src="{{ url_profile }}" width="20" height="20"/>&nbsp;{{ user }}</a>
-                    | {{ time_since }} ago | <a
-                            href="{{ url_thread }}">{{ num_comments }}
-                        comment{{ pluralize }} </a></p>
-            {% endblocktrans %}
 
         </div>
         </div> <!-- .col-md-8(11) -->

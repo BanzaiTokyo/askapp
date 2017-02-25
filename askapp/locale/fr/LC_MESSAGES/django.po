@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 13:14+0000\n"
+"POT-Creation-Date: 2017-02-25 08:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: askapp/settings.py:160
-msgid "English"
-msgstr "Anglais"
-
-#: askapp/settings.py:161
-msgid "French"
-msgstr "Français"
-
-#: askapp/templates/404.html:6
+#: 404.html:6
 msgid "Error 404"
 msgstr ""
 
-#: askapp/templates/404.html:8
+#: 404.html:8
 #, python-format
 msgid ""
 "<p>Unfortunately the page you were trying to open could not be found.</p>\n"
@@ -38,65 +30,61 @@ msgid ""
 "</p>"
 msgstr ""
 
-#: askapp/templates/base.html:53
+#: base.html:53
 msgid "Top"
 msgstr ""
 
-#: askapp/templates/base.html:54 askapp/templates/base.html.py:119
+#: base.html:54 base.html.py:119
 msgid "Recent"
 msgstr ""
 
-#: askapp/templates/base.html:55 askapp/templates/base.html.py:120
+#: base.html:55 base.html.py:120
 msgid "Submit post"
 msgstr ""
 
-#: askapp/templates/base.html:62
+#: base.html:62
 msgid "Logged in"
 msgstr ""
 
-#: askapp/templates/base.html:63
+#: base.html:63
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: askapp/templates/base.html:65
+#: base.html:65
 msgid "Login"
 msgstr ""
 
-#: askapp/templates/base.html:67
+#: base.html:67
 msgid "Register"
 msgstr ""
 
-#: askapp/templates/base.html:126
+#: base.html:126
 msgid "Powered by "
 msgstr ""
 
-#: askapp/templates/comment.html:9
+#: comment.html:9
 msgid "Comment #"
 msgstr ""
 
-#: askapp/templates/comment.html:10
+#: comment.html:10
 msgid "posted on"
 msgstr ""
 
-#: askapp/templates/comment.html:21 askapp/templates/comments_list.html:16
-#: askapp/templates/comments_list.html:18
-#: askapp/templates/comments_list.html:20
-#: askapp/templates/thread_like_button.html:3
-#: askapp/templates/thread_like_button.html:5
-#: askapp/templates/thread_like_button.html:7
+#: comment.html:21 comments_list.html:16 comments_list.html.py:18
+#: comments_list.html.py:20 thread_like_button.html:4
+#: thread_like_button.html.py:6 thread_like_button.html:8
 msgid "Upvote"
 msgstr ""
 
-#: askapp/templates/comment.html:23 askapp/templates/comments_list.html:23
-#: askapp/templates/thread.html:29
+#: comment.html:23 comments_list.html:23 thread.html:29
 msgid "Downvote"
 msgstr ""
 
-#: askapp/templates/comment.html:24
+#: comment.html:24
 msgid "Delete comment"
 msgstr ""
 
-#: askapp/templates/comment.html:33
+#: comment.html:33
 #, python-format
 msgid ""
 "\n"
@@ -108,12 +96,12 @@ msgid ""
 "            "
 msgstr ""
 
-#: askapp/templates/comment.html:67 askapp/templates/thread.html:118
+#: comment.html:67 thread.html:118
 msgid "Post comment"
 msgstr ""
 
 # ############ Login or register to post a comment
-#: askapp/templates/comment.html:76
+#: comment.html:76
 #, python-format
 msgid ""
 "\n"
@@ -124,64 +112,51 @@ msgid ""
 "                "
 msgstr ""
 
-#: askapp/templates/comments_list.html:13
+#: comments_list.html:13
 msgid "deleted"
 msgstr ""
 
-#: askapp/templates/comments_list.html:24
+#: comments_list.html:24
 msgid "Delete this comment"
 msgstr ""
 
-#: askapp/templates/comments_list.html:25
+#: comments_list.html:25
 msgid "Delete this comment and all its children"
 msgstr ""
 
-#: askapp/templates/comments_list.html:31
+#: comments_list.html:31
 msgid "comment"
 msgstr ""
 
-#: askapp/templates/development/content.html:9
-msgid "Thank you!"
-msgstr ""
-
-#: askapp/templates/development/content.html:10
-msgid ""
-"Thank you for creating your account! A confirmation email has been sent to "
-"the address that you\n"
-"        have submitted. If you don't find it in a few minutes, please, check "
-"your spam folder.\n"
-"    "
-msgstr ""
-
-#: askapp/templates/index.html:21
+#: index.html:21
 msgid "Our categories:"
 msgstr ""
 
-#: askapp/templates/index.html:30
+#: index.html:30
 msgid "Recently registered users:"
 msgstr ""
 
-#: askapp/templates/login.html:10
+#: login.html:10
 msgid "Sorry this is an error!"
 msgstr ""
 
-#: askapp/templates/login.html:14 askapp/templates/profile_edit.html:14
+#: login.html:14 profile_edit.html:14
 msgid "Username:"
 msgstr ""
 
-#: askapp/templates/login.html:17
+#: login.html:17
 msgid "Password:"
 msgstr ""
 
-#: askapp/templates/login.html:20
+#: login.html:20
 msgid "login"
 msgstr ""
 
-#: askapp/templates/pagination.html:14
+#: pagination.html:14
 msgid "Page"
 msgstr ""
 
-#: askapp/templates/profile.html:7
+#: profile.html:7
 #, python-format
 msgid ""
 "\n"
@@ -189,22 +164,22 @@ msgid ""
 "    "
 msgstr ""
 
-#: askapp/templates/profile.html:24
+#: profile.html:24
 msgid "Edit profile"
 msgstr ""
 
-#: askapp/templates/profile.html:37
+#: profile.html:37
 #, python-format
 msgid ""
 "Recent threads by\n"
 "                <strong>%(username)s</strong>"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:5
+#: profile_edit.html:5
 msgid "Edit your profile"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:27
+#: profile_edit.html:27
 msgid ""
 " We do not require you to fill in this information, however we\n"
 "                            find that it helps to build a friendly community "
@@ -212,138 +187,140 @@ msgid ""
 "                            themselves and their interests."
 msgstr ""
 
-#: askapp/templates/profile_edit.html:35
+#: profile_edit.html:35
 msgid "Country:"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:40
+#: profile_edit.html:40
 msgid "City:"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:46
+#: profile_edit.html:46
 msgid "About you:"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:57
+#: profile_edit.html:57
 msgid "Avatar:"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:61
+#: profile_edit.html:61
 msgid "To replace your current avatar:"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:67
+#: profile_edit.html:67
 msgid "Choose an image file on your computer to upload and use as your avatar."
 msgstr ""
 
-#: askapp/templates/profile_edit.html:74
+#: profile_edit.html:74
 msgid "Active"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:76
+#: profile_edit.html:76
 msgid ""
 " Warning: unchecking this checkbox will delete all user's posts and threads!"
 msgstr ""
 
-#: askapp/templates/profile_edit.html:82
+#: profile_edit.html:82
 msgid "Save profile"
 msgstr ""
 
-#: askapp/templates/registration/activate.html:4
-#: askapp/templates/registration/activate.html:8
+#: registration/activate.html:4 registration/activate.html.py:8
 msgid "Account activation failed"
 msgstr ""
 
-#: askapp/templates/registration/activation_complete.html:4
-#: askapp/templates/registration/activation_complete.html:7
+#: registration/activation_complete.html:4
+#: registration/activation_complete.html:7
 msgid "Your account is now activated."
 msgstr ""
 
-#: askapp/templates/registration/activation_email.txt:2
+#: registration/activation_email.txt:2
 msgid "Activate account at"
 msgstr ""
 
-#: askapp/templates/registration/activation_email.txt:6
+#: registration/activation_email.txt:6
 #, python-format
 msgid "Link is valid for %(expiration_days)s days."
 msgstr ""
 
-#: askapp/templates/registration/activation_email_subject.txt:1
+#: registration/activation_email_subject.txt:1
 msgid "Account activation on"
 msgstr ""
 
-#: askapp/templates/registration/logout.html:8
+#: registration/logout.html:8
 msgid "Logged out"
 msgstr ""
 
-#: askapp/templates/registration/password_change_done.html:5
+#: registration/password_change_done.html:5
 msgid "Password changed"
 msgstr ""
 
-#: askapp/templates/registration/password_change_form.html:9
-#: askapp/templates/registration/password_reset_confirm.html:12
-#: askapp/templates/registration/password_reset_form.html:9
-#: askapp/templates/registration/registration_form.html:9
-#: askapp/templates/thread_edit.html:48
+#: registration/password_change_form.html:9
+#: registration/password_reset_confirm.html:12
+#: registration/password_reset_form.html:9
+#: registration/registration_form.html:9 thread_edit.html:48
 msgid "Submit"
 msgstr "Envoyer"
 
-#: askapp/templates/registration/password_reset_complete.html:6
+#: registration/password_reset_complete.html:6
 msgid "Password reset successfully"
 msgstr ""
 
-#: askapp/templates/registration/password_reset_complete.html:8
+#: registration/password_reset_complete.html:8
 msgid "Log in"
 msgstr ""
 
-#: askapp/templates/registration/password_reset_confirm.html:17
+#: registration/password_reset_confirm.html:17
 msgid "Password reset failed"
 msgstr ""
 
-#: askapp/templates/registration/password_reset_done.html:5
+#: registration/password_reset_done.html:5
 msgid "Email with password reset instructions has been sent."
 msgstr ""
 
-#: askapp/templates/registration/password_reset_email.html:2
-#: askapp/templates/registration/password_reset_email.txt:2
+#: registration/password_reset_email.html:2
+#: registration/password_reset_email.txt:2
 #, python-format
 msgid "Reset password at %(site_name)s"
 msgstr ""
 
-#: askapp/templates/registration/registration_closed.html:5
+#: registration/registration_closed.html:5
 msgid "Registration is currently closed."
 msgstr ""
 
-#: askapp/templates/registration/registration_complete.html:4
-#: askapp/templates/registration/registration_complete.html:7
+#: registration/registration_complete.html:4
+#: registration/registration_complete.html:7
 msgid "You are now registered. Activation email sent."
 msgstr ""
 
-#: askapp/templates/rules_light/exception.html:7
+#: rules_light/exception.html:7
 msgid "You do not have permission to do that."
 msgstr ""
 
-#: askapp/templates/rules_light/exception.html:10
+#: rules_light/exception.html:10
 msgid "Try logging in"
 msgstr ""
 
-#: askapp/templates/rules_light/exception.html:10
+#: rules_light/exception.html:10
 msgid "with other credentials"
 msgstr ""
 
-#: askapp/templates/thread.html:32 askapp/templates/thread_delete.html:39
+#: thread.html:32 thread_delete.html:39
 msgid "Delete thread"
 msgstr ""
 
-#: askapp/templates/thread.html:37
+#: thread.html:37
 msgid "Unlock thread"
 msgstr ""
 
-#: askapp/templates/thread.html:41
+#: thread.html:41
 msgid "Lock thread"
 msgstr ""
 
-#: askapp/templates/thread.html:73
+#: thread.html:66 thread_edit.html:5
+msgid "Edit thread"
+msgstr ""
+
+#: thread.html:73
 #, python-format
 msgid ""
 "\n"
@@ -354,7 +331,7 @@ msgid ""
 "                    "
 msgstr ""
 
-#: askapp/templates/thread.html:80
+#: thread.html:80
 #, python-format
 msgid ""
 "\n"
@@ -362,64 +339,68 @@ msgid ""
 "                    "
 msgstr ""
 
-#: askapp/templates/thread.html:84
+#: thread.html:84
 msgid "in"
 msgstr ""
 
-#: askapp/templates/thread.html:115
+#: thread.html:115
 msgid "Comment:"
 msgstr ""
 
-#: askapp/templates/thread_delete.html:5
+#: thread_delete.html:5
 msgid "Delete thread: "
 msgstr ""
 
-#: askapp/templates/thread_delete.html:36
+#: thread_delete.html:36
 msgid "Reason: "
 msgstr ""
 
-#: askapp/templates/thread_delete.html:40
+#: thread_delete.html:40
 msgid "Cancel"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:5
+#: thread_edit.html:5
 msgid "Submit new thread"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:5
-msgid "Edit thread"
-msgstr ""
-
-#: askapp/templates/thread_edit.html:13
+#: thread_edit.html:13
 msgid "Type:"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:25
+#: thread_edit.html:25
 msgid "Title:"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:30
+#: thread_edit.html:30
 msgid "Summary:"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:35
+#: thread_edit.html:35
 msgid "Categories:"
 msgstr ""
 
-#: askapp/templates/thread_edit.html:40
+#: thread_edit.html:40
 msgid "Image:"
 msgstr ""
 
-#: askapp/templates/threads_list.html:77
+#: threads_list.html:79
+msgid "posted by"
+msgstr "posté par"
+
+#: threads_list.html:81
 #, python-format
-msgid ""
-"\n"
-"\n"
-"                <p>posted by <a href=\"%(url_profile)s\">\n"
-"                    <img src=\"%(url_profile)s\" width=\"20\" height=\"20\"/"
-">&nbsp;%(user)s</a>\n"
-"                    | %(time_since)s ago | <a\n"
-"                            href=\"%(url_thread)s\">%(num_comments)s\n"
-"                        comment%(pluralize)s </a></p>\n"
-"            "
+msgid "%(time_since)s ago"
 msgstr ""
+
+#: threads_list.html:82
+#, python-format
+msgid "1 comment"
+msgid_plural "%(num_comments)s comments"
+msgstr[0] "%(num_comments)s commentaire"
+msgstr[1] "%(num_comments)s commentaires"
+
+#~ msgid "English"
+#~ msgstr "Anglais"
+
+#~ msgid "French"
+#~ msgstr "Français"
