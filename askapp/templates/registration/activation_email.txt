@@ -3,4 +3,4 @@
 
 http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 
-{% blocktrans %}Link is valid for {{ expiration_days }} days.{% endblocktrans %}
+{% trans "Link is valid for" %} {% blocktrans count days=expiration_days %}1 day.{% plural %}{{ days }} days.{% endblocktrans %}

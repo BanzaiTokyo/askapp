@@ -24,8 +24,8 @@
         {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}" title="{% trans "Delete this comment"%}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
         {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' node.id %}" title="{% trans "Delete this comment and all its children"%}"> <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
 
-        | <a href="{% url 'comment_page' node.id %}">#{{ node.id }}</a> by <a href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
-        | {{ node.created|timesince }} ago
+        | <a href="{% url 'comment_page' node.id %}">#{{ node.id }}</a> {% trans "by" %} <a href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
+        | {% blocktrans with time_since=node.created|timesince %}{{ time_since }} ago{% endblocktrans %}
 
         <div>{{ node.text|safe }}<br>
             <a href="{% url 'comment_page' node.id %}">{% trans "comment" %}</a></p>

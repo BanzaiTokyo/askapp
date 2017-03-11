@@ -4,9 +4,7 @@
 
 
 {% block title %}
-    {% blocktrans with username=object.username %}
-        {{ username }}'s user profile
-    {% endblocktrans %}
+    {% blocktrans with username=object.username %}{{ username }}'s user profile{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
@@ -34,8 +32,7 @@
 
     <div class="row">
         <h3>
-            {% blocktrans with username=object.username %}Recent threads by
-                <strong>{{ username }}</strong>{% endblocktrans %}
+            {% blocktrans with username=object.username %}Recent threads by <strong>{{ username }}</strong>{% endblocktrans %}
         </h3>
         {% include 'threads_list.html' %}
     </div>

@@ -20,6 +20,7 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
+from django.utils.translation import ugettext_lazy as _
 import rules_light
 from markdownx.models import MarkdownxField
 from askapp import settings
@@ -139,8 +140,9 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Tag, self).save(*args, **kwargs)
-    def __str__( self ):
-        return "{0}".format( self.name)
+
+    def __str__(self):
+        return "{0}".format(self.name)
 
 
 class Thread(models.Model):
@@ -152,13 +154,13 @@ class Thread(models.Model):
     # iterable collection for types of posts
     # must consist of iterables of exactly two items
     TYPES_OF_THREAD = (
-        (QUESTION, 'Question'),
-        (DISCUSSION, 'Discussion'),
-        (LINK, 'Link'),
+        (QUESTION, _('Question')),
+        (DISCUSSION, _('Discussion')),
+        (LINK, _('Link')),
     )
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
 
     # these fields are taken into account only if the post is thread starter
     hidden = models.BooleanField(default=False) # the thread is visible only to the staff and the author

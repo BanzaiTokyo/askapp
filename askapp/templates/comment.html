@@ -30,11 +30,10 @@
 {# Example: #12649 | posted by <avatar> BarbaraEbara | 6 days ago on Sumo crowns new Grand Champion#}
             {% url 'profile' object.user.id object.user|slugify as url_profile %}
             {% url 'thread' object.thread.id object.thread.title|slugify as url_thread %}
-            {% blocktrans with object_id=object.id avatar=object.user.profile.avatar.url username=object.user time_since=object.created|timesince thread=object.thread.title|truncatechars:60 %}
-                #{{ object_id }} | posted by
-                <a href="{{ url_profile }}"><img src="{{ avatar }}" width="20" height="20"/>&nbsp;{{ username }}</a>  |
-                {{ time_since }} ago on <a href="{{ url_thread }}">{{ thread }}</a></p>
-            {% endblocktrans %}
+            #{{ object.id }} | {% trans "posted by" %}
+            <a href="{{ url_profile }}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a> |
+            {% blocktrans with time_since=object.created|timesince %}{{ time_since }} ago{% endblocktrans %} {% trans "on" %}
+            <a href="{{ url_thread }}">{{ object.thread.title|truncatechars:60 }}</a>
 
         </div>
 
@@ -60,7 +59,7 @@
                 <div class="form-group">
                     <form method="post">
                         {% csrf_token %}
-                        <label for="comment">Comment:</label>
+                        <label for="comment">{% trans "Comment:" %}</label>
                         {{ form.text }}
                         {{ form.text.errors }}
                         <br>

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Error 404{% endblock %}
+{% block title %}{% trans "Error 404" %}{% endblock %}
 
 {% block content %}
     <h2>{% trans "Error 404" %}</h2>
     {% url 'index' as index_url %}
-    {% blocktrans %}<p>Unfortunately the page you were trying to open could not be found.</p>
-        <p>You might want to open our <a href="{{ index_url }}">homepage</a>.</p>{% endblocktrans %}
+    <p>{% trans "Unfortunately the page you were trying to open could not be found." %}</p>
+        <p>{% blocktrans %}You might want to open our <a href="{{ index_url }}">homepage</a>.{% endblocktrans %}</p>
 {% endblock %}
 
 {% block rightcolumn %}

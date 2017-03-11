@@ -22,10 +22,10 @@
                                       href="{% url 'delete_thread' object.id object.title|slugify %}"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
-                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread"
+                        <a class="btn glyphicon glyphicon-lock text-success" title="{% trans "unlock thread" %}"
                            href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"></a>
                     {% else %}
-                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread"
+                        <a class="btn glyphicon glyphicon-lock text-danger" title="{% trans "lock thread" %}"
                            href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"></a>
                     {% endif %}
                 {% endif %}
@@ -43,11 +43,11 @@
 
                 <!--Tags-->
 
-                <div>posted by <a href="{% url 'profile' object.user.id object.user|slugify %}"><img
+                <div>{% trans "posted by" %} <a href="{% url 'profile' object.user.id object.user|slugify %}"><img
                         src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
-                    | {{ object.created|timesince }} ago
+                    | {% blocktrans with time_since=object.created|timesince %}{{ time_since }} ago{% endblocktrans %}
                     {% if object.tags.all %}
-                        in
+                        {% trans "in" %}
                         {% include 'tags_list.html' with tags=object.tags.all only %}
                     {% endif %}
 
@@ -78,16 +78,16 @@
         <div class="row">
             <div class="col-xs-12    col-md-11 col-md-offset-1">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#" data-toggle="tab">Answer</a></li>
-                  <li><a href="#" data-toggle="tab">Comment</a></li>
+                  <li class="active"><a href="#" data-toggle="tab">{% trans "Answer" %}</a></li>
+                  <li><a href="#" data-toggle="tab">{% trans "Comment" %}</a></li>
                 </ul>
                 <div class="form-group">
                     <form method="post" action="{% url 'reply_thread' object.id object.title|slugify %}" id="reply_form">
                         {% csrf_token %}
-                        <label for="comment">Answer:</label>
+                        <label for="comment">{% trans "Answer:" %}</label>
                         <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
                         <input name="is_answer" value="1" style="display: none" />
-                        <button type="submit" class="btn btn-primary pull-right">Post answer</button>
+                        <button type="submit" class="btn btn-primary pull-right">{% trans "Post answer" %}</button>
                     </form>
                 </div>
             </div>
@@ -118,17 +118,18 @@
               <span class="text-danger"> {{ answer.points }} </span>
               {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger" href="{% url 'post_like' answer.id 'down' %}"></a>{% endif %}
               {% if can_delete_comment %}<a href="{% url 'delete_comment' answer.id %}" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
-              {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' answer.id %}" title="Delete this comment and all its children"> <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
+              {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' answer.id %}" title="{% trans "Delete this comment and all its children" %}">
+                <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
 
               | <a href="{% url 'comment_page' answer.id %}">#{{ answer.id }}</a> by <a href="{% url 'profile' answer.user.id answer.user|slugify %}">&nbsp;{{ answer.user }}</a>
               | {{ answer.created|timesince }} ago
 
               <div>{{ answer.text|safe }}
                 {% if can_reply_answer %}
-                  <br><a href="{% url 'comment_page' answer.id %}">comment</a>
+                  <br><a href="{% url 'comment_page' answer.id %}">{% trans "comment" %}</a>
                 {% endif %}
                 {% if can_accept_answer %}
-                  <br><a href="{% url 'accept_answer' answer.id %}">accept as the answer</a>
+                  <br><a href="{% url 'accept_answer' answer.id %}">{% trans "accept as the answer" %}</a>
                 {% endif %}
               </div>
 
@@ -143,13 +144,13 @@
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   if ($('input[name=is_answer]').length) {
     $('input[name=is_answer]').remove();
-    $('#reply_form label').text('Comment:');
-    $('#reply_form button').text('Post comment');
+    $('#reply_form label').text('{% trans "Comment:" %}');
+    $('#reply_form button').text('{% trans "Post comment" %}');
   }
   else {
     $('#reply_form').append('<input name="is_answer" value="1" style="display: none" />');
-    $('#reply_form label').text('Answer:');
-    $('#reply_form button').text('Post answer');
+    $('#reply_form label').text('{% trans "Answer:" %}');
+    $('#reply_form button').text('{% trans "Post answer" %}');
   }
 });
 </script>

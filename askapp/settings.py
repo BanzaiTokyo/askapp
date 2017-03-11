@@ -159,6 +159,7 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', _('English')),
     ('fr', _('French')),
+    ('ru', _('Russian')),
 )
 
 LOCALE_PATHS = (

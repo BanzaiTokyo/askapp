@@ -1,6 +1,7 @@
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 from registration.forms import RegistrationFormTermsOfService
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from .models import Profile, Thread, Post
 
@@ -16,7 +17,7 @@ class ProfileForm(forms.ModelForm):
         fields = ('avatar', 'country', 'city', 'about')
         widgets = {
             'country': forms.Select(attrs=form_control),
-            'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your city'}),
+            'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Enter your city')}),
             'about': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 
@@ -43,6 +44,7 @@ class ThreadForm(forms.ModelForm):
         elif not user.is_staff:
             self.fields.pop('thread_type')
 
+
     def clean(self):
         cleaned_data = super(ThreadForm, self).clean()
         link = cleaned_data.get("link")
@@ -52,7 +54,7 @@ class ThreadForm(forms.ModelForm):
         #    self.add_error('title', 'You are not allowed to change the thread type')
 
         if thread_type == 'LL' and not link and not self.has_error('link'):
-                msg = "This field is required"
+                msg = _("This field is required")
                 self.add_error('link', msg)
         elif self.has_error('link') and thread_type != 'LL':
             del self.errors['link']

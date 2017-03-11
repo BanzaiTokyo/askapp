@@ -16,7 +16,7 @@
             {% endif %}
             {% if not form.instance.pk or admin_view or form.instance.thread_type == 'LL' %}
             <div class="form-group" id="url_group">
-	            <label for="id_link">URL:</label>
+	            <label for="id_link">{% trans "URL:" %}</label>
 	            {{ form.link }}
 	            {{ form.link.errors }}
             </div>

@@ -32,11 +32,11 @@
                                       title="{% trans "Delete thread" %}"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
-                        <a class="btn glyphicon glyphicon-lock text-success" title="unlock thread"
+                        <a class="btn glyphicon glyphicon-lock text-success"
                            href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"
                            title="{% trans "Unlock thread" %}"></a>
                     {% else %}
-                        <a class="btn glyphicon glyphicon-lock text-danger" title="lock thread"
+                        <a class="btn glyphicon glyphicon-lock text-danger"
                            href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"
                            title="{% trans "Lock thread" %}"></a>
                     {% endif %}
@@ -70,16 +70,11 @@
 
                 <div>
                     {% url 'profile' object.user.id object.user|slugify as url_profile %}
-                    {% blocktrans with avatar_url=object.user.profile.avatar.url user=object.user %}
-                        posted by <a href="{{ url_profile }}"><img
-                            src="{{ avatar_url }}" width="20" height="20"/>&nbsp;{{ user }}
-                    </a>
-                    {% endblocktrans %}
+                    {% trans "posted by" %} <a href="{{ url_profile }}">
+                      <img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
 
                     |
-                    {% blocktrans with time_since=object.created|timesince %}
-                        {{ time_since }} ago
-                    {% endblocktrans %}
+                    {% blocktrans with time_since=object.created|timesince %}{{ time_since }} ago{% endblocktrans %}
                     {% if object.tags.all %}
                         {% trans "in" %}
                         {% include 'tags_list.html' with tags=object.tags.all only %}
