@@ -235,10 +235,16 @@ class Thread(models.Model):
 
     @property
     def comments(self):
-        params = {'is_answer': False}
         if self.thread_type == self.QUESTION:
-            params['deleted'] = False
-        return self.post_set.filter(**params)
+            params = {
+                'is_answer': False,
+                'deleted': False,
+                'parent_id__isnull': True,
+            }
+            result = self.post_set.filter(**params)
+        else:
+            result = self.post_set.all()
+        return result
 
     @property
     def answers(self):
