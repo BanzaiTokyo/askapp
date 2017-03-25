@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'debug_toolbar',
     'snowpenguin.django.recaptcha2',
     'bootstrap3',

@@ -354,6 +354,7 @@ class PostLikeView(LoginRequiredMixin, View):
         models.PostLike.vote(post, request.user, kwargs['verb'])
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
 
+
 class AcceptAnswerView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])

@@ -1,16 +1,21 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.sitemaps import views as sitemaps_views
+from django.views.decorators.cache import cache_page
 from django.conf.urls.static import static
 from django.http import HttpResponse
 
 from askapp import settings
 from askapp import views
+from askapp.sitemaps import sitemap_dict
 
 urlpatterns = [
     # system URLs
     url(r'^admin/', include(admin.site.urls)),
     url(r'^markdownx/', include('markdownx.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^sitemap\.xml$', cache_page(86400)(sitemaps_views.index), {'sitemaps': sitemap_dict, 'sitemap_url_name': 'sitemaps'}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(86400)(sitemaps_views.sitemap), {'sitemaps': sitemap_dict}, name='sitemaps'),
 
     # static templates
     # url(r'^newregister$', views.NewRegisterView.as_view(), name="new_register"),
