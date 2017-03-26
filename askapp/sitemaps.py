@@ -4,7 +4,13 @@ from django.template.defaultfilters import slugify
 
 
 class ThreadSitemap(Sitemap):
+    """
+    What does this class do?
+    """
+
+    #what is changefreq?
     changefreq = "never"
+
     priority = 0.5
 
     def items(self):
@@ -18,6 +24,9 @@ class ThreadSitemap(Sitemap):
 
 
 class ProfileSitemap(Sitemap):
+    """
+    Some documentation would be helpful
+    """
     changefreq = "never"
     priority = 0.5
 
@@ -30,7 +39,7 @@ class ProfileSitemap(Sitemap):
     def location(self, obj):
         return '/profile/{}/{}/'.format(obj.id, slugify(obj))
 
-
+# what does this dictionary do?
 sitemap_dict = {
     'threads': ThreadSitemap,
     'profiles': ProfileSitemap,
