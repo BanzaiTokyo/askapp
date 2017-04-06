@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load recaptcha2 %}
+
+{% block title %}{% trans "Registration form" %}{% endblock %}
+
+
+{% block content %}
+{% recaptcha_init %}
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab">{% trans "Create an account" %}</a></li>
+        <li><a href="{% url 'auth_login' %}" >{% trans "Login" %}</a></li>
+    </ul>
+
+    <p>&nbsp;</p>
+
+    <div class="row col-md-6">
+        <form method="post">
+	        {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">{% trans "Username:" %}</label>
+                <input type="text" class="form-control" id="username" aria-describedby="username"
+                       placeholder="{% trans "Enter your desired username" %}" name="username" value="{{ form.username.value|default:'' }}">
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">{% trans "Email address:" %}</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                       placeholder="{% trans "Enter email" %}" name="email" value="{{ form.email.value|default:'' }}">
+                <small id="emailHelp" class="form-text text-muted">
+                    {% trans "We'll never share your email with anyone else" %}.
+                </small>
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">{% trans "Password:" %}</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="{% trans "password" %}" name="password1">
+                {{ form.password.errors }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword2">{% trans "Confirm password:" %}</label>
+                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="{% trans "password" %}" name="password2">
+                {{ form.password.errors }}
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="newsletter">
+                    {% blocktrans with sitename=site.name %}I would like to subscribe to {{ sitename }} newsletter{% endblocktrans %}</label>
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="tos">
+                    {% blocktrans %}I agree to <a href="" target="_blank"> terms of services</a>{% endblocktrans %}.
+                </label>
+            </div>
+
+            <div class="form-group">
+				{{ form.captcha }}
+	            {{ form.captcha.errors }}
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right">{% trans "Submit" %}</button>
+        </form>
+
+
+    </div>
+
+
+{% endblock %}
+
+
+{% block rightcolumn %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <p>You are already logged in.#}
+    {#        </p>#}
+    {#    {% else %}#}
+    {#        <p>You are not logged in?!</p>#}
+    {#    {% endif %}#}
+
+
+
+{% endblock %}

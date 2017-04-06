@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-11 12:08+0000\n"
+"POT-Creation-Date: 2017-04-06 19:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,147 +17,105 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:20
-msgid "Enter your city"
-msgstr ""
-
-#: forms.py:57
-msgid "This field is required"
-msgstr ""
-
-#: models.py:157
-msgid "Question"
-msgstr ""
-
-#: models.py:158
-msgid "Discussion"
-msgstr ""
-
-#: models.py:159
-msgid "Link"
-msgstr ""
-
-#: models.py:163
-msgid "tags"
-msgstr ""
-
-#: settings.py:160
-msgid "English"
-msgstr ""
-
-#: settings.py:161
-msgid "French"
-msgstr ""
-
-#: settings.py:162
-msgid "Russian"
-msgstr ""
-
-#: templates/404.html:3 templates/404.html.py:6
+#: 404.html:3 404.html.py:6
 msgid "Error 404"
 msgstr ""
 
-#: templates/404.html:8
+#: 404.html:8
 msgid "Unfortunately the page you were trying to open could not be found."
 msgstr ""
 
-#: templates/404.html:9
+#: 404.html:9
 #, python-format
 msgid "You might want to open our <a href=\"%(index_url)s\">homepage</a>."
 msgstr ""
 
-#: templates/base.html:27
+#: base.html:27
 msgid "Questions about Japan answered directly from Akihabara, Tokyo!"
 msgstr ""
 
-#: templates/base.html:41
+#: base.html:41
 msgid "Toggle navigation"
 msgstr ""
 
-#: templates/base.html:52
+#: base.html:52
 msgid "Top"
 msgstr ""
 
-#: templates/base.html:53 templates/base.html.py:117
+#: base.html:53 base.html.py:117
 msgid "Recent"
 msgstr ""
 
-#: templates/base.html:54 templates/base.html.py:118
+#: base.html:54 base.html.py:118
 msgid "Submit post"
 msgstr ""
 
-#: templates/base.html:61
+#: base.html:61
 msgid "Logged in"
 msgstr ""
 
-#: templates/base.html:62
+#: base.html:62
 msgid "Log out"
 msgstr ""
 
-#: templates/base.html:64 templates/login.html:5
-#: templates/registration/login.html:13
+#: base.html:64 login.html:5 registration/login.html:13
+#: registration_form.html:15
 msgid "Login"
 msgstr ""
 
-#: templates/base.html:66
+#: base.html:66
 msgid "Register"
 msgstr ""
 
-#: templates/base.html:124
+#: base.html:124
 msgid "Powered by "
 msgstr ""
 
-#: templates/comment.html:9
+#: comment.html:9
 msgid "Comment #"
 msgstr ""
 
-#: templates/comment.html:10
+#: comment.html:10
 msgid "posted on"
 msgstr ""
 
-#: templates/comment.html:21 templates/comments_list.html:16
-#: templates/comments_list.html.py:18 templates/comments_list.html:20
-#: templates/thread_like_button.html:4 templates/thread_like_button.html:6
-#: templates/thread_like_button.html:8
+#: comment.html:21 comments_list.html:16 comments_list.html.py:18
+#: comments_list.html.py:20 thread_like_button.html:4
+#: thread_like_button.html.py:6 thread_like_button.html:8
 msgid "Upvote"
 msgstr ""
 
-#: templates/comment.html:23 templates/comments_list.html:23
-#: templates/thread.html:29
+#: comment.html:23 comments_list.html:23 thread.html:29
 msgid "Downvote"
 msgstr ""
 
-#: templates/comment.html:24
+#: comment.html:24
 msgid "Delete comment"
 msgstr ""
 
-#: templates/comment.html:33 templates/thread.html:73
-#: templates/thread_question.html:46 templates/threads_list.html:79
+#: comment.html:33 thread.html:75 thread_question.html:47 threads_list.html:79
 msgid "posted by"
 msgstr ""
 
-#: templates/comment.html:35 templates/comments_list.html:28
-#: templates/comments_list_qst.html:27 templates/thread.html:77
-#: templates/thread_question.html:48 templates/threads_list.html:81
+#: comment.html:35 comments_list.html:28 comments_list_qst.html:27
+#: thread.html:79 thread_question.html:49 threads_list.html:81
 #, python-format
 msgid "%(time_since)s ago"
 msgstr ""
 
-#: templates/comment.html:35
+#: comment.html:35
 msgid "on"
 msgstr ""
 
-#: templates/comment.html:62 templates/thread.html:110
-#: templates/thread_question.html:147
+#: comment.html:62 thread.html:112 thread_question.html:148
 msgid "Comment:"
 msgstr ""
 
-#: templates/comment.html:66 templates/thread.html:113
-#: templates/thread_question.html:148
+#: comment.html:66 thread.html:115 thread_question.html:149
 msgid "Post comment"
 msgstr ""
 
-#: templates/comment.html:75
+#: comment.html:75
 #, python-format
 msgid ""
 "\n"
@@ -168,84 +126,84 @@ msgid ""
 "                "
 msgstr ""
 
-#: templates/comments_list.html:13
+#: comments_list.html:13
 msgid "deleted"
 msgstr ""
 
-#: templates/comments_list.html:24
+#: comments_list.html:24
 msgid "Delete this comment"
 msgstr ""
 
-#: templates/comments_list.html:25 templates/thread_question.html:121
+#: comments_list.html:25 thread_question.html:122
 msgid "Delete this comment and all its children"
 msgstr ""
 
-#: templates/comments_list.html:27 templates/comments_list_qst.html:25
+#: comments_list.html:27 comments_list_qst.html:25
 msgid "by"
 msgstr ""
 
-#: templates/comments_list.html:31 templates/thread_question.html:129
+#: comments_list.html:31 thread_question.html:130
 msgid "comment"
 msgstr ""
 
-#: templates/index.html:14
+#: index.html:14
 msgid "About"
 msgstr ""
 
-#: templates/index.html:15
+#: index.html:15
 msgid ""
 "Find links to the most interesting articles about contemporary Japanese "
 "culture and technology and get your questions about Japan answered directly "
 "from Akihabara, Tokyo!"
 msgstr ""
 
-#: templates/index.html:20
+#: index.html:20
 msgid "Our categories:"
 msgstr ""
 
-#: templates/index.html:29
+#: index.html:29
 msgid "Recently registered users:"
 msgstr ""
 
-#: templates/login.html:10
+#: login.html:10
 msgid "Sorry this is an error!"
 msgstr ""
 
-#: templates/login.html:14 templates/profile_edit.html:14
+#: login.html:14 profile_edit.html:14 registration_form.html:24
 msgid "Username:"
 msgstr ""
 
-#: templates/login.html:17
+#: login.html:17 registration_form.html:41
 msgid "Password:"
 msgstr ""
 
-#: templates/login.html:20
+#: login.html:20
 msgid "login"
 msgstr ""
 
-#: templates/pagination.html:14
+#: pagination.html:14
 msgid "Page"
 msgstr ""
 
-#: templates/profile.html:7
+#: profile.html:7
 #, python-format
 msgid "%(username)s's user profile"
 msgstr ""
 
-#: templates/profile.html:22
+#: profile.html:22
 msgid "Edit profile"
 msgstr ""
 
-#: templates/profile.html:35
+#: profile.html:35
 #, python-format
 msgid "Recent threads by <strong>%(username)s</strong>"
 msgstr ""
 
-#: templates/profile_edit.html:5
+#: profile_edit.html:5
 msgid "Edit your profile"
 msgstr ""
 
-#: templates/profile_edit.html:27
+#: profile_edit.html:27
 msgid ""
 " We do not require you to fill in this information, however we\n"
 "                            find that it helps to build a friendly community "
@@ -253,249 +211,284 @@ msgid ""
 "                            themselves and their interests."
 msgstr ""
 
-#: templates/profile_edit.html:35
+#: profile_edit.html:35
 msgid "Country:"
 msgstr ""
 
-#: templates/profile_edit.html:40
+#: profile_edit.html:40
 msgid "City:"
 msgstr ""
 
-#: templates/profile_edit.html:46
+#: profile_edit.html:46
 msgid "About you:"
 msgstr ""
 
-#: templates/profile_edit.html:57
+#: profile_edit.html:57
 msgid "Avatar:"
 msgstr ""
 
-#: templates/profile_edit.html:61
+#: profile_edit.html:61
 msgid "To replace your current avatar:"
 msgstr ""
 
-#: templates/profile_edit.html:67
+#: profile_edit.html:67
 msgid "Choose an image file on your computer to upload and use as your avatar."
 msgstr ""
 
-#: templates/profile_edit.html:74
+#: profile_edit.html:74
 msgid "Active"
 msgstr ""
 
-#: templates/profile_edit.html:76
+#: profile_edit.html:76
 msgid ""
 " Warning: unchecking this checkbox will delete all user's posts and threads!"
 msgstr ""
 
-#: templates/profile_edit.html:82
+#: profile_edit.html:82
 msgid "Save profile"
 msgstr ""
 
-#: templates/registration/activate.html:4
-#: templates/registration/activate.html:8
+#: registration/activate.html:4 registration/activate.html.py:8
 msgid "Account activation failed"
 msgstr ""
 
-#: templates/registration/activation_complete.html:4
-#: templates/registration/activation_complete.html:7
+#: registration/activation_complete.html:4
+#: registration/activation_complete.html:7
 msgid "Your account is now activated."
 msgstr ""
 
-#: templates/registration/activation_email.txt:2
+#: registration/activation_email.txt:2
 msgid "Activate account at"
 msgstr ""
 
-#: templates/registration/activation_email.txt:6
+#: registration/activation_email.txt:6
 msgid "Link is valid for"
 msgstr ""
 
-#: templates/registration/activation_email.txt:6
+#: registration/activation_email.txt:6
 #, python-format
 msgid "1 day."
 msgid_plural "%(days)s days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/registration/activation_email_subject.txt:1
+#: registration/activation_email_subject.txt:1
 msgid "Account activation on"
 msgstr ""
 
-#: templates/registration/login.html:6
+#: registration/login.html:6
 msgid "Login form"
 msgstr ""
 
-#: templates/registration/login.html:12
+#: registration/login.html:12 registration_form.html:14
 msgid "Create an account"
 msgstr ""
 
-#: templates/registration/login.html:24 templates/registration/login.html:26
+#: registration/login.html:24 registration/login.html.py:26
 msgid "Username"
 msgstr ""
 
-#: templates/registration/login.html:31 templates/registration/login.html:32
+#: registration/login.html:31 registration/login.html.py:32
 msgid "Password"
 msgstr ""
 
-#: templates/registration/login.html:36
-#: templates/registration/password_change_form.html:9
-#: templates/registration/password_reset_confirm.html:12
-#: templates/registration/password_reset_form.html:9
-#: templates/registration/registration_form.html:9
-#: templates/thread_edit.html:48
+#: registration/login.html:36 registration/password_change_form.html:9
+#: registration/password_reset_confirm.html:12
+#: registration/password_reset_form.html:9
+#: registration/registration_form.html:9 registration_form.html:70
+#: thread_edit.html:48
 msgid "Submit"
 msgstr ""
 
-#: templates/registration/login.html:38
+#: registration/login.html:38
 msgid "Forgot password?"
 msgstr ""
 
-#: templates/registration/login.html:38
+#: registration/login.html:38
 msgid "Reset it!"
 msgstr ""
 
-#: templates/registration/logout.html:5
+#: registration/logout.html:5
 msgid "You are logged out"
 msgstr ""
 
-#: templates/registration/logout.html:8
+#: registration/logout.html:8
 msgid "Logged out"
 msgstr ""
 
-#: templates/registration/password_change_done.html:5
+#: registration/password_change_done.html:5
 msgid "Password changed"
 msgstr ""
 
-#: templates/registration/password_reset_complete.html:6
+#: registration/password_reset_complete.html:6
 msgid "Password reset successfully"
 msgstr ""
 
-#: templates/registration/password_reset_complete.html:8
+#: registration/password_reset_complete.html:8
 msgid "Log in"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.html:17
+#: registration/password_reset_confirm.html:17
 msgid "Password reset failed"
 msgstr ""
 
-#: templates/registration/password_reset_done.html:5
+#: registration/password_reset_done.html:5
 msgid "Email with password reset instructions has been sent."
 msgstr ""
 
-#: templates/registration/password_reset_email.html:2
-#: templates/registration/password_reset_email.txt:2
+#: registration/password_reset_email.html:2
+#: registration/password_reset_email.txt:2
 #, python-format
 msgid "Reset password at %(site_name)s"
 msgstr ""
 
-#: templates/registration/registration_closed.html:5
+#: registration/registration_closed.html:5
 msgid "Registration is currently closed."
 msgstr ""
 
-#: templates/registration/registration_complete.html:4
-#: templates/registration/registration_complete.html:7
+#: registration/registration_complete.html:4
+#: registration/registration_complete.html:7
 msgid "You are now registered. Activation email sent."
 msgstr ""
 
-#: templates/rules_light/exception.html:7
+#: registration_form.html:6
+msgid "Registration form"
+msgstr ""
+
+#: registration_form.html:26
+msgid "Enter your desired username"
+msgstr ""
+
+#: registration_form.html:31
+msgid "Email address:"
+msgstr ""
+
+#: registration_form.html:33
+msgid "Enter email"
+msgstr ""
+
+#: registration_form.html:35
+msgid "We'll never share your email with anyone else"
+msgstr ""
+
+#: registration_form.html:42 registration_form.html.py:48
+msgid "password"
+msgstr ""
+
+#: registration_form.html:47
+msgid "Confirm password:"
+msgstr ""
+
+#: registration_form.html:55
+#, python-format
+msgid "I would like to subscribe to %(sitename)s newsletter"
+msgstr ""
+
+#: registration_form.html:61
+msgid "I agree to <a href=\"\" target=\"_blank\"> terms of services</a>"
+msgstr ""
+
+#: rules_light/exception.html:7
 msgid "You do not have permission to do that."
 msgstr ""
 
-#: templates/rules_light/exception.html:10
+#: rules_light/exception.html:10
 msgid "Try logging in"
 msgstr ""
 
-#: templates/rules_light/exception.html:10
+#: rules_light/exception.html:10
 msgid "with other credentials"
 msgstr ""
 
-#: templates/thread.html:32 templates/thread_delete.html:39
+#: thread.html:32 thread_delete.html:39
 msgid "Delete thread"
 msgstr ""
 
-#: templates/thread.html:37
+#: thread.html:37
 msgid "Unlock thread"
 msgstr ""
 
-#: templates/thread.html:41
+#: thread.html:41
 msgid "Lock thread"
 msgstr ""
 
-#: templates/thread.html:66 templates/thread_edit.html:5
+#: thread.html:67 thread_edit.html:5
 msgid "Edit thread"
 msgstr ""
 
-#: templates/thread.html:79 templates/thread_question.html:50
+#: thread.html:81 thread_question.html:51
 msgid "in"
 msgstr ""
 
-#: templates/thread_delete.html:5
+#: thread_delete.html:5
 msgid "Delete thread: "
 msgstr ""
 
-#: templates/thread_delete.html:36
+#: thread_delete.html:36
 msgid "Reason: "
 msgstr ""
 
-#: templates/thread_delete.html:40
+#: thread_delete.html:40
 msgid "Cancel"
 msgstr ""
 
-#: templates/thread_edit.html:5
+#: thread_edit.html:5
 msgid "Submit new thread"
 msgstr ""
 
-#: templates/thread_edit.html:13
+#: thread_edit.html:13
 msgid "Type:"
 msgstr ""
 
-#: templates/thread_edit.html:19
+#: thread_edit.html:19
 msgid "URL:"
 msgstr ""
 
-#: templates/thread_edit.html:25
+#: thread_edit.html:25
 msgid "Title:"
 msgstr ""
 
-#: templates/thread_edit.html:30
+#: thread_edit.html:30
 msgid "Summary:"
 msgstr ""
 
-#: templates/thread_edit.html:35
+#: thread_edit.html:35
 msgid "Categories:"
 msgstr ""
 
-#: templates/thread_edit.html:40
+#: thread_edit.html:40
 msgid "Image:"
 msgstr ""
 
-#: templates/thread_question.html:25
+#: thread_question.html:26
 msgid "unlock thread"
 msgstr ""
 
-#: templates/thread_question.html:28
+#: thread_question.html:29
 msgid "lock thread"
 msgstr ""
 
-#: templates/thread_question.html:81
+#: thread_question.html:82
 msgid "Answer"
 msgstr ""
 
-#: templates/thread_question.html:82
+#: thread_question.html:83
 msgid "Comment"
 msgstr ""
 
-#: templates/thread_question.html:87 templates/thread_question.html.py:152
+#: thread_question.html:88 thread_question.html.py:153
 msgid "Answer:"
 msgstr ""
 
-#: templates/thread_question.html:90 templates/thread_question.html.py:153
+#: thread_question.html:91 thread_question.html.py:154
 msgid "Post answer"
 msgstr ""
 
-#: templates/thread_question.html:132
+#: thread_question.html:133
 msgid "accept as the answer"
 msgstr ""
 
-#: templates/threads_list.html:82
+#: threads_list.html:82
 #, python-format
 msgid "1 comment"
 msgid_plural "%(num_comments)s comments"
