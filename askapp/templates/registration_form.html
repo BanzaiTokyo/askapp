@@ -18,6 +18,7 @@
     <p>&nbsp;</p>
 
     <div class="row col-md-6">
+      {% if not user.is_authenticated %}
         <form method="post">
 	        {% csrf_token %}
             <div class="form-group">
@@ -69,7 +70,14 @@
 
             <button type="submit" class="btn btn-primary pull-right">{% trans "Submit" %}</button>
         </form>
-
+      {% else %}
+          <p>
+            {% trans "You are already logged in." %}
+            {% url 'auth_logout' as logout_url %}
+            {% url 'registration_register' as signup_url %}
+            {% blocktrans %}<a href="{{ logout_url }}?next={{ signup_url }}">Logout</a> to create another account{% endblocktrans %}
+          </p>
+      {% endif %}
 
     </div>
 

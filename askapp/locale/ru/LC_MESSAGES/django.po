@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-06 19:20+0000\n"
+"POT-Creation-Date: 2017-05-18 12:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,107 +19,149 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: 404.html:3 404.html.py:6
+#: forms.py:20
+msgid "Enter your city"
+msgstr "Ваш город"
+
+#: forms.py:57
+msgid "This field is required"
+msgstr "Поле нужно заполнить"
+
+#: models.py:157
+msgid "Question"
+msgstr "Вопрос"
+
+#: models.py:158
+msgid "Discussion"
+msgstr "Обсуждение"
+
+#: models.py:159
+msgid "Link"
+msgstr "Ссылка"
+
+#: models.py:163
+msgid "tags"
+msgstr "тэги"
+
+#: settings.py:161
+msgid "English"
+msgstr "Английский"
+
+#: settings.py:162
+msgid "French"
+msgstr "Французский"
+
+#: settings.py:163
+msgid "Russian"
+msgstr "Русский"
+
+#: templates/404.html:3 templates/404.html.py:6
 msgid "Error 404"
 msgstr "Ошибка 404"
 
-#: 404.html:8
+#: templates/404.html:8
 msgid "Unfortunately the page you were trying to open could not be found."
 msgstr "Страница, которую Вы пытаетесь открыть, не найдена."
 
-#: 404.html:9
+#: templates/404.html:9
 #, python-format
 msgid "You might want to open our <a href=\"%(index_url)s\">homepage</a>."
 msgstr ""
 "Возможно, вы захотите посетить <a href=\"%(index_url)s\">домашнюю страницу</"
 "a>."
 
-#: base.html:27
+#: templates/base.html:27
 msgid "Questions about Japan answered directly from Akihabara, Tokyo!"
 msgstr "Вопросы про Японию с ответами напрямую из Акихабары, Токио!"
 
-#: base.html:41
+#: templates/base.html:41
 msgid "Toggle navigation"
 msgstr "Меню"
 
-#: base.html:52
+#: templates/base.html:52
 msgid "Top"
 msgstr "Обсуждаемые"
 
-#: base.html:53 base.html.py:117
+#: templates/base.html:53 templates/base.html.py:117
 msgid "Recent"
 msgstr "Недавние"
 
-#: base.html:54 base.html.py:118
+#: templates/base.html:54 templates/base.html.py:118
 msgid "Submit post"
 msgstr "Создать тему"
 
-#: base.html:61
+#: templates/base.html:61
 msgid "Logged in"
 msgstr "Пользователь"
 
-#: base.html:62
+#: templates/base.html:62
 msgid "Log out"
 msgstr "Выйти"
 
-#: base.html:64 login.html:5 registration/login.html:13
-#: registration_form.html:15
+#: templates/base.html:64 templates/registration_form.html:15
+#: templates/registration/login.html:13
 msgid "Login"
 msgstr "Вход"
 
-#: base.html:66
+#: templates/base.html:66
 msgid "Register"
 msgstr "Регистрация"
 
-#: base.html:124
+#: templates/base.html:124
 msgid "Powered by "
 msgstr "Поддержка: "
 
-#: comment.html:9
+#: templates/comment.html:9
 msgid "Comment #"
 msgstr "Комментарий №"
 
-#: comment.html:10
+#: templates/comment.html:10
 msgid "posted on"
 msgstr "в теме"
 
-#: comment.html:21 comments_list.html:16 comments_list.html.py:18
-#: comments_list.html.py:20 thread_like_button.html:4
-#: thread_like_button.html.py:6 thread_like_button.html:8
+#: templates/comment.html:21 templates/comments_list.html:16
+#: templates/comments_list.html.py:18 templates/comments_list.html:20
+#: templates/thread_like_button.html:4 templates/thread_like_button.html:6
+#: templates/thread_like_button.html:8
 msgid "Upvote"
 msgstr "Нравится"
 
-#: comment.html:23 comments_list.html:23 thread.html:29
+#: templates/comment.html:23 templates/comments_list.html:23
+#: templates/thread.html:29
 msgid "Downvote"
 msgstr "Не нравится"
 
-#: comment.html:24
+#: templates/comment.html:24
 msgid "Delete comment"
 msgstr "Удалить комментарий"
 
-#: comment.html:33 thread.html:75 thread_question.html:47 threads_list.html:79
+#: templates/comment.html:33 templates/thread.html:75
+#: templates/thread_question.html:47 templates/threads_list.html:79
 msgid "posted by"
 msgstr "от"
 
-#: comment.html:35 comments_list.html:28 comments_list_qst.html:27
-#: thread.html:79 thread_question.html:49 threads_list.html:81
+#: templates/comment.html:35 templates/comments_list.html:28
+#: templates/comments_list_qst.html:27 templates/thread.html:79
+#: templates/thread_question.html:49 templates/threads_list.html:81
 #, python-format
 msgid "%(time_since)s ago"
 msgstr "%(time_since)s назад"
 
-#: comment.html:35
+#: templates/comment.html:35
 msgid "on"
 msgstr "в"
 
-#: comment.html:62 thread.html:112 thread_question.html:148
+#: templates/comment.html:62 templates/thread.html:112
+#: templates/thread_question.html:148
 msgid "Comment:"
 msgstr "Комментарий:"
 
-#: comment.html:66 thread.html:115 thread_question.html:149
+#: templates/comment.html:66 templates/thread.html:115
+#: templates/thread_question.html:149
 msgid "Post comment"
 msgstr "Комментировать"
 
-#: comment.html:75
+#: templates/comment.html:75
 #, python-format
 msgid ""
 "\n"
@@ -136,31 +178,31 @@ msgstr ""
 "прокомментировать\n"
 "                "
 
-#: comments_list.html:13
+#: templates/comments_list.html:13
 msgid "deleted"
 msgstr "удалён"
 
-#: comments_list.html:24
+#: templates/comments_list.html:24
 msgid "Delete this comment"
 msgstr "Удалить"
 
-#: comments_list.html:25 thread_question.html:122
+#: templates/comments_list.html:25 templates/thread_question.html:122
 msgid "Delete this comment and all its children"
 msgstr "Удалить комментарий и всю ветку"
 
-#: comments_list.html:27 comments_list_qst.html:25
+#: templates/comments_list.html:27 templates/comments_list_qst.html:25
 msgid "by"
 msgstr "от"
 
-#: comments_list.html:31 thread_question.html:130
+#: templates/comments_list.html:31 templates/thread_question.html:130
 msgid "comment"
 msgstr "комментировать"
 
-#: index.html:14
+#: templates/index.html:14
 msgid "About"
 msgstr "Об этом сайте"
 
-#: index.html:15
+#: templates/index.html:15
 msgid ""
 "Find links to the most interesting articles about contemporary Japanese "
 "culture and technology and get your questions about Japan answered directly "
@@ -170,53 +212,41 @@ msgstr ""
 "технологиях, задавайте вопросы и получайте ответы на них прямо из Акихабары, "
 "Токио!"
 
-#: index.html:20
+#: templates/index.html:20
 msgid "Our categories:"
 msgstr "Наши категории:"
 
-#: index.html:29
+#: templates/index.html:29
 msgid "Recently registered users:"
 msgstr "Недавно зарегистрировались:"
 
-#: login.html:10
-msgid "Sorry this is an error!"
-msgstr "Неправильное имя или пароль."
-
-#: login.html:14 profile_edit.html:14 registration_form.html:24
-msgid "Username:"
-msgstr "Логин:"
-
-#: login.html:17 registration_form.html:41
-msgid "Password:"
-msgstr "Пароль:"
-
-#: login.html:20
-msgid "login"
-msgstr "войти"
-
-#: pagination.html:14
+#: templates/pagination.html:14
 msgid "Page"
 msgstr "Страница"
 
-#: profile.html:7
+#: templates/profile.html:7
 #, python-format
 msgid "%(username)s's user profile"
 msgstr "Профиль пользователя %(username)s"
 
-#: profile.html:22
+#: templates/profile.html:22
 msgid "Edit profile"
 msgstr "Редактировать профиль"
 
-#: profile.html:35
+#: templates/profile.html:35
 #, python-format
 msgid "Recent threads by <strong>%(username)s</strong>"
 msgstr "Недавние темы от <strong>%(username)s</strong>:"
 
-#: profile_edit.html:5
+#: templates/profile_edit.html:5
 msgid "Edit your profile"
 msgstr "Редактировать профиль"
 
-#: profile_edit.html:27
+#: templates/profile_edit.html:14 templates/registration_form.html:25
+msgid "Username:"
+msgstr "Логин:"
+
+#: templates/profile_edit.html:27
 msgid ""
 " We do not require you to fill in this information, however we\n"
 "                            find that it helps to build a friendly community "
@@ -226,295 +256,200 @@ msgstr ""
 " Мы не требуем заполнить все поля, однако мы могли бы создать приятный круг "
 "общения, если бы посетители рассказали немного о себе."
 
-#: profile_edit.html:35
+#: templates/profile_edit.html:35
 msgid "Country:"
 msgstr "Страна:"
 
-#: profile_edit.html:40
+#: templates/profile_edit.html:40
 msgid "City:"
 msgstr "Город:"
 
-#: profile_edit.html:46
+#: templates/profile_edit.html:46
 msgid "About you:"
 msgstr "Немного о себе:"
 
-#: profile_edit.html:57
+#: templates/profile_edit.html:57
 msgid "Avatar:"
 msgstr "Аватар:"
 
-#: profile_edit.html:61
+#: templates/profile_edit.html:61
 msgid "To replace your current avatar:"
 msgstr "Чтобы заменить аватар:"
 
-#: profile_edit.html:67
+#: templates/profile_edit.html:67
 msgid "Choose an image file on your computer to upload and use as your avatar."
 msgstr "Загрузите картинку с Вашего компьютера"
 
-#: profile_edit.html:74
+#: templates/profile_edit.html:74
 msgid "Active"
 msgstr "Активный"
 
-#: profile_edit.html:76
+#: templates/profile_edit.html:76
 msgid ""
 " Warning: unchecking this checkbox will delete all user's posts and threads!"
 msgstr ""
 "Предупреждение: если снять галку, то удалятся все его темы и комментарии!"
 
-#: profile_edit.html:82
+#: templates/profile_edit.html:82
 msgid "Save profile"
 msgstr "Сохранить"
 
-#: registration/activate.html:4 registration/activate.html.py:8
-msgid "Account activation failed"
-msgstr "Невозможно активировать аккаунт"
-
-#: registration/activation_complete.html:4
-#: registration/activation_complete.html:7
-msgid "Your account is now activated."
-msgstr "Аккаунт активирован."
-
-#: registration/activation_email.txt:2
-msgid "Activate account at"
-msgstr "Активируйте аккаунт по ссылке"
-
-#: registration/activation_email.txt:6
-msgid "Link is valid for"
-msgstr "Ссылка действительна"
-
-#: registration/activation_email.txt:6
-#, python-format
-msgid "1 day."
-msgid_plural "%(days)s days."
-msgstr[0] "1 день."
-msgstr[1] "%(days)s дня."
-msgstr[2] "%(days)s дней."
-
-#: registration/activation_email_subject.txt:1
-msgid "Account activation on"
-msgstr "Активация аккаунта"
-
-#: registration/login.html:6
-msgid "Login form"
-msgstr "Войти в систему"
-
-#: registration/login.html:12 registration_form.html:14
-msgid "Create an account"
-msgstr "Зарегистрироваться"
-
-#: registration/login.html:24 registration/login.html.py:26
-#, fuzzy
-#| msgid "Username:"
-msgid "Username"
-msgstr "Логин:"
-
-#: registration/login.html:31 registration/login.html.py:32
-#, fuzzy
-#| msgid "Password:"
-msgid "Password"
-msgstr "Пароль:"
-
-#: registration/login.html:36 registration/password_change_form.html:9
-#: registration/password_reset_confirm.html:12
-#: registration/password_reset_form.html:9
-#: registration/registration_form.html:9 registration_form.html:70
-#: thread_edit.html:48
-msgid "Submit"
-msgstr "Отправить"
-
-#: registration/login.html:38
-msgid "Forgot password?"
-msgstr "Забыли пароль?"
-
-#: registration/login.html:38
-msgid "Reset it!"
-msgstr "Сбросьте его!"
-
-#: registration/logout.html:5
-msgid "You are logged out"
-msgstr "Вы вышли из системы"
-
-#: registration/logout.html:8
-msgid "Logged out"
-msgstr "Вы вышли из системы"
-
-#: registration/password_change_done.html:5
-msgid "Password changed"
-msgstr "Пароль изменён"
-
-#: registration/password_reset_complete.html:6
-msgid "Password reset successfully"
-msgstr "Пароль успешно сброшен"
-
-#: registration/password_reset_complete.html:8
-msgid "Log in"
-msgstr "Войти"
-
-#: registration/password_reset_confirm.html:17
-msgid "Password reset failed"
-msgstr "Не удалось сбросить пароль"
-
-#: registration/password_reset_done.html:5
-msgid "Email with password reset instructions has been sent."
-msgstr "Вам отправлено письмо с инструкцией по сбросу пароля."
-
-#: registration/password_reset_email.html:2
-#: registration/password_reset_email.txt:2
-#, python-format
-msgid "Reset password at %(site_name)s"
-msgstr "Сбросить пароль на %(site_name)s"
-
-#: registration/registration_closed.html:5
-msgid "Registration is currently closed."
-msgstr "Регистрация закрыта."
-
-#: registration/registration_complete.html:4
-#: registration/registration_complete.html:7
-msgid "You are now registered. Activation email sent."
-msgstr "Вы зарегистрированы. Письмо об активации направлено."
-
-#: registration_form.html:6
+#: templates/registration_form.html:6
 msgid "Registration form"
 msgstr "Регистрация"
 
-#: registration_form.html:26
+#: templates/registration_form.html:14 templates/registration/login.html:12
+msgid "Create an account"
+msgstr "Зарегистрироваться"
+
+#: templates/registration_form.html:27
 msgid "Enter your desired username"
 msgstr "Придумайте желаемое имя пользователя"
 
-#: registration_form.html:31
+#: templates/registration_form.html:32
 #, fuzzy
-#| msgid "Email address"
 msgid "Email address:"
 msgstr "Адрес эл. почты"
 
-#: registration_form.html:33
+#: templates/registration_form.html:34
 msgid "Enter email"
 msgstr "Введите адрес эл. почты"
 
-#: registration_form.html:35
+#: templates/registration_form.html:36
 msgid "We'll never share your email with anyone else"
 msgstr "Мы никогда не передадим Ваш адрес третьим лицам"
 
-#: registration_form.html:42 registration_form.html.py:48
+#: templates/registration_form.html:42
+msgid "Password:"
+msgstr "Пароль:"
+
+#: templates/registration_form.html:43 templates/registration_form.html:49
 msgid "password"
 msgstr "пароль"
 
-#: registration_form.html:47
+#: templates/registration_form.html:48
 #, fuzzy
-#| msgid "Confirm password"
 msgid "Confirm password:"
 msgstr "Повторите пароль"
 
-#: registration_form.html:55
+#: templates/registration_form.html:56
 #, python-format
-#| msgid "I would like to subscribe to {{sitename}} newsletter"
 msgid "I would like to subscribe to %(sitename)s newsletter"
 msgstr "Я хочу подписаться на рассылку новостей %(sitename)s"
 
-#: registration_form.html:61
+#: templates/registration_form.html:62
 msgid "I agree to <a href=\"\" target=\"_blank\"> terms of services</a>"
 msgstr "Я принимаю <a href=\"\" target=\"_blank\"> правила пользования</a>"
 
-#: rules_light/exception.html:7
-msgid "You do not have permission to do that."
-msgstr "У Вас недостаточно прав."
+#: templates/registration_form.html:71 templates/thread_edit.html:48
+#: templates/registration/login.html:36
+#: templates/registration/password_change_form.html:9
+#: templates/registration/password_reset_confirm.html:12
+#: templates/registration/password_reset_form.html:9
+#: templates/registration/registration_form.html:9
+msgid "Submit"
+msgstr "Отправить"
 
-#: rules_light/exception.html:10
-msgid "Try logging in"
-msgstr "Попробуйте войти в систему"
+#: templates/registration_form.html:75 templates/registration/login.html:41
+msgid "You are already logged in."
+msgstr "Вы уже вошли в систему."
 
-#: rules_light/exception.html:10
-msgid "with other credentials"
-msgstr "другой учётной записью"
+#: templates/registration_form.html:78
+#, python-format
+msgid ""
+"<a href=\"%(logout_url)s?next=%(signup_url)s\">Logout</a> to create another "
+"account"
+msgstr "<a href=\"%(logout_url)s?next=%(signup_url)s\">Выйдите</a>, чтобы создать новую учётную запись"
 
-#: thread.html:32 thread_delete.html:39
+#: templates/thread.html:32 templates/thread_delete.html:39
 msgid "Delete thread"
 msgstr "Удалить тему"
 
-#: thread.html:37
+#: templates/thread.html:37
 msgid "Unlock thread"
 msgstr "Разрешить обсуждение"
 
-#: thread.html:41
+#: templates/thread.html:41
 msgid "Lock thread"
 msgstr "Запретить обсуждение"
 
-#: thread.html:67 thread_edit.html:5
+#: templates/thread.html:67 templates/thread_edit.html:5
 msgid "Edit thread"
 msgstr "Редактировать тему"
 
-#: thread.html:81 thread_question.html:51
+#: templates/thread.html:81 templates/thread_question.html:51
 msgid "in"
 msgstr "в"
 
-#: thread_delete.html:5
+#: templates/thread_delete.html:5
 msgid "Delete thread: "
 msgstr "Удалить тему: "
 
-#: thread_delete.html:36
+#: templates/thread_delete.html:36
 msgid "Reason: "
 msgstr "Причина: "
 
-#: thread_delete.html:40
+#: templates/thread_delete.html:40
 msgid "Cancel"
 msgstr "Отмена"
 
-#: thread_edit.html:5
+#: templates/thread_edit.html:5
 msgid "Submit new thread"
 msgstr "Создать новую тему"
 
-#: thread_edit.html:13
+#: templates/thread_edit.html:13
 msgid "Type:"
 msgstr "Тип:"
 
-#: thread_edit.html:19
+#: templates/thread_edit.html:19
 msgid "URL:"
 msgstr "Адрес:"
 
-#: thread_edit.html:25
+#: templates/thread_edit.html:25
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: thread_edit.html:30
+#: templates/thread_edit.html:30
 msgid "Summary:"
 msgstr "Краткое описание:"
 
-#: thread_edit.html:35
+#: templates/thread_edit.html:35
 msgid "Categories:"
 msgstr "Категории:"
 
-#: thread_edit.html:40
+#: templates/thread_edit.html:40
 msgid "Image:"
 msgstr "Картинка:"
 
-#: thread_question.html:26
+#: templates/thread_question.html:26
 msgid "unlock thread"
 msgstr "Разблокировать тему"
 
-#: thread_question.html:29
+#: templates/thread_question.html:29
 msgid "lock thread"
 msgstr "Заблокировать тему"
 
-#: thread_question.html:82
+#: templates/thread_question.html:82
 msgid "Answer"
 msgstr "Ответ"
 
-#: thread_question.html:83
+#: templates/thread_question.html:83
 msgid "Comment"
 msgstr "Комментарий:"
 
-#: thread_question.html:88 thread_question.html.py:153
+#: templates/thread_question.html:88 templates/thread_question.html.py:153
 msgid "Answer:"
 msgstr "Ответ:"
 
-#: thread_question.html:91 thread_question.html.py:154
+#: templates/thread_question.html:91 templates/thread_question.html.py:154
 msgid "Post answer"
 msgstr "Ответить"
 
-#: thread_question.html:133
+#: templates/thread_question.html:133
 msgid "accept as the answer"
 msgstr "принять ответ"
 
-#: threads_list.html:82
+#: templates/threads_list.html:82
 #, python-format
 msgid "1 comment"
 msgid_plural "%(num_comments)s comments"
@@ -522,29 +457,122 @@ msgstr[0] "1 комментарий"
 msgstr[1] "%(num_comments)s комментария"
 msgstr[2] "%(num_comments)s комментариев"
 
-#~ msgid "Enter your city"
-#~ msgstr "Ваш город"
+#: templates/registration/activate.html:4
+#: templates/registration/activate.html:8
+msgid "Account activation failed"
+msgstr "Невозможно активировать аккаунт"
 
-#~ msgid "This field is required"
-#~ msgstr "Поле нужно заполнить"
+#: templates/registration/activation_complete.html:4
+#: templates/registration/activation_complete.html:7
+msgid "Your account is now activated."
+msgstr "Аккаунт активирован."
 
-#~ msgid "Question"
-#~ msgstr "Вопрос"
+#: templates/registration/activation_email.txt:2
+msgid "Activate account at"
+msgstr "Активируйте аккаунт по ссылке"
 
-#~ msgid "Discussion"
-#~ msgstr "Обсуждение"
+#: templates/registration/activation_email.txt:6
+msgid "Link is valid for"
+msgstr "Ссылка действительна"
 
-#~ msgid "Link"
-#~ msgstr "Ссылка"
+#: templates/registration/activation_email.txt:6
+#, python-format
+msgid "1 day."
+msgid_plural "%(days)s days."
+msgstr[0] "1 день."
+msgstr[1] "%(days)s дня."
+msgstr[2] "%(days)s дней."
 
-#~ msgid "tags"
-#~ msgstr "тэги"
+#: templates/registration/activation_email_subject.txt:1
+msgid "Account activation on"
+msgstr "Активация аккаунта"
 
-#~ msgid "English"
-#~ msgstr "Английский"
+#: templates/registration/login.html:6
+msgid "Login form"
+msgstr "Войти в систему"
 
-#~ msgid "French"
-#~ msgstr "Французский"
+#: templates/registration/login.html:24 templates/registration/login.html:26
+#, fuzzy
+msgid "Username"
+msgstr "Логин:"
 
-#~ msgid "Russian"
-#~ msgstr "Русский"
+#: templates/registration/login.html:31 templates/registration/login.html:32
+#, fuzzy
+msgid "Password"
+msgstr "Пароль:"
+
+#: templates/registration/login.html:38
+msgid "Forgot password?"
+msgstr "Забыли пароль?"
+
+#: templates/registration/login.html:38
+msgid "Reset it!"
+msgstr "Сбросьте его!"
+
+#: templates/registration/login.html:44
+#, python-format
+msgid ""
+"<a href=\"%(logout_url)s?next=%(login_url)s\">Logout</a> to sign in with "
+"another credentials"
+msgstr "<a href=\"%(logout_url)s?next=%(login_url)s\">Выйдите</a>, если хотите войти с другими учётными данными"
+
+#: templates/registration/logout.html:5
+msgid "You are logged out"
+msgstr "Вы вышли из системы"
+
+#: templates/registration/logout.html:8
+msgid "Logged out"
+msgstr "Вы вышли из системы"
+
+#: templates/registration/password_change_done.html:5
+msgid "Password changed"
+msgstr "Пароль изменён"
+
+#: templates/registration/password_reset_complete.html:6
+msgid "Password reset successfully"
+msgstr "Пароль успешно сброшен"
+
+#: templates/registration/password_reset_complete.html:8
+msgid "Log in"
+msgstr "Войти"
+
+#: templates/registration/password_reset_confirm.html:17
+msgid "Password reset failed"
+msgstr "Не удалось сбросить пароль"
+
+#: templates/registration/password_reset_done.html:5
+msgid "Email with password reset instructions has been sent."
+msgstr "Вам отправлено письмо с инструкцией по сбросу пароля."
+
+#: templates/registration/password_reset_email.html:2
+#: templates/registration/password_reset_email.txt:2
+#, python-format
+msgid "Reset password at %(site_name)s"
+msgstr "Сбросить пароль на %(site_name)s"
+
+#: templates/registration/registration_closed.html:5
+msgid "Registration is currently closed."
+msgstr "Регистрация закрыта."
+
+#: templates/registration/registration_complete.html:4
+#: templates/registration/registration_complete.html:7
+msgid "You are now registered. Activation email sent."
+msgstr "Вы зарегистрированы. Письмо об активации направлено."
+
+#: templates/rules_light/exception.html:7
+msgid "You do not have permission to do that."
+msgstr "У Вас недостаточно прав."
+
+#: templates/rules_light/exception.html:10
+msgid "Try logging in"
+msgstr "Попробуйте войти в систему"
+
+#: templates/rules_light/exception.html:10
+msgid "with other credentials"
+msgstr "другой учётной записью"
+
+#~ msgid "Sorry this is an error!"
+#~ msgstr "Неправильное имя или пароль."
+
+#~ msgid "login"
+#~ msgstr "войти"

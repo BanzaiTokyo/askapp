@@ -36,6 +36,13 @@
             <button type="submit" class="btn btn-primary pull-right">{% trans "Submit" %}</button>
         </form>
 		<p>{% trans "Forgot password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it!" %}</a></p>
+  {% else %}
+      <p>
+        {% trans "You are already logged in." %}
+        {% url 'auth_logout' as logout_url %}
+        {% url 'auth_login' as login_url %}
+        {% blocktrans %}<a href="{{ logout_url }}?next={{ login_url }}">Logout</a> to sign in with another credentials{% endblocktrans %}
+      </p>
 	{% endif %}
     </div>
 
