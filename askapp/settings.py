@@ -15,6 +15,7 @@ import os
 import sys
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import BooleanField, CharField
 
 print("system=->", sys.path)
 
@@ -45,6 +46,7 @@ ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 INSTALLED_APPS = (
+    'siteprefs',
     'askapp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +54,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'django.contrib.sitemaps',
     'debug_toolbar',
     'snowpenguin.django.recaptcha2',
@@ -65,6 +66,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'askapp.middleware.ForceDefaultLanguageMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -163,6 +165,11 @@ LANGUAGES = (
     ('ru', _('Russian')),
 )
 
+YESNO = (
+    (True, _("Yes")),
+    (False, _("No"))
+)
+
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'askapp/locale'),
 )
@@ -203,9 +210,41 @@ PAGINATION_DEFAULT_WINDOW = 2
 PAGINATION_THREADS_PER_PROFILE = 3
 
 # setting used by Django "sites" framework
-SITE_ID = 1
+SITE_NAME = 'Akihabara'
 
 # Markdown extensions
 MARKDOWNX_MARKDOWN_EXTENSIONS = ['markdown.extensions.nl2br', ]
 MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {}
 
+REGISTRATION_OPEN = False
+GOOGLE_ANALYTICS_ID = ''
+
+from siteprefs.toolbox import patch_locals, register_prefs, pref, pref_group
+patch_locals()  # required by django-siteprefs manual
+register_prefs(  # Now we register our settings to make them available as siteprefs.
+        # And finally we register a non-static setting with extended meta for Admin.
+        pref(SITE_NAME, verbose_name=_('Site Name'), static=False),
+        pref(RECAPTCHA_PUBLIC_KEY, verbose_name=_('ReCAPTCHA Public Key'), static=False),
+        pref(RECAPTCHA_PRIVATE_KEY, verbose_name=_('ReCAPTCHA Private Key'), static=False),
+        pref(LANGUAGE_CODE, verbose_name=_('Site Language'), static=False, field=CharField(choices=LANGUAGES, max_length=2)),
+        pref(REGISTRATION_OPEN, verbose_name=_('Is registration open?'), static=False, field=BooleanField(choices=YESNO)),
+        pref(GOOGLE_ANALYTICS_ID, verbose_name=_('Google Analytics ID'), static=False, field=CharField(max_length=15, blank=True, null=True)),
+        pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
+    )
+# Add string methods to
+from siteprefs.utils import PrefProxy, PatchedLocal
+def prefproxy_find(self, sub, start=None, end=None):
+    return str(self).find(sub, start, end)
+def prefproxy_lower(self):
+    return str(self).lower()
+def prefproxy_getitem(self, key):
+    return str(self).__getitem__(key)
+def prefproxy_split(self, sep=None, maxsplit=-1):
+    return str(self).split(sep, maxsplit)
+PrefProxy.find = prefproxy_find
+PrefProxy.__getitem__ = prefproxy_getitem
+PrefProxy.lower = prefproxy_lower
+PrefProxy.split = prefproxy_split
+def patchedlocal_iter(self):
+    return iter(self.val)
+PatchedLocal.__iter__ = patchedlocal_iter

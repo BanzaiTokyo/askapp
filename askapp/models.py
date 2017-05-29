@@ -24,7 +24,7 @@ from django.utils.translation import ugettext_lazy as _
 import rules_light
 from markdownx.models import MarkdownxField
 from askapp import settings
-
+from siteprefs.models import Preference
 
 class OverwriteStorage(FileSystemStorage):
     def get_available_name(self, name):
@@ -453,3 +453,14 @@ class AuditThread(models.Model):
             return
         audit = cls(user=instance.modified_by, thread=instance, action=action, content=content)
         audit.save()
+
+
+@receiver(post_save, sender=Preference)
+def clear_language_cache(sender, instance, **kwargs):
+    """
+    This function clears lru cache of django.utils.translation.trans_real.get_supported_language_variant
+    Otherwise this function ignores settings.LANGUAGE_CODE change
+    """
+    if instance.name == 'language_code':
+        from django.utils.translation.trans_real import get_supported_language_variant
+        get_supported_language_variant.cache_clear()

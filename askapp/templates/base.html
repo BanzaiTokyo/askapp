@@ -20,7 +20,7 @@
 
     <title>
         {% block title %}
-            {{ site.name }}
+            {{ site_name }}
         {% endblock %}
     </title>
 
@@ -43,7 +43,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'index' %}">{{ site.name }}</a>
+                <a class="navbar-brand" href="{% url 'index' %}">{{ site_name }}</a>
             </div>
 
 
@@ -110,7 +110,7 @@
 
             <div class="navbar-default">
                 <div class="col-sm-12 col-lg-3">
-                    <span class="navbar-brand"> &copy; {% now "Y" %} <a href="{% url 'index' %}">{{ site.name }}</a></span>
+                    <span class="navbar-brand"> &copy; {% now "Y" %} <a href="{% url 'index' %}">{{ site_name }}</a></span>
                 </div>
                 <div class=" col-sm-12 col-lg-5">
                     <ul class="nav navbar-nav">

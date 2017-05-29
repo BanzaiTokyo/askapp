@@ -1,4 +1,4 @@
-from django.contrib.sites.models import Site
+from .settings import SITE_NAME
 
 def site_processor(request):
-    return { 'site': Site.objects.get_current() }
+    return { 'site_name': SITE_NAME }

@@ -4,7 +4,7 @@ from registration.backends.hmac.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
 from askapp.score_calcuator import calculate_scores
-from askapp.settings import BLACKLISTED_DOMAINS
+from askapp.settings import BLACKLISTED_DOMAINS, REGISTRATION_OPEN, SITE_NAME
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse_lazy
@@ -183,9 +183,23 @@ class AskappRegistrationView(RegistrationView):
     form_class = forms.RecaptchaRegistrationForm
     template_name = 'registration_form.html'
 
+    def registration_allowed(self):
+        """
+        This method returns proper settings.REGISTRATION_OPEN value when used with django-siteprefs
+        """
+        return REGISTRATION_OPEN.get_value()
+
     @staticmethod
     def is_email_blacklisted(email):
         return any([email.lower().endswith('@'+d) for d in BLACKLISTED_DOMAINS])
+
+    def get_email_context(self, activation_key):
+        result = super(AskappRegistrationView, self).get_email_context(activation_key)
+        class objectview(object):
+            def __init__(self, d):
+                self.__dict__ = d
+        result['site'] = objectview({'domain': self.request.get_host(), 'name': SITE_NAME})
+        return result
 
     def send_activation_email(self, user):
         if self.is_email_blacklisted(user.email):

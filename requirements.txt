@@ -10,3 +10,4 @@ django-rules-light
 django-mptt
 django-pagination-bootstrap
 django-markdownx
+django-siteprefs
