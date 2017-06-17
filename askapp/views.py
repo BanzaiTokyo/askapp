@@ -12,9 +12,9 @@ from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import resolve
-from django.db.models import Q
+from django.db.models import Q, Count, Avg
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import rules_light
 import askapp.auth_rules
@@ -36,9 +36,7 @@ class HomeView(View):
     def get_sticky(self):
         return models.Thread.objects.filter(deleted=False, sticky__isnull=False, sticky__gte=datetime.now())
 
-
     def get(self, request, *args, **kwargs):
-
         calculate_scores()
         context = {
             'home_page': resolve(request.path_info).url_name == 'index'
@@ -375,3 +373,48 @@ class AcceptAnswerView(LoginRequiredMixin, View):
         rules_light.require(request.user, 'askapp.post.accept', post)
         post.accept()
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
+
+
+class DomainsView(View):
+    def domain_stats(self, period, order_by, order_dir):
+        params = {'deleted': 0, 'domain__isnull': False}
+        dnow = datetime.now()
+        if period == 'day':
+            params['created__gte'] = dnow - timedelta(days=1)
+        elif period == 'week':
+            params['created__gte'] = dnow - timedelta(days=7)
+        elif period == 'month':
+            last_day_previous_month = dnow - timedelta(days=dnow.day)
+            params['created__gte'] = (last_day_previous_month.replace(day=dnow.day)
+                                     if dnow.day < last_day_previous_month.day
+                                     else last_day_previous_month)
+
+        order_fields = ['domain', 'articles', 'avg_points']
+        result = models.Thread.objects.filter(**params)\
+                            .values('domain')\
+                            .annotate(articles=Count('id'))\
+                            .annotate(avg_points=Avg('threadlike__points'))\
+                            .exclude(domain='')\
+                            .values(*order_fields)
+        order_by = int(order_by)
+        if 0 <= order_by < len(order_fields) and order_fields[order_by]:
+            order = order_fields[order_by]
+            if order_dir.lower() == 'desc':
+                order = '-' + order
+            result = result.order_by(order)
+        return result[:10]
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'period': self.request.GET.get('period', '')
+        }
+        return render(request, 'domains.html', context)
+
+    def post(self, request, *args, **kwargs):
+        period = self.request.POST.get('period', '')
+        domains = self.domain_stats(period, self.request.POST.get('order[0][column]', -1),
+                                    self.request.POST.get('order[0][dir]', ''))
+        data = [[d['domain'], d['articles'], d['avg_points']] for d in domains]
+        data = {'draw': self.request.POST.get('draw', 1), 'data': data}
+        from django.http import JsonResponse
+        return JsonResponse(data)

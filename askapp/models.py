@@ -192,6 +192,9 @@ class Thread(models.Model):
     # link field for the Threads of the type Link
     link = models.URLField(null=True, blank=True)
 
+    # link's domain. Used for /domains page by the task #66
+    domain = models.CharField(max_length=255, null=True, blank=True)
+
     # thread title can be null if the post is not a thread starter
     title = models.CharField(max_length=255, null=True)
 
@@ -232,6 +235,10 @@ class Thread(models.Model):
     def update_link(self):
         if self.thread_type != 'LL':
             self.link = None
+            self.domain = None
+        else:
+            hostname = urlparse(self.link)
+            self.domain = hostname.netloc
 
     @property
     def comments(self):
@@ -254,15 +261,6 @@ class Thread(models.Model):
     @property
     def num_comments(self):
         return self.post_set.filter(deleted=False).count()
-
-    @property
-    def domain(self):
-        if not hasattr(self, '_domain'):
-            self._domain = None
-            if self.link:
-                hostname = urlparse(self.link)
-                self._domain = hostname.netloc
-        return self._domain
 
     @property
     def points(self):
