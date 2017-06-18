@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+  <div class="row">
+    <ul class="nav nav-pills">
+      Period
+      <li {% if not period %}class="active"{% endif %}><a href="{{ request.path }}">All the time</a></li>
+      <li {% if period == 'month' %}class="active"{% endif %}><a href="{{ request.path }}?period=month">Past month</a></li>
+      <li {% if period == 'week' %}class="active"{% endif %}><a href="{{ request.path }}?period=week">Last week</a></li>
+      <li {% if period == 'day' %}class="active"{% endif %}><a href="{{ request.path }}?period=day">Day</a></li>
+    </ul>
+  </div>
+  <div class="row">
+    <table id="domains">
+      <thead><tr>
+        <th>Domain</th>
+        <th>Referencing Articles</th>
+        <th>Avg. Points</th>
+      </tr></thead>
+    </table>
+  </div>
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+  <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('#domains').DataTable({
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        ajax: {
+          type: "POST",
+          data: function ( d ) {
+              d.period = "{{ period }}";
+              d.csrfmiddlewaretoken = "{{ csrf_token }}";
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}
