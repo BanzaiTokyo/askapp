@@ -32,6 +32,7 @@
 
 {#----------------header-------------------------#}
 {% block header %}
+    {% load askapp_filters %}
     <nav class="navbar navbar-default">
         <div class="container">
 
@@ -49,9 +50,12 @@
 
             <div id="navbar" class="navbar-collapse collapse ">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'index' %}">{% trans "Top" %}</a></li>
-                    <li><a href="{% url 'recent' %}">{% trans "Recent" %}</a></li>
-                    <li><a href="{% url 'new_thread' %}">{% trans "Submit post"%}</a></li>
+                    <li class="{% url_active 'index' %}"><a href="{% url 'index' %}">{% trans "Top" %}</a></li>
+                    <li class="{% url_active 'recent' %}"><a href="{% url 'recent' %}">{% trans "Recent" %}</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="{% url_active 'favorites' %}"><a href="{% url 'favorites' %}">{% trans "Favorite posts" %}</a></li>
+                    {% endif %}
+                    <li class="{% url_active 'new_thread' %}"><a href="{% url 'new_thread' %}">{% trans "Submit post"%}</a></li>
 
                 </ul>
 

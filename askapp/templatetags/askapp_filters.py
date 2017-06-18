@@ -3,7 +3,7 @@ from askapp.settings import MARKDOWNX_MARKDOWN_EXTENSIONS, MARKDOWNX_MARKDOWN_EX
 from django import template
 from django.utils.safestring import mark_safe
 import re
-from math import ceil, floor
+from django.core.urlresolvers import reverse
 
 register = template.Library()
 
@@ -16,3 +16,13 @@ def markdownify(content):
 def markdownify_noimages(content):
     s = re.sub(r'\!\[\]\([\/\w\-\.]+\)', '', content)
     return markdownify(s)
+
+@register.simple_tag(takes_context=True)
+def url_active(context, viewname):
+    request = context['request']
+    current_path = request.path
+    compare_path = reverse(viewname)
+    if current_path == compare_path:
+        return 'active'
+    else:
+        return ''

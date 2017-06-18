@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
     url(r'^profile/(?P<pk>\d+)/edit$', views.AdminProfileEditView.as_view(), name="admin_profile_edit"),
     url(r'^submit$', views.NewThreadView.as_view(), name="new_thread"),
+    url(r'^favorites$', views.FavoriteThreadsView.as_view(), name="favorites"),
     url(r'^thread/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))/edit$', views.EditThreadView.as_view(), name="edit_thread"),
     url(r'^thread/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))/delete$', views.DeleteThreadView.as_view(), name="delete_thread"),
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/(?P<action>lock|unlock)', views.LockThreadView.as_view(),
@@ -50,6 +51,8 @@ urlpatterns = [
 
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/vote/(?P<verb>up|down)$', views.ThreadLikeView.as_view(),
         name="thread_like"),
+    url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/(?P<verb>favorite|unfavorite)$', views.ThreadFavoriteView.as_view(),
+        name="thread_favorite"),
     url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),
     url(r'^post/(?P<post_id>\d+)/accept$', views.AcceptAnswerView.as_view(), name="accept_answer"),
 

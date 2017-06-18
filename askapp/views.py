@@ -58,6 +58,15 @@ class RecentThreadsView(HomeView):
             return models.Thread.objects.filter(deleted=False).order_by('-created')
 
 
+class FavoriteThreadsView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'home_page': False,
+            'threads': self.request.user.profile.favorite_threads,
+        }
+        return render(request, 'favorites.html', context)
+
+
 class ProfileView(DetailView):
     model = models.User
     template_name = 'profile.html'
@@ -69,6 +78,8 @@ class ProfileView(DetailView):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['threads'] = models.Thread.objects.filter(user=self.object, deleted=False).order_by('-created')
         context['per_page'] = settings.PAGINATION_THREADS_PER_PROFILE
+        context['admin_view'] = self.request.user.is_staff
+        context['favorites'] = self.request.user.profile.favorite_threads
         return context
 
 
@@ -373,6 +384,16 @@ class AcceptAnswerView(LoginRequiredMixin, View):
         rules_light.require(request.user, 'askapp.post.accept', post)
         post.accept()
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
+
+
+class ThreadFavoriteView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
+        if kwargs['verb'] == 'favorite':
+            models.ThreadFavorite.favorite(thread, request.user)
+        else:
+            models.ThreadFavorite.unfavorite(thread, request.user)
+        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
 
 
 class DomainsView(View):

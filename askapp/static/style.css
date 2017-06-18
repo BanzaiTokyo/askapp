@@ -97,6 +97,12 @@ img {
 .mt-15 {
  margin-top: 15px;
 }
+.glyphicon-chevron-up, .glyphicon-chevron-down {
+    padding: 0 12px;
+}
+.thread-list-row h2 {
+    margin: 0;
+}
 @media (min-width: 601px) {
  .m {display: none;}
 }

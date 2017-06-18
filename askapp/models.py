@@ -19,8 +19,10 @@ except:
 from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.forms import model_to_dict
 from django.utils.translation import ugettext_lazy as _
+from django.utils.functional import cached_property
 import rules_light
 from markdownx.models import MarkdownxField
 from askapp import settings
@@ -111,6 +113,12 @@ class Profile(models.Model):
         else:
             avatar_url = settings.STATIC_URL + 'images/avatar.png'
         return avatar_url
+
+    @cached_property
+    def favorite_threads(self):
+        favorites = ThreadFavorite.objects.filter(user=self.user)
+        threads = [f.thread for f in favorites]
+        return threads
 
 
 @receiver(post_save, sender=User)
@@ -451,6 +459,34 @@ class AuditThread(models.Model):
             return
         audit = cls(user=instance.modified_by, thread=instance, action=action, content=content)
         audit.save()
+
+
+class ThreadFavorite(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    thread = models.ForeignKey(Thread)
+
+    class Meta:
+        unique_together = ('user', 'thread',)
+
+    @classmethod
+    def favorite(cls, thread, user):
+        if not rules_light.registry['askapp.thread.favorite'](user, None, thread):
+            return
+        obj = cls(thread=thread, user=user)
+        try:
+            obj.save()
+        except IntegrityError:
+            pass
+
+    @classmethod
+    def unfavorite(cls, thread, user):
+        try:
+            obj = cls.objects.get(thread=thread, user=user)
+            if not rules_light.registry['askapp.thread.unfavorite'](user, None, thread):
+                return
+        except ObjectDoesNotExist:
+            return
+        obj.delete()
 
 
 @receiver(post_save, sender=Preference)

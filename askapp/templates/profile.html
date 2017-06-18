@@ -36,6 +36,14 @@
         </h3>
         {% include 'threads_list.html' %}
     </div>
+    {% if admin_view and favorites %}
+    <div class="row">
+        <h3>
+            {% blocktrans with username=object.username %}Favorite threads of <strong>{{ username }}</strong>{% endblocktrans %}
+        </h3>
+        {% include 'threads_list.html' with threads=favorites %}
+    </div>
+    {% endif %}
 {% endblock %}
 
 

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+	{% include 'threads_list.html' with threads=threads sticky=False %}
+{% endblock %}
