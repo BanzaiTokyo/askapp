@@ -387,6 +387,9 @@ class AcceptAnswerView(LoginRequiredMixin, View):
 
 
 class DomainsView(View):
+    def dispatch(self, request, *args, **kwargs):
+        return super(DomainsView, self).dispatch(request, *args, **kwargs)
+
     def domain_stats(self, period, order_by, order_dir):
         params = {'deleted': 0, 'domain__isnull': False}
         dnow = datetime.now()
@@ -413,7 +416,7 @@ class DomainsView(View):
             if order_dir.lower() == 'desc':
                 order = '-' + order
             result = result.order_by(order)
-        return result[:10]
+        return result
 
     def get(self, request, *args, **kwargs):
         context = {

@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^profile/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))?/$', views.ProfileView.as_view(), name="profile"),
     url(r'^thread/(?P<pk>\d+)(?:/(?P<slug>[\w\d-]+))?/$', views.ThreadView.as_view(), name="thread"),
     url(r'^tag/(?P<slug>[-\w]+)$', views.TagView.as_view(), name="tag"),
-    url(r'^domains$', views.DomainsView.as_view(), name="domains"),
+    url(r'^domains$', cache_page(86400)(views.DomainsView.as_view()), name="domains"),
 
     url(r'^accounts/register/$', views.AskappRegistrationView.as_view(), name='register'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),

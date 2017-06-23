@@ -105,6 +105,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'askapp.wsgi.application'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/askapp_cache',
+    }
+}
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
