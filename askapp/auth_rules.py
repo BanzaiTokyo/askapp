@@ -1,5 +1,5 @@
 import rules_light
-from askapp.models import ThreadLike, PostLike, ThreadFavorite
+from askapp.models import ThreadLike, PostLike
 
 def can_edit_thread(user, rule, thread):
     return user.is_staff or thread.user == user
@@ -11,16 +11,6 @@ def can_delete_thread(user, rule, thread):
 
 def can_reply_thread(user, rule, thread):
     return user.is_active and not thread.hidden and not thread.closed and not thread.deleted
-
-
-def can_favorite_thread(user, rule, thread):
-    return user.is_active and thread.user != user and not thread.hidden and not thread.deleted \
-            and ThreadFavorite.objects.filter(thread=thread, user=user).count() == 0
-
-
-def can_unfavorite_thread(user, rule, thread):
-    return user.is_active and thread.user != user and not thread.hidden and not thread.deleted \
-            and ThreadFavorite.objects.filter(thread=thread, user=user).count() == 1
 
 
 def can_reply_post(user, rule, post):
@@ -74,5 +64,3 @@ rules_light.registry['askapp.threadlike.down'] = can_dislike_thread
 rules_light.registry['askapp.postlike.up'] = can_like_post
 rules_light.registry['askapp.postlike.down'] = can_dislike_post
 rules_light.registry['askapp.profile.update'] = can_edit_profile
-rules_light.registry['askapp.thread.favorite'] = can_favorite_thread
-rules_light.registry['askapp.thread.unfavorite'] = can_unfavorite_thread

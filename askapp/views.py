@@ -386,16 +386,6 @@ class AcceptAnswerView(LoginRequiredMixin, View):
         return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
 
 
-class ThreadFavoriteView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
-        if kwargs['verb'] == 'favorite':
-            models.ThreadFavorite.favorite(thread, request.user)
-        else:
-            models.ThreadFavorite.unfavorite(thread, request.user)
-        return redirect(request.META.get('HTTP_REFERER', reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
-
-
 class DomainsView(View):
     def domain_stats(self, period, order_by, order_dir):
         params = {'deleted': 0, 'domain__isnull': False}

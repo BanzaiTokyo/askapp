@@ -24,8 +24,6 @@
     <div class="col-xs-1 {% if sticky and thread.sticky or thread.featured %}mt-15{% endif %}">
         {% rule 'askapp.threadlike.up' thread as can_like_thread %}
         {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
-        {% rule 'askapp.thread.favorite' thread as can_favorite_thread %}
-        {% rule 'askapp.thread.unfavorite' thread as can_unfavorite_thread %}
         {% include 'thread_like_button.html' with object=thread %}
         {% if home_page %}
             <h2 class="text-center">{{ thread.points }}</h2>
@@ -39,10 +37,6 @@
         {% elif thread.thread_type == 'QQ' %}
             <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
         {% endif %}
-        {% if can_favorite_thread %}<a class="btn glyphicon glyphicon-star-empty" title="{% trans "Add to Favorites" %}"
-                                      href="{% url 'thread_favorite' thread.id thread.title|slugify 'favorite' %}"></a>{% endif %}
-        {% if can_unfavorite_thread %}<a class="btn glyphicon glyphicon-star" title="{% trans "Remove from Favorites" %}"
-                                      href="{% url 'thread_favorite' thread.id thread.title|slugify 'unfavorite' %}"></a>{% endif %}
     </div>
 
     <div class="col-xs-10 col-sm-11 {% if sticky and thread.sticky %}bs-callout bs-callout-success bg-success{% endif %}{% if thread.featured %} bs-callout bs-callout-info bg-info{% endif %}">

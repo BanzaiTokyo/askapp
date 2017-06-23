@@ -51,8 +51,6 @@ urlpatterns = [
 
     url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/vote/(?P<verb>up|down)$', views.ThreadLikeView.as_view(),
         name="thread_like"),
-    url(r'^thread/(?P<thread_id>\d+)(?:/(?P<slug>[\w\d-]+))/(?P<verb>favorite|unfavorite)$', views.ThreadFavoriteView.as_view(),
-        name="thread_favorite"),
     url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),
     url(r'^post/(?P<post_id>\d+)/accept$', views.AcceptAnswerView.as_view(), name="accept_answer"),
 
