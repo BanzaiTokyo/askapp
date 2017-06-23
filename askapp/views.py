@@ -416,6 +416,8 @@ class DomainsView(View):
             if order_dir.lower() == 'desc':
                 order = '-' + order
             result = result.order_by(order)
+        if hasattr(settings, 'NUM_DOMAIN_STATS'):
+            result = result[:settings.NUM_DOMAIN_STATS]
         return result
 
     def get(self, request, *args, **kwargs):
