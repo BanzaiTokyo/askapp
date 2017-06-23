@@ -1,6 +1,7 @@
 {% load rules_light_tags %}
 {% load askapp_filters %}
 {% load i18n %}
+{% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
 
 {% if not sticky %}
     {% load pagination_tags %}

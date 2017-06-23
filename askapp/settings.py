@@ -229,6 +229,8 @@ GOOGLE_ANALYTICS_ID = ''
 # number of rows in the table at the /domains page
 NUM_DOMAIN_STATS = 3
 
+UPVOTES_PER_DAY = 3
+
 from siteprefs.toolbox import patch_locals, register_prefs, pref, pref_group
 patch_locals()  # required by django-siteprefs manual
 register_prefs(  # Now we register our settings to make them available as siteprefs.
@@ -240,7 +242,8 @@ register_prefs(  # Now we register our settings to make them available as sitepr
         pref(REGISTRATION_OPEN, verbose_name=_('Is registration open?'), static=False, field=BooleanField(choices=YESNO)),
         pref(GOOGLE_ANALYTICS_ID, verbose_name=_('Google Analytics ID'), static=False, field=CharField(max_length=15, blank=True, null=True)),
         pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
-        pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False)
+        pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False),
+        pref(UPVOTES_PER_DAY, verbose_name=_('Number of upvotes per day'), static=False),
     )
 # Add string methods to
 from siteprefs.utils import PrefProxy, PatchedLocal

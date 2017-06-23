@@ -1,5 +1,7 @@
 import rules_light
 from askapp.models import ThreadLike, PostLike
+from datetime import datetime, timedelta
+from .settings import UPVOTES_PER_DAY
 
 def can_edit_thread(user, rule, thread):
     return user.is_staff or thread.user == user
@@ -26,9 +28,14 @@ def can_delete_comment_tree(user, rule, post):
     return user.is_staff
 
 
+def can_upvote_threads(user, rule):
+    return ThreadLike.objects.filter(user=user, created__gte=datetime.utcnow()-timedelta(days=1)).count() < int(str(UPVOTES_PER_DAY))\
+        or user.is_staff
+
+
 def can_like_thread(user, rule, thread):
     return user.is_active and thread.user != user and ThreadLike.objects.filter(thread=thread, user=user).count() == 0 \
-            or user.is_staff
+        or user.is_staff
 
 
 def can_dislike_thread(user, rule, thread):
@@ -59,6 +66,7 @@ rules_light.registry['askapp.post.reply'] = can_reply_post
 rules_light.registry['askapp.post.accept'] = can_accept_answer
 rules_light.registry['askapp.post.delete'] = can_delete_comment
 rules_light.registry['askapp.post.delete_all'] = can_delete_comment_tree
+rules_light.registry['askapp.user.upvote_threads'] = can_upvote_threads
 rules_light.registry['askapp.threadlike.up'] = can_like_thread
 rules_light.registry['askapp.threadlike.down'] = can_dislike_thread
 rules_light.registry['askapp.postlike.up'] = can_like_post

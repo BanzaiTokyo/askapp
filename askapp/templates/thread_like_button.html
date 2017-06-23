@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if can_like_thread %}
+{% if can_upvote_threads and can_like_thread %}
   <a class="btn glyphicon glyphicon-chevron-up" href="{% url 'thread_like' object.id object.title|slugify 'up' %}" title="{% trans "Upvote" %}"></a>
 {% elif user.is_active %}
   <a class="btn glyphicon glyphicon-chevron-up disabled" title="{% trans "Upvote" %}"></a>
