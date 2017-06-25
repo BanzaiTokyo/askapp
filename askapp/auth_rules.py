@@ -29,7 +29,7 @@ def can_delete_comment_tree(user, rule, post):
 
 
 def can_upvote_threads(user, rule):
-    return ThreadLike.objects.filter(user=user, created__gte=datetime.utcnow()-timedelta(days=1)).count() < int(str(UPVOTES_PER_DAY))\
+    return user.is_active and ThreadLike.objects.filter(user=user, created__gte=datetime.utcnow()-timedelta(days=1)).count() < int(str(UPVOTES_PER_DAY))\
         or user.is_staff
 
 

@@ -11,3 +11,4 @@ django-mptt
 django-pagination-bootstrap
 django-markdownx
 django-siteprefs
+django-memoize

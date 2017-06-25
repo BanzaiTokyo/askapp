@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'mptt',
     'pagination_bootstrap',
     'markdownx',
+    'memoize',
 )
 
 MIDDLEWARE_CLASSES = (

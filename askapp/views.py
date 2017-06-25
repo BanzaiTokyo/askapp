@@ -13,6 +13,7 @@ from django.http import Http404
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import resolve
 from django.db.models import Q, Count, Avg
+from memoize import memoize
 
 from datetime import datetime, timedelta
 
@@ -390,6 +391,7 @@ class DomainsView(View):
     def dispatch(self, request, *args, **kwargs):
         return super(DomainsView, self).dispatch(request, *args, **kwargs)
 
+    @memoize(timeout=86400)
     def domain_stats(self, period, order_by, order_dir):
         params = {'deleted': 0, 'domain__isnull': False}
         dnow = datetime.now()
@@ -417,7 +419,7 @@ class DomainsView(View):
                 order = '-' + order
             result = result.order_by(order)
         if hasattr(settings, 'NUM_DOMAIN_STATS'):
-            result = result[:settings.NUM_DOMAIN_STATS]
+            result = result[:int(str(settings.NUM_DOMAIN_STATS) or 10)]
         return result
 
     def get(self, request, *args, **kwargs):
