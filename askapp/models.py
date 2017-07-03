@@ -116,7 +116,7 @@ class Profile(models.Model):
 
     @cached_property
     def favorite_threads(self):
-        favorites = ThreadLike.objects.filter(user=self.user, points__gt=0)
+        favorites = ThreadLike.objects.filter(user=self.user, points__gt=0).order_by('-created')
         threads = [f.thread for f in favorites]
         return threads
 
@@ -368,7 +368,10 @@ class Action(models.Model):
 
 class ThreadLike(models.Model):
     '''
-
+    Users can give up- and down-votes to threads. Upvote = +1, downvote = -1.
+    Regular users cannot "like" their own thread.
+    Regular users cannot "like" others' threads more than once.
+    Threads with positive likes are diplayed in user's "favorites" page.
     '''
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
