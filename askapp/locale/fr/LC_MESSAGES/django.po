@@ -193,13 +193,6 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: templates/index.html:15
-msgid ""
-"Find links to the most interesting articles about contemporary Japanese "
-"culture and technology and get your questions about Japan answered directly "
-"from Akihabara, Tokyo!"
-msgstr ""
-
 #: templates/index.html:20
 msgid "Our categories:"
 msgstr ""

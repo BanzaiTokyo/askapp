@@ -202,16 +202,6 @@ msgstr "комментировать"
 msgid "About"
 msgstr "Об этом сайте"
 
-#: templates/index.html:15
-msgid ""
-"Find links to the most interesting articles about contemporary Japanese "
-"culture and technology and get your questions about Japan answered directly "
-"from Akihabara, Tokyo!"
-msgstr ""
-"Читайте самые интересные статьи о современной японской культуре и "
-"технологиях, задавайте вопросы и получайте ответы на них прямо из Акихабары, "
-"Токио!"
-
 #: templates/index.html:20
 msgid "Our categories:"
 msgstr "Наши категории:"
