@@ -405,16 +405,16 @@ class DomainsView(View):
                                      if dnow.day < last_day_previous_month.day
                                      else last_day_previous_month)
 
-        order_fields = ['domain', 'articles', 'avg_points']
+        display_fields = ['domain', 'articles', 'avg_points']
         result = models.Thread.objects.filter(**params)\
                             .values('domain')\
                             .annotate(articles=Count('id'))\
                             .annotate(avg_points=Avg('threadlike__points'))\
                             .exclude(domain='')\
-                            .values(*order_fields)
+                            .values(*display_fields)
         order_by = int(order_by)
-        if 0 <= order_by < len(order_fields) and order_fields[order_by]:
-            order = order_fields[order_by]
+        if 0 <= order_by < len(display_fields) and display_fields[order_by]:
+            order = display_fields[order_by]
             if order_dir.lower() == 'desc':
                 order = '-' + order
             result = result.order_by(order)
