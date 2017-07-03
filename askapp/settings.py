@@ -232,6 +232,8 @@ NUM_DOMAIN_STATS = 3
 
 UPVOTES_PER_DAY = 3
 
+ABOUT_TEXT = ''
+
 from siteprefs.toolbox import patch_locals, register_prefs, pref, pref_group
 patch_locals()  # required by django-siteprefs manual
 register_prefs(  # Now we register our settings to make them available as siteprefs.
@@ -245,6 +247,7 @@ register_prefs(  # Now we register our settings to make them available as sitepr
         pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
         pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False),
         pref(UPVOTES_PER_DAY, verbose_name=_('Number of upvotes per day'), static=False),
+        pref(ABOUT_TEXT, verbose_name=_('"About" text'), static=False),
     )
 # Add string methods to
 from siteprefs.utils import PrefProxy, PatchedLocal
