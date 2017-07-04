@@ -58,7 +58,19 @@
               d.period = "{{ period }}";
               d.csrfmiddlewaretoken = "{{ csrf_token }}";
           }
-        }
+        },
+        columnDefs: [
+          {
+            targets: 0,
+            data: null,
+            render: function ( data, type, full, meta ) {
+              if ((type === 'display') && data[meta.col])
+                return '<a href="{% url 'domains' %}/'+data[meta.col]+'">'+data[meta.col]+'</a>';
+              else
+                return '';
+            }
+          },
+        ]
       })
     });
   </script>

@@ -32,13 +32,13 @@ class LoginRequiredMixin(object):
 
 class HomeView(View):
     def get_threads(self):
+        calculate_scores()
         return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')[:10]
 
     def get_sticky(self):
         return models.Thread.objects.filter(deleted=False, sticky__isnull=False, sticky__gte=datetime.now())
 
     def get(self, request, *args, **kwargs):
-        calculate_scores()
         context = {
             'home_page': resolve(request.path_info).url_name == 'index'
         }
@@ -436,3 +436,15 @@ class DomainsView(View):
         data = {'draw': self.request.POST.get('draw', 1), 'data': data}
         from django.http import JsonResponse
         return JsonResponse(data)
+
+
+class DomainThreadsView(HomeView):
+    def get_threads(self):
+        domain = self.kwargs.get('domain')
+        if not domain:
+            return redirect(reverse_lazy('domains'))
+        return models.Thread.objects.filter(domain=domain)
+
+    def get_sticky(self):
+        return None
+
