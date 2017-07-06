@@ -14,8 +14,10 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import resolve
 from django.db.models import Q, Count, Avg
 from memoize import memoize
+from django.http import JsonResponse
 
 from datetime import datetime, timedelta
+from collections import namedtuple
 
 import rules_light
 import askapp.auth_rules
@@ -23,7 +25,13 @@ import logging
 
 
 class LoginRequiredMixin(object):
+    """
+    A common ancestor for the class-based views that require authentication
+    """
     def dispatch(self, request, *args, **kwargs):
+        """
+        it's a standard Django method that is called before HTTP methods
+        """
         if request.user.is_authenticated() and request.user.is_active:
             return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
         else:
@@ -31,11 +39,22 @@ class LoginRequiredMixin(object):
 
 
 class HomeView(View):
+    """
+    Home page handler. Additionally, this is the base class to display a page that "should look like the home page"
+    """
     def get_threads(self):
-        calculate_scores()
-        return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')[:10]
+        """
+        Returns the list of threads to display on the page. This function is overwritten in descendant classes
+        """
+        calculate_scores()  # a temporary solution, whilst a cron is not programmed
+        # pick up non-sticky or old sticky threads
+        result = models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')
+        return result[:10]
 
     def get_sticky(self):
+        """
+        Returns the list of sticky threads
+        """
         return models.Thread.objects.filter(deleted=False, sticky__isnull=False, sticky__gte=datetime.now())
 
     def get(self, request, *args, **kwargs):
@@ -52,7 +71,11 @@ class HomeView(View):
 
 
 class RecentThreadsView(HomeView):
+    """
+    /recent page handler
+    """
     def get_threads(self):
+        # exclude sticky threads from the first page (they are displayed in a separate list)
         if getattr(self.request, 'page') == 1:
             return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-created')
         else:
@@ -60,6 +83,9 @@ class RecentThreadsView(HomeView):
 
 
 class FavoriteThreadsView(View):
+    """
+    /favorites page handler
+    """
     def get(self, request, *args, **kwargs):
         context = {
             'home_page': False,
@@ -73,6 +99,10 @@ class ProfileView(DetailView):
     template_name = 'profile.html'
 
     def get_context_object_name(self, obj):
+        """
+        Return the context variable name that will be used to contain the data that this view is manipulating.
+        Named it "object" to align with other templates
+        """
         return 'object'
 
     def get_context_data(self, **kwargs):
@@ -84,29 +114,10 @@ class ProfileView(DetailView):
         return context
 
 
-# class NewRegisterView(View):
-#     def get(self, request, *args, **kwargs):
-#         context = {
-#             'key1': "value",
-#         }
-#         return render(request, 'new-registration.html', context)
-#
-# class ThankyouView(View):
-#     def get(self, request, *args, **kwargs):
-#         context = {
-#             'key1': "value",
-#         }
-#         return render(request, 'content.html', context)
-
-# class NewLoginView(View):
-#     def get(self, request, *args, **kwargs):
-#         context = {
-#             'key1': "value",
-#         }
-#         return render(request, 'new-login.html', context)
-
-
 class ProfileEditView(LoginRequiredMixin, UpdateView):
+    """
+    /profile/edit page handler
+    """
     form_class = forms.ProfileForm
     template_name = 'profile_edit.html'
     success_url = reverse_lazy('profile_edit')
@@ -114,13 +125,16 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         try:
             profile = self.request.user.profile
-        except:
+        except:  # this is just for an improbable case when the user object has no corresponding profile object
             return models.Profile.objects.model(user=self.request.user)
         return profile
 
 
 @rules_light.class_decorator('askapp.profile.update')
 class AdminProfileEditView(LoginRequiredMixin, UpdateView):
+    """
+    /profile/:id/edit handler - edit arbitrary profile by admins
+    """
     form_class = forms.ProfileForm
     template_name = 'profile_edit.html'
     model = models.Profile
@@ -147,6 +161,7 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
         if 'block_user' in request._post:
             user = get_object_or_404(models.User, id=self.kwargs['pk'])
             user.is_active = False
+            # update everything, except is_active to prevent deleting user's threads/posts on this step
             user.save(update_fields={'is_active': False})
             self.object = user.profile
             return redirect(self.get_success_url())
@@ -161,35 +176,20 @@ class AdminProfileEditView(LoginRequiredMixin, UpdateView):
 
 
 class ThreadView(DetailView):
+    """
+    Displays single thread view of all three types: Question, Link, Discussion
+    In case of "question" type of thread thread_question.html is used
+    """
     model = models.Thread
 
     def get_template_names(self):
         return 'thread_question.html' if self.object.thread_type == self.object.QUESTION else 'thread.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(ThreadView, self).get_context_data(**kwargs)
-        print(context['object'].answers)
-        return context
-
-
-# class QuestionView(View):
-#     def get(self, request, *args, **kwargs):
-#         context = {
-#             'key1': "value",
-#         }
-#         return render(request, 'question.html', context)
-
-
-class CommentView(CreateView):
-    model = models.Post
-    template_name = 'comment.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CommentView, self).get_context_data(**kwargs)
-        return context
-
 
 class AskappRegistrationView(RegistrationView):
+    """
+    /account/register page handler
+    """
     form_class = forms.RecaptchaRegistrationForm
     template_name = 'registration_form.html'
 
@@ -197,18 +197,19 @@ class AskappRegistrationView(RegistrationView):
         """
         This method returns proper settings.REGISTRATION_OPEN value when used with django-siteprefs
         """
-        return REGISTRATION_OPEN.get_value()
+        return REGISTRATION_OPEN.get_value() if isinstance(REGISTRATION_OPEN, object) else REGISTRATION_OPEN
 
     @staticmethod
     def is_email_blacklisted(email):
         return any([email.lower().endswith('@'+d) for d in BLACKLISTED_DOMAINS])
 
     def get_email_context(self, activation_key):
+        """
+        populate template variables for the activation email
+        """
         result = super(AskappRegistrationView, self).get_email_context(activation_key)
-        class objectview(object):
-            def __init__(self, d):
-                self.__dict__ = d
-        result['site'] = objectview({'domain': self.request.get_host(), 'name': SITE_NAME})
+        d = {'domain': self.request.get_host(), 'name': SITE_NAME}
+        result['site'] = namedtuple("Site", d.keys())(*d.values())
         return result
 
     def send_activation_email(self, user):
@@ -219,6 +220,9 @@ class AskappRegistrationView(RegistrationView):
 
 
 class ThreadMixin(object):
+    """
+    Common methods for create/edit threads
+    """
     form_class = forms.ThreadForm
     template_name = 'thread_edit.html'
     def get_form_kwargs(self):
@@ -231,11 +235,17 @@ class ThreadMixin(object):
 
 
 class NewThreadView(LoginRequiredMixin, ThreadMixin, CreateView):
+    """
+    /submit page handler
+    """
     pass
 
 
 @rules_light.class_decorator('askapp.thread.update')
 class EditThreadView(LoginRequiredMixin, ThreadMixin, UpdateView):
+    """
+    /thread/:id/:slug/edit page handler
+    """
     model = models.Thread
 
     def get_context_data(self, **kwargs):
@@ -246,12 +256,19 @@ class EditThreadView(LoginRequiredMixin, ThreadMixin, UpdateView):
 
 @rules_light.class_decorator('askapp.thread.delete')
 class DeleteThreadView(LoginRequiredMixin, UpdateView):
+    """
+    /thread/:id/:slug/delete page handler
+    """
     success_url = reverse_lazy('index')
     model = models.Thread
     fields = ['deleted']
     template_name = 'thread_delete.html'
 
     def form_valid(self, form):
+        """
+        This function is used to avoid placing <input type="hidden" name="deleted"/> to the page. Instead, it explicitly
+        sets the value of "deleted" attribute
+        """
         instance = form.save(commit=False)
         instance.deleted = True
         instance.delete_reason = self.request.POST.get('reason', '')
@@ -259,9 +276,12 @@ class DeleteThreadView(LoginRequiredMixin, UpdateView):
 
 
 class LockThreadView(LoginRequiredMixin, View):
+    """
+    /thread/:id/:slug/lock|unlock handler. Todo: refactor thread locking to AJAX?
+    """
     def get(self, request, *args, **kwargs):
         thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
-        rules_light.require(request.user, 'askapp.thread.update', thread)
+        rules_light.require(request.user, 'askapp.thread.update', thread)  # check user credentials to update the thread
         thread.closed = not thread.closed
         thread.save()
         return redirect(reverse_lazy('thread', args=(thread.id, slugify(thread.title))))
@@ -298,20 +318,22 @@ class ReplyMixin(CreateView):
 
 class ReplyThreadView(ReplyMixin):
     """
-    Inline comment handler
+    Inline comment handler, /thread/:id/:slug/reply
     """
     template_name = 'index.html'
 
     def form_invalid(self, form):
+        # fail silently, redirect back to the thread view
         return redirect(self.get_success_url())
 
     def get(self, request, *args, **kwargs):
+        # redirect to the thread view in case this URL is opened directly. Do not display empty home page
         return redirect(self.get_success_url())
 
 
 class ReplyCommentView(ReplyMixin):
     """
-    Standalone comment handler
+    Standalone comment handler, /comment/:id
     """
     template_name = 'comment.html'
 
@@ -333,9 +355,10 @@ class ReplyCommentView(ReplyMixin):
 
 class DeleteCommentView(LoginRequiredMixin, View):
     """
-    Actually this is not a view, but just a request handler
+    Actually this is not a view, but just a request handler for /comment/:id/delete
     """
     def get(self, request, *args, **kwargs):
+        # no need to display the post deletion confirmation, so use GET method instead of POST
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.post.delete', post)
         post.deleted = True
@@ -344,6 +367,9 @@ class DeleteCommentView(LoginRequiredMixin, View):
 
 
 class DeleteCommentTreeView(LoginRequiredMixin, View):
+    """
+    /comment/:id/delete_all handler
+    """
     def get(self, request, *args, **kwargs):
         rules_light.require(request.user, 'askapp.post.delete_all', None)
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
@@ -353,17 +379,20 @@ class DeleteCommentTreeView(LoginRequiredMixin, View):
 
 class TagView(HomeView):
     """
-    Display threads by tag
+    Display threads by tag, /tag/:slug handler
     """
     def get_threads(self):
         try:
-            tag = get_object_or_404(models.Tag, slug=self.kwargs['slug'])
+            tag = models.Tag.objects.get(slug=self.kwargs['slug'])
         except ObjectDoesNotExist:
-            raise Http404
+            return []
         return tag.thread_set.order_by('-created')
 
 
 class ThreadLikeView(LoginRequiredMixin, View):
+    """
+    /thread/:id/:slug/vote/up|down handler. Todo: refactor for AJAX?
+    """
     def get(self, request, *args, **kwargs):
         thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
         rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
@@ -372,6 +401,9 @@ class ThreadLikeView(LoginRequiredMixin, View):
 
 
 class PostLikeView(LoginRequiredMixin, View):
+    """
+    /post/:id/:slug/vote/up|down handler. Todo: refactor for AJAX?
+    """
     def get(self, request, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
@@ -388,18 +420,22 @@ class AcceptAnswerView(LoginRequiredMixin, View):
 
 
 class DomainsView(View):
-    def dispatch(self, request, *args, **kwargs):
-        return super(DomainsView, self).dispatch(request, *args, **kwargs)
-
+    """
+    /domains page handler, displays number of articles and average "like" points for domain names extracted from
+    threads of type "link"
+    """
+    # cache the results for 1 day. Caching decorator considers the method parameters, so different caches for each
+    # period and ordering column will be created
     @memoize(timeout=86400)
     def domain_stats(self, period, order_by, order_dir):
         params = {'deleted': 0, 'domain__isnull': False}
-        dnow = datetime.now()
+        dnow = datetime.utcnow()
         if period == 'day':
             params['created__gte'] = dnow - timedelta(days=1)
         elif period == 'week':
             params['created__gte'] = dnow - timedelta(days=7)
         elif period == 'month':
+            # gets the day one month ago (taking into account edge cases)
             last_day_previous_month = dnow - timedelta(days=dnow.day)
             params['created__gte'] = (last_day_previous_month.replace(day=dnow.day)
                                      if dnow.day < last_day_previous_month.day
@@ -419,6 +455,7 @@ class DomainsView(View):
                 order = '-' + order
             result = result.order_by(order)
         if hasattr(settings, 'NUM_DOMAIN_STATS'):
+            #int(str()) converts the setting from django-siteprefs object back to its original type
             result = result[:int(str(settings.NUM_DOMAIN_STATS) or 10)]
         return result
 
@@ -429,16 +466,21 @@ class DomainsView(View):
         return render(request, 'domains.html', context)
 
     def post(self, request, *args, **kwargs):
+        """
+        server part of the Datatables component
+        """
         period = self.request.POST.get('period', '')
         domains = self.domain_stats(period, self.request.POST.get('order[0][column]', -1),
                                     self.request.POST.get('order[0][dir]', ''))
         data = [[d['domain'], d['articles'], d['avg_points']] for d in domains]
         data = {'draw': self.request.POST.get('draw', 1), 'data': data}
-        from django.http import JsonResponse
         return JsonResponse(data)
 
 
 class DomainThreadsView(HomeView):
+    """
+    /domains/:domain handler, displays list of threads for a domain
+    """
     def get_threads(self):
         domain = self.kwargs.get('domain')
         if not domain:
