@@ -3,7 +3,7 @@ from askapp.settings import MARKDOWNX_MARKDOWN_EXTENSIONS, MARKDOWNX_MARKDOWN_EX
 from django import template
 from django.utils.safestring import mark_safe
 import re
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 register = template.Library()
 

@@ -1,11 +1,11 @@
 mysqlclient
-Django==1.8.4
-django-registration==2.2
+Django
+django-registration-redux
 django-debug-toolbar
 django-recaptcha2
 django-bootstrap3
 django-countries
-Pillow
+Pillow!=5.1.0
 django-rules-light
 django-mptt
 django-pagination-bootstrap

@@ -55,7 +55,7 @@ class AskappImageFieldFile(ImageFieldFile):
     @property
     def url(self):
         try:
-            result = super(AskappImageFieldFile, self)._get_url()
+            result = super(AskappImageFieldFile, self).url
             if not os.path.isfile(self.path):
                 raise ValueError
         except ValueError:
@@ -203,7 +203,7 @@ class Thread(models.Model):
     deleted = models.BooleanField(default=False)  # the thread is marked as deleted, usually on user blocking
 
     # reference to the user who created the post
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add = True)
@@ -323,13 +323,13 @@ class Post(MPTTModel):
     """
 
     # defines the parent post. If the value is null, the post is a thread starter
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+    parent = TreeForeignKey('self', models.CASCADE, null=True, blank=True, related_name='children', db_index=True)
 
     # the thread that the Post belongs to
-    thread = models.ForeignKey(Thread)
+    thread = models.ForeignKey(Thread, models.CASCADE)
 
     # reference to the user who created the post
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
 
     # atomatically added timestamp field when the record is created
     created = models.DateTimeField(auto_now_add=True)
@@ -378,7 +378,7 @@ class ThreadLike(models.Model):
     Threads with positive likes are diplayed in user's "favorites" page.
     """
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
 
     # atomatically added timestamp field when the record is created
@@ -407,7 +407,7 @@ class PostLike(models.Model):
     Regular users cannot "like" others' comments more than once.
     """
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     # atomatically added timestamp field when the record is created
@@ -446,8 +446,8 @@ class AuditThread(models.Model):
         ("delete", 'Delete'),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-    thread = models.ForeignKey(Thread)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
+    thread = models.ForeignKey(Thread, models.CASCADE)
     action = models.TextField(null=False, choices=TYPES_OF_ACTION, default="update")
     created = models.DateTimeField(auto_now_add=True)
     content = models.TextField(null=True)  # old title or text of the edited post

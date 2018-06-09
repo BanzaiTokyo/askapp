@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
-from registration.backends.hmac.views import RegistrationView
+from django.views.generic.list import ListView
+from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
 from askapp.score_calcuator import calculate_scores
 from askapp.settings import BLACKLISTED_DOMAINS, REGISTRATION_OPEN, SITE_NAME
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import resolve
+from django.urls import resolve
 from django.db.models import Q, Count, Avg
 from memoize import memoize
 from django.http import JsonResponse
@@ -22,7 +23,7 @@ from collections import namedtuple
 import rules_light
 import askapp.auth_rules
 import logging
-
+import newspaper
 
 class LoginRequiredMixin(object):
     """
@@ -32,7 +33,7 @@ class LoginRequiredMixin(object):
         """
         it's a standard Django method that is called before HTTP methods
         """
-        if request.user.is_authenticated() and request.user.is_active:
+        if request.user.is_authenticated and request.user.is_active:
             return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
         else:
             return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
@@ -63,7 +64,7 @@ class HomeView(View):
         }
         context.update({
             'threads': self.get_threads(),
-            'sticky': self.get_sticky() if context['home_page'] or getattr(self.request, 'page') == 1 else [],
+            'sticky': self.get_sticky() if context['home_page'] or self.request.GET.get('page', '1') == '1' else [],
             'tags': models.Tag.objects.all(),
             'users': models.User.objects.filter(is_active=True).order_by('-date_joined')[:5],
         })
@@ -76,7 +77,7 @@ class RecentThreadsView(HomeView):
     """
     def get_threads(self):
         # exclude sticky threads from the first page (they are displayed in a separate list)
-        if getattr(self.request, 'page') == 1:
+        if self.request.GET.get('page', '1') == '1':
             return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-created')
         else:
             return models.Thread.objects.filter(deleted=False).order_by('-created')
@@ -344,9 +345,9 @@ class ReplyCommentView(ReplyMixin):
         return super(ReplyCommentView, self).get_form(form_class)
 
     def get_context_data(self, **kwargs):
-        context = {'object': self.post_object}
-        context.update(kwargs)
-        return super(ReplyCommentView, self).get_context_data(**context)
+        context = super(ReplyCommentView, self).get_context_data(**kwargs)
+        context['object'] = self.post_object
+        return context
 
     def form_valid(self, form):
         form.instance.parent = self.post_object
@@ -490,3 +491,18 @@ class DomainThreadsView(HomeView):
     def get_sticky(self):
         return None
 
+
+class NewspaperView(ListView):
+    template_name = 'newspaper.html'
+
+    def get_queryset(self):
+        return None
+
+    def get_context_data(self, **kwargs):
+        context = super(NewspaperView, self).get_context_data(**kwargs)
+        config = newspaper.Config()
+        config.memoize_articles = False
+        tc_paper = newspaper.build('http://cnn.com', config=config, language=str(settings.LANGUAGE_CODE))
+        context['object_list'] = tc_paper.articles
+
+        return context

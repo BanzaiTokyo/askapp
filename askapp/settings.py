@@ -64,9 +64,10 @@ INSTALLED_APPS = (
     'pagination_bootstrap',
     'markdownx',
     'memoize',
+    'registration'
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'askapp.middleware.ForceDefaultLanguageMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -96,7 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.media',
+                'django.template.context_processors.media',
                 'askapp.context_processors.site_processor',
                 'django.template.context_processors.i18n',
             ],
@@ -234,35 +235,37 @@ UPVOTES_PER_DAY = 3
 
 ABOUT_TEXT = ''
 
-from siteprefs.toolbox import patch_locals, register_prefs, pref, pref_group
-patch_locals()  # required by django-siteprefs manual
-register_prefs(  # Now we register our settings to make them available as siteprefs.
-        # And finally we register a non-static setting with extended meta for Admin.
-        pref(SITE_NAME, verbose_name=_('Site Name'), static=False),
-        pref(RECAPTCHA_PUBLIC_KEY, verbose_name=_('ReCAPTCHA Public Key'), static=False),
-        pref(RECAPTCHA_PRIVATE_KEY, verbose_name=_('ReCAPTCHA Private Key'), static=False),
-        pref(LANGUAGE_CODE, verbose_name=_('Site Language'), static=False, field=CharField(choices=LANGUAGES, max_length=2)),
-        pref(REGISTRATION_OPEN, verbose_name=_('Is registration open?'), static=False, field=BooleanField(choices=YESNO)),
-        pref(GOOGLE_ANALYTICS_ID, verbose_name=_('Google Analytics ID'), static=False, field=CharField(max_length=15, blank=True, null=True)),
-        pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
-        pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False),
-        pref(UPVOTES_PER_DAY, verbose_name=_('Number of upvotes per day'), static=False),
-        pref(ABOUT_TEXT, verbose_name=_('"About" text'), static=False),
-    )
-# Add string methods to
-from siteprefs.utils import PrefProxy, PatchedLocal
-def prefproxy_find(self, sub, start=None, end=None):
-    return str(self).find(sub, start, end)
-def prefproxy_lower(self):
-    return str(self).lower()
-def prefproxy_getitem(self, key):
-    return str(self).__getitem__(key)
-def prefproxy_split(self, sep=None, maxsplit=-1):
-    return str(self).split(sep, maxsplit)
-PrefProxy.find = prefproxy_find
-PrefProxy.__getitem__ = prefproxy_getitem
-PrefProxy.lower = prefproxy_lower
-PrefProxy.split = prefproxy_split
-def patchedlocal_iter(self):
-    return iter(self.val)
-PatchedLocal.__iter__ = patchedlocal_iter
+from django.conf import settings
+if 'siteprefs' in settings.INSTALLED_APPS:
+    from siteprefs.toolbox import patch_locals, register_prefs, pref, pref_group
+    patch_locals()  # required by django-siteprefs manual
+    register_prefs(  # Now we register our settings to make them available as siteprefs.
+            # And finally we register a non-static setting with extended meta for Admin.
+            pref(SITE_NAME, verbose_name=_('Site Name'), static=False),
+            pref(RECAPTCHA_PUBLIC_KEY, verbose_name=_('ReCAPTCHA Public Key'), static=False),
+            pref(RECAPTCHA_PRIVATE_KEY, verbose_name=_('ReCAPTCHA Private Key'), static=False),
+            pref(LANGUAGE_CODE, verbose_name=_('Site Language'), static=False, field=CharField(choices=LANGUAGES, max_length=2)),
+            pref(REGISTRATION_OPEN, verbose_name=_('Is registration open?'), static=False, field=BooleanField(choices=YESNO)),
+            pref(GOOGLE_ANALYTICS_ID, verbose_name=_('Google Analytics ID'), static=False, field=CharField(max_length=15, blank=True, null=True)),
+            pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
+            pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False),
+            pref(UPVOTES_PER_DAY, verbose_name=_('Number of upvotes per day'), static=False),
+            pref(ABOUT_TEXT, verbose_name=_('"About" text'), static=False),
+        )
+    # Add string methods to
+    from siteprefs.utils import PrefProxy, PatchedLocal
+    def prefproxy_find(self, sub, start=None, end=None):
+        return str(self).find(sub, start, end)
+    def prefproxy_lower(self):
+        return str(self).lower()
+    def prefproxy_getitem(self, key):
+        return str(self).__getitem__(key)
+    def prefproxy_split(self, sep=None, maxsplit=-1):
+        return str(self).split(sep, maxsplit)
+    PrefProxy.find = prefproxy_find
+    PrefProxy.__getitem__ = prefproxy_getitem
+    PrefProxy.lower = prefproxy_lower
+    PrefProxy.split = prefproxy_split
+    def patchedlocal_iter(self):
+        return iter(self.val)
+    PatchedLocal.__iter__ = patchedlocal_iter

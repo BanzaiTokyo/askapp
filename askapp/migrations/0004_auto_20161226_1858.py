@@ -30,13 +30,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='thread',
-            field=models.ForeignKey(default=1, to='askapp.Thread'),
+            field=models.ForeignKey(default=1, to='askapp.Thread', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='post',
             name='user',
-            field=models.ForeignKey(default=1, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=1, to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='thread',

@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='auditthread',
             name='thread',
-            field=models.ForeignKey(to='askapp.Thread'),
+            field=models.ForeignKey(to='askapp.Thread', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='post',

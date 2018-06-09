@@ -1,12 +1,19 @@
 """Add user created_by and modified_by foreign key refs to any model automatically.
    Almost entirely taken from https://github.com/Atomidata/django-audit-log/blob/master/audit_log/middleware.py"""
+try:
+    from django.utils.deprecation import MiddlewareMixin
+    object = MiddlewareMixin
+except:
+    pass
+
 from django.db.models import signals
 from django.utils.functional import curry
+
 
 class WhodidMiddleware(object):
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
-            if hasattr(request, 'user') and request.user.is_authenticated():
+            if hasattr(request, 'user') and request.user.is_authenticated:
                 user = request.user
             else:
                 user = None

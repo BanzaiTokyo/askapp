@@ -39,6 +39,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='parent',
-            field=mptt.fields.TreeForeignKey(related_name='children', blank=True, to='askapp.Post', null=True),
+            field=mptt.fields.TreeForeignKey(related_name='children', blank=True, to='askapp.Post', null=True, on_delete=models.CASCADE),
         ),
     ]

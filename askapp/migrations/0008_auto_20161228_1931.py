@@ -14,13 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='postlike',
             name='post',
-            field=models.ForeignKey(default=1, to='askapp.Post'),
+            field=models.ForeignKey(default=1, to='askapp.Post', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='threadlike',
             name='thread',
-            field=models.ForeignKey(default=1, to='askapp.Thread'),
+            field=models.ForeignKey(default=1, to='askapp.Thread', on_delete=models.CASCADE),
             preserve_default=False,
         ),
         migrations.AlterField(

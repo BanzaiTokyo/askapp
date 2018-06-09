@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('parent', models.ForeignKey(to='askapp.Post', null=True)),
+                ('parent', models.ForeignKey(to='askapp.Post', null=True, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -35,8 +35,8 @@ class Migration(migrations.Migration):
                 ('action_name', models.TextField(choices=[('update', 'Update'), ('close', 'Close'), ('sticky', 'Sticky')], default='update')),
                 ('old_text', models.TextField(null=True)),
                 ('old_title', models.TextField(null=True)),
-                ('post', models.ForeignKey(to='askapp.Post', null=True)),
-                ('taken_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
+                ('post', models.ForeignKey(to='askapp.Post', null=True, on_delete=models.CASCADE)),
+                ('taken_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(null=True, max_length=255)),
                 ('image', models.ImageField(upload_to='uploads/images/%Y/%m/%d')),
                 ('score', models.IntegerField(default=0)),
-                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
+                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)),
                 ('tags', models.ManyToManyField(to='askapp.Tag')),
                 ('link', models.URLField(null=True)),
             ],
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='thread_id',
-            field=models.ForeignKey(to='askapp.Thread', null=True),
+            field=models.ForeignKey(to='askapp.Thread', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='post',
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('points', models.IntegerField()),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -89,7 +89,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('points', models.IntegerField()),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)),
             ],
         ),
     ]

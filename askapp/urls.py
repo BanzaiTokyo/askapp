@@ -8,12 +8,14 @@ from django.http import HttpResponse
 from askapp import settings
 from askapp import views
 from askapp.sitemaps import sitemap_dict
+from markdownx.urls import urlpatterns as markdownx_urls
+#from registration.backends.default.urls import urlpatterns as reg_urls
 
 urlpatterns = [
     # system URLs
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^markdownx/', include('markdownx.urls')),
-    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^markdownx/', (markdownx_urls, 'markdownx', 'markdownx')),
+    #url(r'^i18n/', django.conf.urls.i18n),
     url(r'^sitemap\.xml$', cache_page(86400)(sitemaps_views.index), {'sitemaps': sitemap_dict, 'sitemap_url_name': 'sitemaps'}),
     url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(86400)(sitemaps_views.sitemap), {'sitemaps': sitemap_dict}, name='sitemaps'),
 
@@ -33,7 +35,9 @@ urlpatterns = [
     url(r'^domains/(?P<domain>[-\w\.]+)$', views.DomainThreadsView.as_view(), name="domain_thread"),
 
     url(r'^accounts/register/$', views.AskappRegistrationView.as_view(), name='register'),
-    url(r'^accounts/', include('registration.backends.hmac.urls')),
+    #url(r'^accounts/', (reg_urls, 'registration', 'registration')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
+
 
     # authenticated users
     url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
@@ -58,13 +62,14 @@ urlpatterns = [
     # robots.txt
     url(r'^robots.txt$', lambda r: HttpResponse("User-agent: * \n Allow: / ", content_type="text/plain")),
 
+    url(r'^newspaper$', views.NewspaperView.as_view(), name="newspaper"),
+
 ]
 
 # in debug mode launch debug_toolbar
 if settings.DEBUG:
     import debug_toolbar
-
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        url(r'^__debug__/', debug_toolbar.urls + ('djdt', )),
     ]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
