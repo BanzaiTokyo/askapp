@@ -6,7 +6,19 @@ from queue import Queue
 from threading import Thread
 
 OUTPUT_BASENAME = "articles"
-ADDRESSES = ["http://bloomberg.com",
+ADDRESSES = ["https://venturebeat.com/",
+             "https://www.tokyodev.com",
+             "https://www.popsci.com",
+             "https://www.citylab.com",
+             "https://longreads.com",
+             "http://bigthink.com/",
+             "https://kotaku.com",
+             "https://www.independent.co.uk",
+             "https://interestingengineering.com",
+             "https://www.mirror.co.uk",
+             "https://www.dezeen.com/",
+             "https://www.disruptingjapan.com/",
+             "http://bloomberg.com",
              "http://arstechnica.com/",
              "http://wired.com/",
              "http://bbc.co.uk/",
