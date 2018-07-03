@@ -147,8 +147,9 @@ def create_user_profile(sender, instance, created, **kwargs):
             Post.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
             Thread.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
     elif created:
-        return Profile.objects.create(user=instance)
+        return #Profile.objects.create(user=instance)
     else:
+        return
         # even though "created" is False (this is a regular update), ensure that the Profile object exists
         try:
             profile = instance.profile
