@@ -6,9 +6,9 @@ django-recaptcha2
 django-bootstrap3
 django-countries
 Pillow!=5.1.0
-django-rules-light
+#django-rules-light
 django-mptt
 django-pagination-bootstrap
 django-markdownx
-django-siteprefs
+#django-siteprefs
 django-memoize

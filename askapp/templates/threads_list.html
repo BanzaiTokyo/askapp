@@ -1,6 +1,5 @@
 {% load rules_light_tags %}
 {% load askapp_filters %}
-{% load i18n %}
 {% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
 
 {% if not sticky %}
@@ -77,10 +76,10 @@
             {% url 'profile' thread.user.id thread.user|slugify as url_profile %}
             {% url 'thread' thread.id thread.title|slugify as url_thread %}
 
-                <p>{% trans "posted by" %} <a href="{{ url_profile }}">
+                <p>posted by <a href="{{ url_profile }}">
                     <img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
-                    | {% blocktrans with time_since=thread.created|timesince %}{{ time_since }} ago{% endblocktrans %} |
-<a href="{{ url_thread }}">{% blocktrans count num_comments=thread.num_comments %}1 comment{% plural %}{{ num_comments }} comments{% endblocktrans %}</a></p>
+                    | {{ thread.created|timesince }} ago |
+<a href="{{ url_thread }}">{{ thread.num_comments }} comment{{ thread.num_comments|pluralize }}</a></p>
 
 
         </div>

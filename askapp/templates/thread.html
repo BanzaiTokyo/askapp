@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% load askapp_filters %}
-{% load i18n %}
 
 {% block title %}
     {{ object.title }}
@@ -26,19 +25,19 @@
                 {% include 'thread_like_button.html' with object=object %}
                 {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
                                               href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
-                                              title="{% trans "Downvote" %}"></a>{% endif %}
+                                              title="Downvote"></a>{% endif %}
                 {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger"
                                       href="{% url 'delete_thread' object.id object.title|slugify %}"
-                                      title="{% trans "Delete thread" %}"></a>{% endif %}
+                                      title="Delete thread"></a>{% endif %}
                 {% if can_update %}
                     {% if object.closed %}
                         <a class="btn glyphicon glyphicon-lock text-success"
                            href="{% url 'lock_thread' object.id object.title|slugify 'unlock' %}"
-                           title="{% trans "Unlock thread" %}"></a>
+                           title="Unlock thread"></a>
                     {% else %}
                         <a class="btn glyphicon glyphicon-lock text-danger"
                            href="{% url 'lock_thread' object.id object.title|slugify 'lock' %}"
-                           title="{% trans "Lock thread" %}"></a>
+                           title="Lock thread"></a>
                     {% endif %}
                 {% endif %}
 
@@ -64,7 +63,7 @@
                     {% if thread.domain %}<span class="small">{{ thread.domain }}</span>{% endif %}
                     {% if can_update %}<a class="btn glyphicon glyphicon-edit text-success"
                                           href="{% url 'edit_thread' object.id object.title|slugify %}"
-                                          title="{% trans "Edit thread" %}"></a>{% endif %}
+                                          title="Edit thread"></a>{% endif %}
                 </h2>
 
                 <!--Tags-->
@@ -72,13 +71,13 @@
                 <div>
                     {# Example: posted by  banzaitokyo | 3 weeks, 6 days ago in Anime & Manga#}
                     {% url 'profile' object.user.id object.user|slugify as url_profile %}
-                    {% trans "posted by" %} <a href="{{ url_profile }}">
+                    posted by <a href="{{ url_profile }}">
                     <img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
 
                     |
-                    {% blocktrans with time_since=object.created|timesince %}{{ time_since }} ago{% endblocktrans %}
+                    {{ object.created|timesince }} ago
                     {% if object.tags.all %}
-                        {% trans "in" %}
+                        in
                         {% include 'tags_list.html' with tags=object.tags.all only %}
                     {% endif %}
 
@@ -109,10 +108,10 @@
                 <div class="form-group">
                     <form method="post" action="{% url 'reply_thread' object.id object.title|slugify %}">
                         {% csrf_token %}
-                        <label for="comment">{% trans "Comment:" %}</label>
+                        <label for="comment">Comment:</label>
                         <textarea class="form-control" rows="5" id="comment" name="text" required></textarea><br>
 
-                        <button type="submit" class="btn btn-primary pull-right">{% trans "Post comment" %}</button>
+                        <button type="submit" class="btn btn-primary pull-right">Post comment</button>
                     </form>
                 </div>
             </div>

@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% load i18n %}
 
-{% block title %}{% trans "Delete thread: " %}{{ object.title }}{% endblock %}
+{% block title %}Delete thread: {{ object.title }}{% endblock %}
 
 
 {% block content %}
@@ -33,11 +32,11 @@
                     <div class="form-group">
                         <form method="post">
 	                        {% csrf_token %}
-                            <label for="comment">{% trans "Reason: " %}</label>
+                            <label for="comment">Reason: </label>
 	                        <input type="text" name="reason" />
 	                        <br>
-                            <button type="submit" class="btn btn-primary pull-right">{% trans "Delete thread" %}</button>
-                            <a href="{% url 'thread' object.id object.title|slugify %}" class="btn pull-right">{% trans "Cancel" %}</a>
+                            <button type="submit" class="btn btn-primary pull-right">Delete thread</button>
+                            <a href="{% url 'thread' object.id object.title|slugify %}" class="btn pull-right">Cancel</a>
                         </form>
                     </div>
                 </div>

@@ -28,19 +28,3 @@ class WhodidMiddleware(object):
     def mark_whodid(self, user, sender, instance, **kwargs):
         if not hasattr(instance, 'modified_by_id'):
             instance.modified_by = user
-
-
-class ForceDefaultLanguageMiddleware(object):
-    """
-    Ignore Accept-Language HTTP headers
-
-    This will force the I18N machinery to always choose settings.LANGUAGE_CODE
-    as the default initial language, unless another one is set via sessions or cookies
-
-    Should be installed *before* any middleware that checks request.META['HTTP_ACCEPT_LANGUAGE'],
-    namely django.middleware.locale.LocaleMiddleware
-    """
-    def process_request(self, request):
-        lang_header = 'HTTP_ACCEPT_LANGUAGE'
-        if lang_header in request.META:
-            del request.META[lang_header]

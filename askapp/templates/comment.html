@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% load askapp_filters %}
-{% load i18n %}
 
 
 {% block description %}{{ object.text|markdownify_noimages|striptags|escapejs|truncatechars_html:200 }}{% endblock %}
 
 {% block title %}
-    {% trans "Comment #" %}
-    {{ object.id }} {% trans "posted on" %} {{ object.thread.title }}
+    Comment #
+    {{ object.id }} posted on {{ object.thread.title }}
 {% endblock %}
 
 
@@ -18,10 +17,10 @@
     <!--First Thread-->
     <div class="row">
         <div class="col-xs-1">
-            <a class="btn glyphicon glyphicon-chevron-up" title="{% trans "Upvote" %}"></a>
+            <a class="btn glyphicon glyphicon-chevron-up" title="Upvote"></a>
             <h2 class="text-center text-danger">{{ object.points }}</h2>
-            <a class="btn glyphicon glyphicon-chevron-down text-danger" title="{% trans "Downvote" %}"></a>
-            <a class="btn glyphicon glyphicon-trash text-danger" title="{% trans "Delete comment" %}"></a>
+            <a class="btn glyphicon glyphicon-chevron-down text-danger" title="Downvote"></a>
+            <a class="btn glyphicon glyphicon-trash text-danger" title="Delete comment"></a>
 
         </div>
 
@@ -30,9 +29,9 @@
 {# Example: #12649 | posted by <avatar> BarbaraEbara | 6 days ago on Sumo crowns new Grand Champion#}
             {% url 'profile' object.user.id object.user|slugify as url_profile %}
             {% url 'thread' object.thread.id object.thread.title|slugify as url_thread %}
-            #{{ object.id }} | {% trans "posted by" %}
+            #{{ object.id }} | posted by
             <a href="{{ url_profile }}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a> |
-            {% blocktrans with time_since=object.created|timesince %}{{ time_since }} ago{% endblocktrans %} {% trans "on" %}
+            {{ object.created|timesince }} ago on
             <a href="{{ url_thread }}">{{ object.thread.title|truncatechars:60 }}</a>
 
         </div>
@@ -59,11 +58,11 @@
                 <div class="form-group">
                     <form method="post">
                         {% csrf_token %}
-                        <label for="comment">{% trans "Comment:" %}</label>
+                        <label for="comment">Comment:</label>
                         {{ form.text }}
                         {{ form.text.errors }}
                         <br>
-                        <button type="submit" class="btn btn-primary pull-right">{% trans "Post comment" %}</button>
+                        <button type="submit" class="btn btn-primary pull-right">Post comment</button>
                     </form>
                 </div>
             {% elif not user.is_active %}
@@ -72,10 +71,8 @@
                 {# Example: Login or register to post a comment#}
                 {% url 'auth_login' as url_auth_login %}
                 {% url 'register' as url_register %}
-                {% blocktrans with request_path=request.path %}
-                    <a href="{{ url_auth_login }}?next={{ request_path }}">Login</a> or
-                    <a href="{{ url_register }}">Register</a> to post a comment
-                {% endblocktrans %}
+                <a href="{{ url_auth_login }}?next={{ request.path }}">Login</a> or
+                <a href="{{ url_register }}">Register</a> to post a comment
 
             {% endif %}
         </div>

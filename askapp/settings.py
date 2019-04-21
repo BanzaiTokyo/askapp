@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import sys
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.translation import ugettext_lazy as _
 from django.db.models import BooleanField, CharField
 
 print("system=->", sys.path)
@@ -68,10 +67,8 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE = (
-    'askapp.middleware.ForceDefaultLanguageMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -160,38 +157,10 @@ TIME_ZONE = 'UTC'
 
 USE_TZ = True
 
-# =================== Internationalization
-# inspired by the following tutorial:
-# http://www.marinamele.com/taskbuster-django-tutorial/internationalization-localization-languages-time-zones
-
-USE_I18N = True
-
-LANGUAGE_CODE = 'en'
-
-LANGUAGES = (
-    ('en', _('English')),
-    ('fr', _('French')),
-    ('ru', _('Russian')),
-)
-
 YESNO = (
-    (True, _("Yes")),
-    (False, _("No"))
+    (True, "Yes"),
+    (False, "No")
 )
-
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'askapp/locale'),
-)
-
-# after adding new messages to templates run >>> python manage.py makemessages -l fr
-# when the messages in the .po file are translated, run >>> python manage.py compilemessages -l fr
-# =================== End Internationalization
-
-
-# STATIC_ROOT='static'
-STATIC_ROOT = os.path.join(BASE_DIR, "askapp/static")
-
-STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'auth.User'
 
@@ -206,6 +175,11 @@ RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 # List of domains that are not allowed to have email account on
 # Confirmation email will silently fail to be sent
 BLACKLISTED_DOMAINS = ['yopmail1.com', ]
+
+# STATIC_ROOT='static'
+STATIC_ROOT = os.path.join(BASE_DIR, "askapp/static")
+
+STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
@@ -241,16 +215,15 @@ if 'siteprefs' in settings.INSTALLED_APPS:
     patch_locals()  # required by django-siteprefs manual
     register_prefs(  # Now we register our settings to make them available as siteprefs.
             # And finally we register a non-static setting with extended meta for Admin.
-            pref(SITE_NAME, verbose_name=_('Site Name'), static=False),
-            pref(RECAPTCHA_PUBLIC_KEY, verbose_name=_('ReCAPTCHA Public Key'), static=False),
-            pref(RECAPTCHA_PRIVATE_KEY, verbose_name=_('ReCAPTCHA Private Key'), static=False),
-            pref(LANGUAGE_CODE, verbose_name=_('Site Language'), static=False, field=CharField(choices=LANGUAGES, max_length=2)),
-            pref(REGISTRATION_OPEN, verbose_name=_('Is registration open?'), static=False, field=BooleanField(choices=YESNO)),
-            pref(GOOGLE_ANALYTICS_ID, verbose_name=_('Google Analytics ID'), static=False, field=CharField(max_length=15, blank=True, null=True)),
-            pref(EMAIL_SUBJECT_PREFIX, verbose_name=_('Email subject prefix'), static=False),
-            pref(NUM_DOMAIN_STATS, verbose_name=_('/domains page length'), static=False),
-            pref(UPVOTES_PER_DAY, verbose_name=_('Number of upvotes per day'), static=False),
-            pref(ABOUT_TEXT, verbose_name=_('"About" text'), static=False),
+            pref(SITE_NAME, verbose_name='Site Name', static=False),
+            pref(RECAPTCHA_PUBLIC_KEY, verbose_name='ReCAPTCHA Public Key', static=False),
+            pref(RECAPTCHA_PRIVATE_KEY, verbose_name='ReCAPTCHA Private Key', static=False),
+            pref(REGISTRATION_OPEN, verbose_name='Is registration open?', static=False, field=BooleanField(choices=YESNO)),
+            pref(GOOGLE_ANALYTICS_ID, verbose_name='Google Analytics ID', static=False, field=CharField(max_length=15, blank=True, null=True)),
+            pref(EMAIL_SUBJECT_PREFIX, verbose_name='Email subject prefix', static=False),
+            pref(NUM_DOMAIN_STATS, verbose_name='/domains page length', static=False),
+            pref(UPVOTES_PER_DAY, verbose_name='Number of upvotes per day', static=False),
+            pref(ABOUT_TEXT, verbose_name='"About" text', static=False),
         )
     # Add string methods to
     from siteprefs.utils import PrefProxy, PatchedLocal

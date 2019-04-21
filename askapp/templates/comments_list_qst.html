@@ -1,6 +1,5 @@
 {% load mptt_tags %}
 {% load rules_light_tags %}
-{% load i18n %}
 
 {% recursetree comments %}
     {% rule 'askapp.postlike.up' node as can_like_post %}
@@ -22,9 +21,9 @@
             {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}"
                                           class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
 
-            | <a href="{% url 'comment_page' node.id %}">#{{ node.id }}</a> {% trans "by" %} <a
+            | <a href="{% url 'comment_page' node.id %}">#{{ node.id }}</a> by <a
                 href="{% url 'profile' node.user.id node.user|slugify %}">&nbsp;{{ node.user }}</a>
-            | {% blocktrans with time_since=node.created|timesince %}{{ time_since }} ago{% endblocktrans %}
+            | {{ node.created|timesince }} ago
 
             <div>{{ node.text|safe }}<br>
             </div>

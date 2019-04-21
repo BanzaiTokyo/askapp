@@ -1,5 +1,4 @@
 {% if is_paginated %}
-{% load i18n %}
 
 <ul class="pagination">
   <li class="m"><a href="?page=1{{ getvars }}{{ hashtag }}"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
@@ -11,7 +10,7 @@
 {% for page in pages %}
   {% if page %}
     {% ifequal page page_obj.number %}
-  <li class="active"><a href="#" onclick="javascript: return false;"><span class="m">{% trans "Page" %} </span>{{ page }}</a></li>
+  <li class="active"><a href="#" onclick="javascript: return false;"><span class="m">Page </span>{{ page }}</a></li>
     {% else %}
   <li class="d">
     <a href="?page={{ page }}{{ getvars }}{{ hashtag }}">{{ page }}</a>

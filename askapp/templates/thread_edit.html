@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% load i18n %}
 
-{% block title %}{% if not form.instance.pk %}{% trans "Submit new thread" %}{% else %}{% trans "Edit thread" %}{% endif %}{% endblock %}
+{% block title %}{% if not form.instance.pk %}Submit new{% else %}Edit{% endif %} thread{% endblock %}
 
 {% block content %}
     <div class="row col-md-6">
@@ -10,34 +9,34 @@
 	        {% csrf_token %}
             {% if not form.instance.pk or admin_view %}
             <div class="form-group">
-	            <label for="id_thread_type">{% trans "Type:" %}</label>
+	            <label for="id_thread_type">Type:</label>
 	            {{ form.thread_type }}
             </div>
             {% endif %}
             {% if not form.instance.pk or admin_view or form.instance.thread_type == 'LL' %}
             <div class="form-group" id="url_group">
-	            <label for="id_link">{% trans "URL:" %}</label>
+	            <label for="id_link">URL:</label>
 	            {{ form.link }}
 	            {{ form.link.errors }}
             </div>
             {% endif %}
             <div class="form-group">
-	            <label for="id_title">{% trans "Title:" %}</label>
+	            <label for="id_title">Title:</label>
 	            {{ form.title }}
 	            {{ form.title.errors }}
             </div>
             <div class="form-group">
-	            <label for="id_text"{% trans "Summary:" %}></label>
+	            <label for="id_text">Summary:</label>
 	            {{ form.text }}
 	            {{ form.text.errors }}
             </div>
             <div class="form-group">
-	            <label for="id_tags">{% trans "Categories:" %}</label>
+	            <label for="id_tags">Categories:</label>
 	            {{ form.tags }}
 	            {{ form.tags.errors }}
             </div>
             <div class="form-group">
-	            <label for="id_image">{% trans "Image:" %}</label>
+	            <label for="id_image">Image:</label>
 	            {% if form.image.value %}
 		            <img src="{{ MEDIA_URL }}{{ form.image.value }}" />
 	            {% endif %}
@@ -45,7 +44,7 @@
 	            {{ form.image.errors }}
             </div>
 
-            <button type="submit" class="btn btn-primary pull-right">{% trans "Submit" %}</button>
+            <button type="submit" class="btn btn-primary pull-right">Submit</button>
         </form>
     </div>
 

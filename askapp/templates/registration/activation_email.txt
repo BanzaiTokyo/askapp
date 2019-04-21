@@ -1,6 +1,5 @@
-{% load i18n %}
-{% trans "Activate account at" %} {{ site.name }}:
+Activate account at {{ site.name }}:
 
 http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 
-{% trans "Link is valid for" %} {% blocktrans count days=expiration_days %}1 day.{% plural %}{{ days }} days.{% endblocktrans %}
+Link is valid for {{ expiration_days }} day{{ expiration_days|pluralize }}.

@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% load i18n %}
 
 
 {% block title %}
-    {% blocktrans with username=object.username %}{{ username }}'s user profile{% endblocktrans %}
+    {{ object.username }}'s user profile
 {% endblock %}
 
 {% block content %}
@@ -12,19 +11,19 @@
     {% rule 'askapp.profile.update' object as can_update %}
     <div class="row">
         <div class="col-md-6">
-            <img src="{% static object.profile.avatar.url %}">
+            <img src="{{ object.profile.avatar.url }}">
         </div>
 
         <h3>
             {{ object.username }}
             {% if can_update %}
                 <a class="btn glyphicon glyphicon-edit text-success" href="{% url 'admin_profile_edit' object.id %}"
-                   title="{% trans "Edit profile" %}"></a>{% endif %}
+                   title="Edit profile"></a>{% endif %}
         </h3>
 
         {% if object.profile.country %}
             <p><img width="30" height="20"
-                    src="{% static object.profile.country.flag %}">&nbsp;{{ object.profile.country.name }}
+                    src="{{ object.profile.country.flag }}">&nbsp;{{ object.profile.country.name }}
                 {% if object.profile.city %}, {{ object.profile.city }}{% endif %}</p>
         {% endif %}
         <p>{{ object.profile.about }}</p>
@@ -32,14 +31,14 @@
 
     <div class="row">
         <h3>
-            {% blocktrans with username=object.username %}Recent threads by <strong>{{ username }}</strong>{% endblocktrans %}
+            Recent threads by <strong>{{ object.username }}</strong>
         </h3>
         {% include 'threads_list.html' %}
     </div>
     {% if admin_view and favorites %}
     <div class="row">
         <h3>
-            {% blocktrans with username=object.username %}Favorite threads of <strong>{{ username }}</strong>{% endblocktrans %}
+            Favorite threads of <strong>{{ object.username }}</strong>
         </h3>
         {% include 'threads_list.html' with threads=favorites %}
     </div>
