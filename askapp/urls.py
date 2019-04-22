@@ -64,9 +64,6 @@ urlpatterns = [
 
     # robots.txt
     url(r'^robots.txt$', lambda r: HttpResponse("User-agent: * \n Allow: / ", content_type="text/plain")),
-
-    url(r'^newspaper$', views.NewspaperView.as_view(), name="newspaper"),
-
 ]
 
 # in debug mode launch debug_toolbar

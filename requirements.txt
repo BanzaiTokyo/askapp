@@ -16,4 +16,3 @@ django-markdownx
 django-memoize
 django-etc
 django-classy-tags
-newspaper3k

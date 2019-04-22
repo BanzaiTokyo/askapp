@@ -23,7 +23,7 @@ from collections import namedtuple
 import rules_light
 import askapp.auth_rules
 import logging
-import newspaper
+
 
 class LoginRequiredMixin(object):
     """
@@ -490,19 +490,3 @@ class DomainThreadsView(HomeView):
 
     def get_sticky(self):
         return None
-
-
-class NewspaperView(ListView):
-    template_name = 'newspaper.html'
-
-    def get_queryset(self):
-        return None
-
-    def get_context_data(self, **kwargs):
-        context = super(NewspaperView, self).get_context_data(**kwargs)
-        config = newspaper.Config()
-        config.memoize_articles = False
-        tc_paper = newspaper.build('http://cnn.com', config=config, language=str(settings.LANGUAGE_CODE))
-        context['object_list'] = tc_paper.articles
-
-        return context
