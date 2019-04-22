@@ -1,4 +1,6 @@
 mysqlclient
+python-dotenv
+six
 Django
 django-registration-redux
 django-debug-toolbar
@@ -12,3 +14,4 @@ django-pagination-bootstrap
 django-markdownx
 #django-siteprefs
 django-memoize
+django-etc

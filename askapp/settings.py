@@ -12,11 +12,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import sys
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import BooleanField, CharField
-
-print("system=->", sys.path)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,11 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-def get_env_variable(var_name):
+def get_env_variable(var_name, default_value=None):
     """Get the environment variable or return exception."""
-    print(os.environ[var_name])
     try:
-        return os.environ[var_name]
+        return os.environ[var_name] if default_value is None else os.getenv(var_name, default_value)
     except KeyError:
         error_msg = "Set the {} environment variable.".format(var_name)
         raise ImproperlyConfigured(error_msg)
@@ -37,7 +33,7 @@ def get_env_variable(var_name):
 SECRET_KEY = get_env_variable('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 INTERNAL_IPS = ['127.0.0.1', '::1']
 
@@ -116,7 +112,7 @@ CACHES = {
 
 # [START db_setup]
 # get database parameters from environment variables
-DB_HOST = get_env_variable('DB_HOST')
+DB_HOST = get_env_variable('DB_HOST', 'localhost')
 DB_DATABASE = get_env_variable('DB_DATABASE')
 DB_USER = get_env_variable('DB_USER')
 DB_PASSWORD = get_env_variable('DB_PASSWORD')
@@ -168,8 +164,8 @@ AUTH_USER_MODEL = 'auth.User'
 LOGIN_REDIRECT_URL = '/'
 
 # RECAPTCHA KEYS
-RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY')
-RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY', '')
+RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 # List of domains that are not allowed to have email account on

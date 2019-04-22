@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
+from django.views.static import serve
 from django.conf.urls.static import static
 from django.http import HttpResponse
 
@@ -13,6 +14,8 @@ from markdownx.urls import urlpatterns as markdownx_urls
 
 urlpatterns = [
     # system URLs
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     url(r'^admin/', admin.site.urls),
     url(r'^markdownx/', (markdownx_urls, 'markdownx', 'markdownx')),
     #url(r'^i18n/', django.conf.urls.i18n),
@@ -72,4 +75,3 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', debug_toolbar.urls + ('djdt', )),
     ]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
