@@ -1,7 +1,7 @@
-mysqlclient
+#mysqlclient
 python-dotenv
 six
-Django
+#Django
 django-registration-redux
 django-debug-toolbar
 django-recaptcha2

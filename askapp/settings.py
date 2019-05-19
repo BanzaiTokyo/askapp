@@ -160,6 +160,7 @@ YESNO = (
 
 AUTH_USER_MODEL = 'auth.User'
 
+FORCE_SCRIPT_NAME = os.getenv('PROJECT_PREFIX')
 # the url where the user will be redirected after they log in
 LOGIN_REDIRECT_URL = '/'
 
@@ -170,7 +171,7 @@ RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 # List of domains that are not allowed to have email account on
 # Confirmation email will silently fail to be sent
-BLACKLISTED_DOMAINS = ['yopmail1.com', ]
+BLACKLISTED_DOMAINS = ['yopmail.com', ]
 
 # STATIC_ROOT='static'
 STATIC_ROOT = os.path.join(BASE_DIR, "askapp/static")

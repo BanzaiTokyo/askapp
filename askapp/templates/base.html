@@ -1,4 +1,5 @@
 {% load bootstrap3 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {# Load CSS and JavaScript #}
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="{% static "js/jquery.min.js" %}"></script>
     {% bootstrap_javascript %}
     {% bootstrap_css %}
 
     {% block css %}
-        <link rel="stylesheet" href="/static/style.css"/>
+        <link rel="stylesheet" href="{% static "style.css" %}" />
     {% endblock %}
 
     <title>

@@ -22,9 +22,14 @@ https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 """
 
 import os
+import sys
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+project_dir = str(Path(os.path.abspath(__file__)).parent.parent)
+sys.path.append(project_dir)
+
+load_dotenv(os.path.join(project_dir, '.env'))
 
 from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "askapp.settings")
