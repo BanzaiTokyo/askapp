@@ -90,7 +90,7 @@ class FavoriteThreadsView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'home_page': False,
-            'threads': self.request.user.profile.favorite_threads,
+            'threads': self.request.user.profile.favorite_threads if self.request.user.is_authenticated else None,
         }
         return render(request, 'favorites.html', context)
 
@@ -111,7 +111,7 @@ class ProfileView(DetailView):
         context['threads'] = models.Thread.objects.filter(user=self.object, deleted=False).order_by('-created')
         context['per_page'] = settings.PAGINATION_THREADS_PER_PROFILE
         context['admin_view'] = self.request.user.is_staff
-        context['favorites'] = self.request.user.profile.favorite_threads
+        context['favorites'] = self.request.user.profile.favorite_threads if self.request.user.is_authenticated else None
         return context
 
 

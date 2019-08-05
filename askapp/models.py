@@ -33,7 +33,7 @@ class OverwriteStorage(FileSystemStorage):
     """
     When saving an image, this storage class deletes existing file, thus implementing the overwriting feature
     """
-    def get_available_name(self, name):
+    def get_available_name(self, name, *args, **kwargs):
         if self.exists(name):
             os.remove(os.path.join(settings.MEDIA_ROOT, name))
         return name
