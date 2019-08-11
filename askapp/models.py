@@ -216,7 +216,7 @@ class Thread(models.Model):
     thread_type = models.CharField(
         max_length=2,
         choices=TYPES_OF_THREAD,
-        default=DISCUSSION,
+        default=LINK,
         null=True
     )
 
