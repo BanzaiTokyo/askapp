@@ -23,6 +23,7 @@ EMAIL_ADDRESS, EMAIL_HOST_PASSWORD - SMTP credentials```
 ## Peculiarities when deploying to a Django instance from Bitnami hosted on AWS
 - DB_HOST is /opt/bitnami/mysql/tmp/mysql.sock, DB_USER=root, DB_PASSWORD is taken from https://docs.bitnami.com/aws/faq/get-started/find-credentials/
 - python executable is named "python3" there
+- cron job may look like "0  *  * * *   bitnami /bin/bash -c '. $HOME/.profile; python3 manage.py calculate_scores'"
 
 #### Additional steps:
 - cp ../Project/conf ./
