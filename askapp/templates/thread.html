@@ -16,6 +16,7 @@
     {% rule 'askapp.thread.update' object as can_update %}
     {% rule 'askapp.thread.delete' object as can_delete %}
     {% rule 'askapp.post.create' object as can_reply %}
+    {% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
     {% rule 'askapp.threadlike.up' object as can_like_thread %}
     {% rule 'askapp.threadlike.down' object as can_dislike_thread %}
     <!--First Thread-->
