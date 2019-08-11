@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
-from django.views.generic.list import ListView
 from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
-from askapp.score_calcuator import calculate_scores
 from askapp.settings import BLACKLISTED_DOMAINS, REGISTRATION_OPEN, SITE_NAME
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -47,7 +45,6 @@ class HomeView(View):
         """
         Returns the list of threads to display on the page. This function is overwritten in descendant classes
         """
-        calculate_scores()  # a temporary solution, whilst a cron is not programmed
         # pick up non-sticky or old sticky threads
         result = models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')
         return result[:10]
