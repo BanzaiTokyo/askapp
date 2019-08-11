@@ -21,7 +21,13 @@ img {
     height: 50px;
     background-color: #f5f5f5;
 }
-
+.footer .nav>li {
+    display: inline-block;
+}
+.footer .navbar-nav {
+    margin-bottom: 0;
+    margin-top: 5px;
+}
 .bs-callout {
     padding: 20px;
     margin: 20px 0;
