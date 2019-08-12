@@ -137,8 +137,9 @@ ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL = get_env_variable('EMAIL_ADDRESS')
 
 # outgoing mail server settings
-SERVER_EMAIL = EMAIL
 DEFAULT_FROM_EMAIL = EMAIL
+EMAIL = EMAIL.split(' ')[-1].replace('<', '').replace('>', '')
+SERVER_EMAIL = EMAIL
 EMAIL_HOST_USER = EMAIL
 EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD')
 EMAIL_SUBJECT_PREFIX = '[Akihabara.Tokyo]'
