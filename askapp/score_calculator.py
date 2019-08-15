@@ -24,7 +24,7 @@ def calculate_scores(weeks=100):
               GROUP BY thread_id) l
         ON t.id = l.thread_id
         SET score = IFNULL(l.points, 0) / POW(GREATEST(TIMESTAMPDIFF(HOUR, t.created, now()), 1), {GRAVITY}) * {MAGNIFIER}
-        WHERE t.deleted = 0 AND t.score > 0
+        WHERE t.deleted = 0
     """
     if weeks:
         # get threads that are not older than X weeks
