@@ -108,7 +108,10 @@ class ProfileView(DetailView):
         context['threads'] = models.Thread.objects.filter(user=self.object, deleted=False).order_by('-created')
         context['per_page'] = settings.PAGINATION_THREADS_PER_PROFILE
         context['admin_view'] = self.request.user.is_staff
-        context['favorites'] = self.request.user.profile.favorite_threads if self.request.user.is_authenticated else None
+        try:
+            context['favorites'] = self.object.profile.favorite_threads if self.request.user.is_authenticated else None
+        except models.Profile.DoesNotExist:
+            context['favorites'] = None
         return context
 
 
