@@ -27,11 +27,11 @@ EMAIL_ADDRESS, EMAIL_HOST_PASSWORD - SMTP credentials```
 
 #### Additional steps:
 - cp ../Project/conf ./
-- sed -i 's|Project/Project|<project_dir>/askapp' *
-- sed -i 's|Project|<project_dir>' *
+- sed -i 's|Project/Project|<project_dir>/askapp|g' *
+- sed -i 's|Project|<project_dir>|g' *
+- sed -i 's|wsgi-djangostack |wsgi-djangostack user=bitnami group=bitnami|' conf/httpd-app.conf
 - sudo echo Include \"$(readlink -f conf/httpd-prefix.conf)\" >> ~/stack/apache2/conf/bitnami/bitnami-apps-prefix.conf
 - sudo /opt/bitnami/ctlscript.sh restart apache
 - mkdir askapp/media
-- sudo chown daemon:daemon -R askapp/media
 - sudo chmod 755 askapp/media
-- mkdir -p /var/tmp/askapp_cache && sudo chown daemon:daemon /var/tmp/askapp_cache
+- mkdir -p /var/tmp/askapp_cache
