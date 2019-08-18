@@ -30,7 +30,7 @@
         {% endif %}
         {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
                                       href="{% url 'thread_like' thread.id thread.title|slugify 'down' %}"></a>{% endif %}
-        {% if thread.thread_type == 'LL' %}
+        {% if thread.thread_type in 'LL,YT' %}
             <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
         {% elif thread.thread_type == 'DD' %}
             <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
@@ -52,7 +52,7 @@
             <div class="col-xs-12    col-md-12">
         {% endif %}
 
-        {% if thread.thread_type == 'LL' %}
+        {% if thread.thread_type in 'LL,YT' %}
             <a href="{{ thread.link }}">{{ thread.title }}</a>
 
         {% else %}

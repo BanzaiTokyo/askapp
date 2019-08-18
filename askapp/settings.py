@@ -169,6 +169,8 @@ LOGIN_REDIRECT_URL = '/'
 RECAPTCHA_PRIVATE_KEY = get_env_variable('RECAPTCHA_PRIVATE_KEY', '')
 RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+# Google API key
+GOOGLE_API_KEY = get_env_variable('GOOGLE_API_KEY', '')
 
 # List of domains that are not allowed to have email account on
 # Confirmation email will silently fail to be sent

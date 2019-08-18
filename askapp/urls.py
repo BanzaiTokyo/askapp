@@ -62,6 +62,7 @@ urlpatterns = [
     url(r'^post/(?P<post_id>\d+)/vote/(?P<verb>up|down)$', views.PostLikeView.as_view(), name="post_like"),
     url(r'^post/(?P<post_id>\d+)/accept$', views.AcceptAnswerView.as_view(), name="accept_answer"),
 
+    url(r'^ytinfo$', views.YoutubeInfo.as_view(), name="youtube_info"),
     # robots.txt
     url(r'^robots.txt$', lambda r: HttpResponse("User-agent: * \n Allow: / ", content_type="text/plain")),
 ]

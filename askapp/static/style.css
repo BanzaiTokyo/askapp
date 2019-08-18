@@ -81,7 +81,7 @@ img {
     border-left-color: #d9534f;
 }
 
-.bs-callout-danger h4 {
+.bs-callout-danger h4, .errorlist {
     color: #d9534f;
 }
 

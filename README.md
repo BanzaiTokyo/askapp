@@ -18,7 +18,13 @@ DB_DATABASE - database name
 DB_USER, DB_PASSWORD - MySQL credentials
 DB_PASSWORD - database user password
 EMAIL_HOST - SMTP server address
-EMAIL_ADDRESS, EMAIL_HOST_PASSWORD - SMTP credentials```
+EMAIL_ADDRESS, EMAIL_HOST_PASSWORD - SMTP credentials
+GOOGLE_API_KEY - a key for Youtube API to pull description for Youtube videos```
+
+### How to get Google API Key
+There are numerous tutorials how to do that, for example
+https://www.slickremix.com/docs/get-api-key-for-youtube/ or https://www.yotuwp.com/how-to-get-youtube-api-key/
+
 
 ## Peculiarities when deploying to a Django instance from Bitnami hosted on AWS
 - DB_HOST is /opt/bitnami/mysql/tmp/mysql.sock, DB_USER=root, DB_PASSWORD is taken from https://docs.bitnami.com/aws/faq/get-started/find-credentials/

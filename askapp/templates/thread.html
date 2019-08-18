@@ -84,7 +84,11 @@
 
                 </div>
 
-                {% if object.image %}
+                {% if object.thread_type == 'YT' %}
+                    <div class="embed-responsive embed-responsive-16by9">
+                      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ object.youtube_id }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% elif object.image %}
                     <br>
                     <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;">
                 {% endif %}

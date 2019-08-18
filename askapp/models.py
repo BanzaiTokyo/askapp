@@ -1,4 +1,5 @@
 import os
+import logging
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -17,6 +18,8 @@ try:
 except:
     from urlparse import urlparse
 from datetime import datetime
+import re
+import requests
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
@@ -184,13 +187,15 @@ class Thread(models.Model):
     QUESTION = "QQ"
     DISCUSSION = "DD"
     LINK = "LL"
+    YOUTUBE = "YT"
 
     # iterable collection for types of posts
     # must consist of iterables of exactly two items
     TYPES_OF_THREAD = (
-        (QUESTION, _('Question')),
+        #(QUESTION, _('Question')),
         (DISCUSSION, _('Discussion')),
         (LINK, _('Link')),
+        (YOUTUBE, _('Youtube video')),
     )
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
@@ -255,24 +260,71 @@ class Thread(models.Model):
         super(Thread, self).save()
         AuditThread.audit(self)  # log all changes applied to the thread
 
-    def prepare_images(self):
-        if not self.id:
-            return
+    def _delete_old_image(self):
         try:
             this = Thread.objects.get(id=self.id)
             if this.image != self.image:
-                #delete old image explicitly, as new image will have different name
+                # delete old image explicitly, as new image will have different name
                 this.image.delete(False)
                 this.thumbnail.delete(False)
         except Exception as ex:
             pass
 
+    @cached_property
+    def youtube_id(self):
+        # url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+        # return undefined !== url[2]?url[2].split(/[^0-9a-z_\-]/i)[0]:url[0];
+        r = r"(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)"
+        video_id = re.split(r, self.link)
+        if len(video_id) == 3:
+            video_id = re.split(r"[^0-9a-z_\-](?i)", video_id[2])
+        return video_id[0] if video_id else None
+
+    def parse_youtube_url(self):
+        id = self.youtube_id
+        item = None
+        if settings.GOOGLE_API_KEY:
+            snippet = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={id}&key={settings.GOOGLE_API_KEY}')
+            snippet = snippet.json()
+            if snippet.get('items'):
+                item = snippet['items'][0]['snippet']
+                item['image'] = item['thumbnails']['default']['url']
+        else:
+            snippet = requests.get(f'https://noembed.com/embed?url=https://www.youtube.com/watch?v={id}')
+            snippet = snippet.json()
+            if snippet.get('title'):
+                item = snippet
+                item['image'] = item['thumbnail_url']
+                item['description'] = ''
+        result = None
+        if item:
+            result = {k: item[k] for k in ['title', 'description', 'image']}
+            result['id'] = id
+        return result
+
+    def _load_youtube_thumbnail(self):
+        yt_info = self.parse_youtube_url()
+        if yt_info:
+            filename = os.path.basename(yt_info['image'])
+            ext = filename.split('.', 1)[-1]
+            filename = '%s.%s' % (yt_info['id'], ext)
+            response = requests.get(yt_info['image'])
+            self.image = SimpleUploadedFile(filename, response.content, response.headers['content-type'])
+
+    def prepare_images(self):
+        if self.thread_type == 'YT' and not self.image:
+            self._load_youtube_thumbnail()
+        if not self.id:
+            return
+        self._delete_old_image()
+
     def update_link(self):
         """
         extract domain name for threads of type "link"
         """
-        if self.thread_type != 'LL':
+        if self.thread_type not in ['LL', 'YT']:
             self.link = None
+        if self.thread_type != 'LL':
             self.domain = None
         else:
             hostname = urlparse(self.link)

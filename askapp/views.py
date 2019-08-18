@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db.models import ObjectDoesNotExist
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest
 from django.template.defaultfilters import slugify
 from django.urls import resolve
 from django.db.models import Q, Count, Avg
@@ -490,3 +490,12 @@ class DomainThreadsView(HomeView):
 
     def get_sticky(self):
         return None
+
+
+class YoutubeInfo(View):
+    def get(self, request, *args, **kwargs):
+        yt_url = request.GET.get('q', '')
+        data = models.Thread(link=yt_url).parse_youtube_url()
+        if data:
+            return JsonResponse(data)
+        return HttpResponseBadRequest('This URL does not seem a valid YouTube link')

@@ -13,10 +13,11 @@
 	            {{ form.thread_type }}
             </div>
             {% endif %}
-            {% if not form.instance.pk or admin_view or form.instance.thread_type == 'LL' %}
+            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'LL,YT' %}
             <div class="form-group" id="url_group">
 	            <label for="id_link">URL:</label>
 	            {{ form.link }}
+              <button id="yt_group" onclick="return preload_youtube()" class="btn btn-info">Preload</button>
 	            {{ form.link.errors }}
             </div>
             {% endif %}
@@ -51,13 +52,41 @@
 {{ form.media }}
 {% if not form.instance.pk or admin_view %}
 <script>
+
+function preload_youtube() {
+  url = $('#id_link').val();
+  $.getJSON('{% url 'youtube_info' %}?q='+url, function(data) {
+    $('#id_title').val(data.title);
+    $('#id_text').val(data.description);
+    img = $('.form-group img');
+    if (!img.length)
+      img = $('#id_image').before('<img src="'+data.image+'" />');
+    else
+      img.attr('src', data.image);
+  }).error(function() {
+    alert('This is not a valid YouTube URL');
+    $('#id_link').val('').triggerHandler('input');
+  });
+  return false;
+}
 $('#id_thread_type').on('change', function() {
-	if ($(this).val() == 'LL')
+	if ($(this).val() == 'LL' || $(this).val() == 'YT')
 		$('#url_group').show();
 	else
 		$('#url_group').hide();
+  if ($('#id_thread_type').val() == 'YT')
+    $('#yt_group').show();
+  else
+    $('#yt_group').hide();
 });
+$('#id_link').on('input', function () {
+  if (this.value)
+    $('#yt_group').removeAttr('disabled');
+  else
+    $('#yt_group').attr('disabled', 'disabled')
+})
 $('#id_thread_type').triggerHandler('change');
+$('#id_link').triggerHandler('input');
 </script>
 {% endif %}
 {% endblock %}
