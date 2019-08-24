@@ -21,12 +21,12 @@
 
     {#  Thread #}
     <div class="row thread-list-row">
-    <div class="col-xs-1 {% if sticky and thread.sticky or thread.featured %}mt-15{% endif %}">
+    <div class="vote-buttons col-xs-1 {% if sticky and thread.sticky or thread.featured %}mt-15{% endif %}">
         {% rule 'askapp.threadlike.up' thread as can_like_thread %}
         {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
         {% include 'thread_like_button.html' with object=thread %}
         {% if home_page %}
-            <h2 class="text-center">{{ thread.points }}</h2>
+            <h2>{{ thread.points }}</h2>
         {% endif %}
         {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
                                       href="{% url 'thread_like' thread.id thread.title|slugify 'down' %}"></a>{% endif %}
