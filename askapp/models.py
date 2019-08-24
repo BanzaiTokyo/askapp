@@ -450,11 +450,12 @@ class ThreadLike(models.Model):
         try:
             obj = cls.objects.get(**kwargs)
             if not rules_light.registry['askapp.threadlike.%s' % verb](user, None, obj):
-                return
+                return obj
         except ObjectDoesNotExist:
             obj = cls(points=0, **kwargs)
         obj.points += points
         obj.save()
+        return obj
 
 
 class PostLike(models.Model):
@@ -479,11 +480,11 @@ class PostLike(models.Model):
         try:
             obj = cls.objects.get(**kwargs)
             if not rules_light.registry['askapp.postlike.%s' % verb](user, None, obj):
-                return
+                return obj
         except ObjectDoesNotExist:
             obj = cls(points=0, **kwargs)
         obj.points += points
-        obj.save()
+        return obj
 
 
 class AuditThread(models.Model):

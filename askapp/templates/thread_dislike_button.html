@@ -1,0 +1,5 @@
+{% if can_dislike_thread %}
+  <a class="btn glyphicon glyphicon-chevron-down text-danger a"
+      href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
+      title="Downvote"></a>
+{% endif %}

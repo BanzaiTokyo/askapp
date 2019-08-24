@@ -24,9 +24,8 @@
         <div>
             <div class="col-xs-1">
                 {% include 'thread_like_button.html' with object=object %}
-                {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
-                                              href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
-                                              title="Downvote"></a>{% endif %}
+                {% include 'thread_dislike_button.html' with object=object %}
+
                 {% if can_delete %}<a class="btn glyphicon glyphicon-trash text-danger"
                                       href="{% url 'delete_thread' object.id object.title|slugify %}"
                                       title="Delete thread"></a>{% endif %}
@@ -42,7 +41,7 @@
                     {% endif %}
                 {% endif %}
 
-                <h2 class="text-center">{{ object.points }}</h2>
+                <h2 class="text-center num-points">{{ object.points }}</h2>
 
                 {# Check the type of thread #}
                 {% if object.thread_type == 'LL' %}

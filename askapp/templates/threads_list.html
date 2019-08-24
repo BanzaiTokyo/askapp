@@ -26,10 +26,9 @@
         {% rule 'askapp.threadlike.down' thread as can_dislike_thread %}
         {% include 'thread_like_button.html' with object=thread %}
         {% if home_page %}
-            <h2>{{ thread.points }}</h2>
+            <h2 class="num-points">{{ thread.points }}</h2>
         {% endif %}
-        {% if can_dislike_thread %}<a class="btn glyphicon glyphicon-chevron-down text-danger"
-                                      href="{% url 'thread_like' thread.id thread.title|slugify 'down' %}"></a>{% endif %}
+        {% include 'thread_dislike_button.html' with object=thread %}
         {% if thread.thread_type == 'LL' %}
             <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
         {% elif thread.thread_type == 'YT' %}
