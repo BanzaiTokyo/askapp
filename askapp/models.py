@@ -370,6 +370,10 @@ class Thread(models.Model):
 
 
 class Post(MPTTModel):
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+
     """
     Post is a part of the discussion on the levels below Thread
     It can be comments, answers organized in several levels
