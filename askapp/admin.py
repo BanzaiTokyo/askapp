@@ -5,6 +5,7 @@ from django.db import models
 from markdownx.widgets import AdminMarkdownxWidget
 from askapp.models import Profile, Thread, Tag, Post
 
+
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
@@ -14,9 +15,10 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, )
 
-class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'email', 'id',)
 
+class CustomUserAdmin(UserAdmin):
+    ordering = ('-date_joined',)
+    list_display = ('username', 'first_name', 'last_name', 'email', 'id','date_joined')
 
 
 class ThreadAdmin(admin.ModelAdmin):
@@ -28,6 +30,7 @@ class ThreadAdmin(admin.ModelAdmin):
         models.TextField: {'widget': AdminMarkdownxWidget},
     }
 
+
 class PostAdmin(admin.ModelAdmin):
     list_display = ('created', 'text', 'author')
     list_display_links = ('text',)
@@ -35,6 +38,7 @@ class PostAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': AdminMarkdownxWidget},
     }
+
 
 class TagAdmin(admin.ModelAdmin):
     exclude = ('slug', )

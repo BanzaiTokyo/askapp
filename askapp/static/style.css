@@ -107,7 +107,10 @@ img {
     padding: 0 12px;
 }
 .thread-list-row h2 {
-    margin: 0;
+    margin: 0 7px 0 0;
+}
+.markdownx-editor {
+    width: 100%;
 }
 @media (min-width: 601px) {
  .m {display: none;}
