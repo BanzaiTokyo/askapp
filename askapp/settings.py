@@ -124,6 +124,7 @@ DATABASES = {
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
         'HOST': DB_HOST,
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 
 }
