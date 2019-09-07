@@ -87,7 +87,7 @@ class FavoriteThreadsView(View):
     def get(self, request, *args, **kwargs):
         context = {
             'home_page': False,
-            'threads': self.request.user.profile.favorite_threads if self.request.user.is_authenticated else None,
+            'threads': self.request.user.profile.favorite_threads if hasattr(self.request.user, 'profile') else [],
         }
         return render(request, 'favorites.html', context)
 

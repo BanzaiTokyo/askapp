@@ -2,5 +2,9 @@
 {% load static %}
 
 {% block content %}
-	{% include 'threads_list.html' with threads=threads sticky=False %}
+  {% if threads %}
+	  {% include 'threads_list.html' with threads=threads sticky=False %}
+  {% else %}
+    <h2>You have no favorite threads yet</h2>
+  {% endif %}
 {% endblock %}

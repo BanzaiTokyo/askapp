@@ -138,10 +138,10 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def delete_user_content(sender, instance, created, **kwargs):
     """
-     Signal handler running after Django.user object is saved. This handler creates a Profile object for new user.
-     And for disabled user it marks as "deleted" all user's threads and posts
+     Signal handler running after Django.user object is saved.
+     For disabled user it marks as "deleted" all user's threads and posts
     """
     if not instance.is_active:
         if kwargs['update_fields'] and 'is_active' in kwargs['update_fields']:
@@ -149,16 +149,6 @@ def create_user_profile(sender, instance, created, **kwargs):
             # delete user threads and posts
             Post.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
             Thread.objects.filter(user_id=instance.id, deleted=False).update(deleted=True)
-    elif created:
-        return #Profile.objects.create(user=instance)
-    else:
-        return
-        # even though "created" is False (this is a regular update), ensure that the Profile object exists
-        try:
-            profile = instance.profile
-        except:
-            profile = Profile.objects.create(user=instance)
-            instance.profile = profile
 
 
 class Tag(models.Model):
