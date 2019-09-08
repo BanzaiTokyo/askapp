@@ -70,7 +70,6 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'rules_light.middleware.Middleware',
     'pagination_bootstrap.middleware.PaginationMiddleware',
     'askapp.middleware.WhodidMiddleware',
@@ -209,6 +208,7 @@ NUM_DOMAIN_STATS = 3
 UPVOTES_PER_DAY = 3
 
 ABOUT_TEXT = ''
+AUDIT_LOG_SIZE = 100
 
 from django.conf import settings
 if 'siteprefs' in settings.INSTALLED_APPS:
