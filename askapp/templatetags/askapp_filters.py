@@ -1,5 +1,5 @@
 import markdown
-from askapp.settings import MARKDOWNX_MARKDOWN_EXTENSIONS, MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS
+from askapp import settings
 from django import template
 from django.utils.safestring import mark_safe
 import re
@@ -9,7 +9,11 @@ register = template.Library()
 
 @register.filter(is_safe=True)
 def markdownify(content):
-    s = markdown.markdown(content, extensions=MARKDOWNX_MARKDOWN_EXTENSIONS, extension_configs=MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS)
+    s = markdown.markdown(
+        content,
+        extensions=settings.MARKDOWNX_MARKDOWN_EXTENSIONS,
+        extension_configs=settings.MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS
+    )
     return mark_safe(s)
 
 @register.filter(is_safe=True)
@@ -26,3 +30,7 @@ def url_active(context, viewname):
         return 'active'
     else:
         return ''
+
+@register.filter
+def avatar_url(user):
+    return (user.profile.avatar.url if hasattr(user, 'profile') else '') or settings.DEFAULT_AVATAR_URL

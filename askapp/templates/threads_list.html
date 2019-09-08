@@ -78,7 +78,7 @@
             {% url 'thread' thread.id thread.title|slugify as url_thread %}
 
                 <p>posted by <a href="{{ url_profile }}">
-                    <img src="{{ thread.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
+                    <img src="{{ thread.user|avatar_url }}" width="20" height="20"/>&nbsp;{{ thread.user }}</a>
                     | {{ thread.created|timesince }} ago |
 <a href="{{ url_thread }}">{{ thread.num_comments }} comment{{ thread.num_comments|pluralize }}</a></p>
 

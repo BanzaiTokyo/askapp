@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load askapp_filters %}
 
 
 {% block title %}
@@ -11,7 +12,7 @@
     {% rule 'askapp.profile.update' object as can_update %}
     <div class="row">
         <div class="col-md-6">
-            <img src="{{ object.profile.avatar.url }}">
+            <img src="{{ object|avatar_url }}">
         </div>
 
         <h3>

@@ -30,7 +30,7 @@
             {% url 'profile' object.user.id object.user|slugify as url_profile %}
             {% url 'thread' object.thread.id object.thread.title|slugify as url_thread %}
             #{{ object.id }} | posted by
-            <a href="{{ url_profile }}"><img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a> |
+            <a href="{{ url_profile }}"><img src="{{ object.user|avatar_url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a> |
             {{ object.created|timesince }} ago on
             <a href="{{ url_thread }}">{{ object.thread.title|truncatechars:60 }}</a>
 

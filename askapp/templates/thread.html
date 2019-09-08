@@ -72,7 +72,7 @@
                     {# Example: posted by  banzaitokyo | 3 weeks, 6 days ago in Anime & Manga#}
                     {% url 'profile' object.user.id object.user|slugify as url_profile %}
                     posted by <a href="{{ url_profile }}">
-                    <img src="{{ object.user.profile.avatar.url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
+                    <img src="{{ object.user|avatar_url }}" width="20" height="20"/>&nbsp;{{ object.user }}</a>
 
                     |
                     {{ object.created|timesince }} ago

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load askapp_filters %}
 
 {% block content %}
   {% include 'threads_list.html' with threads=sticky sticky=True %}
@@ -31,7 +32,7 @@
 	            {% for user in users %}
                 <li class="list-group-item">
                     <a href="{% url 'profile' user.id user|slugify %}">
-                        <img src="{{ user.profile.avatar.url }}" alt="" width="20" height="20"/>
+                        <img src="{{ user|avatar_url }}" alt="" width="20" height="20"/>
                         {{ user.username }}</a>
                 </li>
 	            {% endfor %}
