@@ -13,6 +13,11 @@ body {
 img {
     max-width: 100%;
 }
+.navbar-brand img {
+    display: inline;
+    max-height: calc(100% + 30px);
+    margin: -15px 0;
+}
 .footer {
     position: absolute;
     bottom: 0;

@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static "images/favicon.png" %}">
 
     {# Load CSS and JavaScript #}
     <script src="{% static "js/jquery.min.js" %}"></script>
@@ -55,7 +56,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'index' %}">{{ site_name }}</a>
+                <a class="navbar-brand" href="{% url 'index' %}">
+                  {% if site_logo %}<img src="{% static site_logo %}"/>{% endif %}
+                  {{ site_name }}
+                </a>
             </div>
 
 

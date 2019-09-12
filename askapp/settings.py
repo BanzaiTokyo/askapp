@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import BooleanField, CharField
+from django.db.models import BooleanField, CharField, ImageField
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,7 +33,7 @@ def get_env_variable(var_name, default_value=None):
 SECRET_KEY = get_env_variable('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 INTERNAL_IPS = ['127.0.0.1', '::1']
 
@@ -194,6 +194,7 @@ PAGINATION_THREADS_PER_PROFILE = 3
 
 # setting used by Django "sites" framework
 SITE_NAME = 'Akihabara'
+SITE_LOGO = 'images/logo.png'  # consider file path is relative to static files
 
 # Markdown extensions
 MARKDOWNX_MARKDOWN_EXTENSIONS = ['markdown.extensions.nl2br', ]
