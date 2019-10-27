@@ -12,7 +12,7 @@
 			deleted
         {% else %}
         {% if can_like_post %}
-          <a class="btn glyphicon glyphicon-chevron-up a" href="{% url 'post_like' node.id 'up' %}" title="Upvote"></a>
+          <a class="btn glyphicon glyphicon-chevron-up a postlike" href="{% url 'post_like' node.id 'up' %}" title="Upvote"></a>
         {% elif request.user.is_active %}
           <a class="btn glyphicon glyphicon-chevron-up disabled" title="Upvote"></a>
         {% else %}

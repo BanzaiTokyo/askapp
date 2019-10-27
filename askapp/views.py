@@ -392,14 +392,19 @@ class TagView(HomeView):
 
 class ThreadLikeView(LoginRequiredMixin, View):
     """
-    /thread/:id/:slug/vote/up|down handler. Todo: refactor for AJAX?
+    /thread/:id/:slug/vote/up|down handler.
     """
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
         rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
         tl = models.ThreadLike.vote(thread, request.user, kwargs['verb'])
         if 'application/json' in request.META.get('CONTENT_TYPE', '').lower():
-            return JsonResponse({'points': tl.points})
+            thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
+            return JsonResponse({
+                'points': thread.points,
+                'can_like_thread': rules_light.registry['askapp.threadlike.%s' % kwargs['verb']](request.user, None, thread),
+                'can_upvote_threads': rules_light.registry['askapp.user.upvote_threads'](request.user, None)
+            })
         else:
             return redirect(request.META.get('HTTP_REFERER',
                                              reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
@@ -407,14 +412,18 @@ class ThreadLikeView(LoginRequiredMixin, View):
 
 class PostLikeView(LoginRequiredMixin, View):
     """
-    /post/:id/:slug/vote/up|down handler. Todo: refactor for AJAX?
+    /post/:id/:slug/vote/up|down handler.
     """
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
         pl = models.PostLike.vote(post, request.user, kwargs['verb'])
         if 'application/json' in request.META.get('CONTENT_TYPE', '').lower():
-            return JsonResponse({'points': pl.points})
+            post = get_object_or_404(models.Post, pk=kwargs['post_id'])
+            return JsonResponse({
+                'points': post.points,
+                'can_like_post': rules_light.registry['askapp.postlike.%s' % kwargs['verb']](request.user, None, post),
+            })
         else:
             return redirect(request.META.get('HTTP_REFERER',
                                              reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
