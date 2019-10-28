@@ -396,7 +396,7 @@ class ThreadLikeView(LoginRequiredMixin, View):
     """
     def post(self, request, *args, **kwargs):
         thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
-        rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
+        #rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
         tl = models.ThreadLike.vote(thread, request.user, kwargs['verb'])
         if 'application/json' in request.META.get('CONTENT_TYPE', '').lower():
             thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
@@ -416,7 +416,7 @@ class PostLikeView(LoginRequiredMixin, View):
     """
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
-        rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
+        #rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
         pl = models.PostLike.vote(post, request.user, kwargs['verb'])
         if 'application/json' in request.META.get('CONTENT_TYPE', '').lower():
             post = get_object_or_404(models.Post, pk=kwargs['post_id'])
