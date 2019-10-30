@@ -19,7 +19,7 @@
           <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'post_like' node.id 'up' %}" title="Upvote"></a>
         {% endif %}
         <span class="text-danger num-points"> {{ node.points }} </span>
-        {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger a" href="{% url 'post_like' node.id 'down' %}" title="Downvote"></a>{% endif %}
+        {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger a postlike" href="{% url 'post_like' node.id 'down' %}" title="Downvote"></a>{% endif %}
         {% if can_delete_comment %}<a href="{% url 'delete_comment' node.id %}" title="Delete this comment" class="glyphicon glyphicon-trash text-danger"></a>{% endif %}
         {% if can_delete_comment_tree %} &nbsp; |  &nbsp; <a href="{% url 'delete_comment_tree' node.id %}" title="Delete this comment and all its children"> <span class="glyphicon glyphicon-scissors text-danger"></span>  </a> &nbsp; {% endif %}
 
