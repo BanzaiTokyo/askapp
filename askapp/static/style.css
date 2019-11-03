@@ -108,10 +108,11 @@ img {
 .mt-15 {
  margin-top: 15px;
 }
-.vote-buttons .btn {
+.vote-buttons .glyphicon {
     display: block;
     text-align: center;
     padding: 0;
+    line-height: 20px;
 }
 .vote-buttons h2 {
     margin: 0;

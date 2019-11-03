@@ -30,13 +30,13 @@
         {% endif %}
         {% include 'thread_dislike_button.html' with object=thread %}
         {% if thread.thread_type == 'LL' %}
-            <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
         {% elif thread.thread_type == 'YT' %}
-            <span class="btn glyphicon glyphicon-play-circle disabled" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
         {% elif thread.thread_type == 'DD' %}
-            <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
         {% elif thread.thread_type == 'QQ' %}
-            <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
         {% endif %}
     </div>
 

@@ -43,15 +43,16 @@
 
                 <h2 class="text-center num-points">{{ object.points }}</h2>
 
+                <div class="vote-buttons">
                 {# Check the type of thread #}
                 {% if object.thread_type == 'LL' %}
-                    <span class="btn glyphicon glyphicon-link disabled" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
                 {% elif object.thread_type == 'DD' %}
-                    <span class="btn glyphicon glyphicon-comment disabled" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 {% elif object.thread_type == 'QQ' %}
-                    <span class="btn glyphicon glyphicon-question-sign disabled" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                 {% endif %}
-
+                </div>
             </div>
             <div class="col-xs-10 col-sm-11  col-md-11">
                 <h2>
