@@ -13,12 +13,12 @@
   <div id="content-main">
     <div style="padding: 0 0 10px 0">
       <label>
-      {% if hide_bot %}
+      {% if show_tech %}
         <input type="checkbox" checked onclick="window.location='{{ request.path }}'">
       {% else %}
-        <input type="checkbox" onclick="window.location='{{ request.path }}?hide_tech=true'">
+        <input type="checkbox" onclick="window.location='{{ request.path }}?show_tech=true'">
       {% endif %}
-        Hide tech. user activity
+        Show tech. user activity
       </label>
     </div>
     <div class="module" id="changelist">

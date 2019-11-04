@@ -83,20 +83,20 @@ def combined_recent(limit, **kwargs):
 
 
 def audit_view(request, model_admin):
-    hide_tech = request.GET.get('hide_tech') == 'true'
-    if hide_tech:
-        log = combined_recent(
-            limit=settings.AUDIT_LOG_SIZE,
-            threadlike=ThreadLike.objects.exclude(user_id=settings.TECH_USER),
-            thread=Thread.objects.exclude(user_id=settings.TECH_USER),
-            comment=Post.objects.exclude(user_id=settings.TECH_USER),
-        )
-    else:
+    show_tech = request.GET.get('show_tech') == 'true'
+    if show_tech:
         log = combined_recent(
             limit=settings.AUDIT_LOG_SIZE,
             threadlike=ThreadLike.objects.all(),
             thread=Thread.objects.all(),
             comment=Post.objects.all(),
+        )
+    else:
+        log = combined_recent(
+            limit=settings.AUDIT_LOG_SIZE,
+            threadlike=ThreadLike.objects.exclude(user_id=settings.TECH_USER),
+            thread=Thread.objects.exclude(user_id=settings.TECH_USER),
+            comment=Post.objects.exclude(user_id=settings.TECH_USER),
         )
     opts = model_admin.model._meta
     app_config = apps.get_app_config(opts.app_label)
@@ -105,7 +105,7 @@ def audit_view(request, model_admin):
         "opts": opts,
         "app_config": app_config,
         "results": log,
-        "hide_bot": hide_tech
+        "show_tech": show_tech
     }
     template_name = "admin/askapp/audit.html"
     return render(request, template_name, context)
