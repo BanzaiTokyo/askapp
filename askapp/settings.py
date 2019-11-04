@@ -210,6 +210,7 @@ UPVOTES_PER_DAY = 3
 
 ABOUT_TEXT = ''
 AUDIT_LOG_SIZE = 100
+TECH_USER = 0  # specify user id to hide it from activity log
 
 from django.conf import settings
 if 'siteprefs' in settings.INSTALLED_APPS:

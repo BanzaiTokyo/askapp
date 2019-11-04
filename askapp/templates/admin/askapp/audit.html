@@ -11,6 +11,16 @@
 {% block coltype %}flex{% endblock %}
 {% block content %}
   <div id="content-main">
+    <div style="padding: 0 0 10px 0">
+      <label>
+      {% if hide_bot %}
+        <input type="checkbox" checked onclick="window.location='{{ request.path }}'">
+      {% else %}
+        <input type="checkbox" onclick="window.location='{{ request.path }}?hide_tech=true'">
+      {% endif %}
+        Hide tech. user activity
+      </label>
+    </div>
     <div class="module" id="changelist">
 <div class="results">
 <table id="result_list">

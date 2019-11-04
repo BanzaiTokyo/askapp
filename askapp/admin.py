@@ -83,12 +83,21 @@ def combined_recent(limit, **kwargs):
 
 
 def audit_view(request, model_admin):
-    log = combined_recent(
-        limit=settings.AUDIT_LOG_SIZE,
-        threadlike=ThreadLike.objects.all(),
-        thread=Thread.objects.all(),
-        comment=Post.objects.all(),
-    )
+    hide_tech = request.GET.get('hide_tech') == 'true'
+    if hide_tech:
+        log = combined_recent(
+            limit=settings.AUDIT_LOG_SIZE,
+            threadlike=ThreadLike.objects.exclude(user_id=settings.TECH_USER),
+            thread=Thread.objects.exclude(user_id=settings.TECH_USER),
+            comment=Post.objects.exclude(user_id=settings.TECH_USER),
+        )
+    else:
+        log = combined_recent(
+            limit=settings.AUDIT_LOG_SIZE,
+            threadlike=ThreadLike.objects.all(),
+            thread=Thread.objects.all(),
+            comment=Post.objects.all(),
+        )
     opts = model_admin.model._meta
     app_config = apps.get_app_config(opts.app_label)
     context = {
@@ -96,6 +105,7 @@ def audit_view(request, model_admin):
         "opts": opts,
         "app_config": app_config,
         "results": log,
+        "hide_bot": hide_tech
     }
     template_name = "admin/askapp/audit.html"
     return render(request, template_name, context)
@@ -114,7 +124,7 @@ class AuditModelAdmin(admin.ModelAdmin):
         view_name = '{}_{}_changelist'.format(
             self.model._meta.app_label, self.model._meta.model_name)
         return [
-            path('acivity_log/', audit_view, name=view_name, kwargs={"model_admin": self}),
+            path('activity_log', audit_view, name=view_name, kwargs={"model_admin": self}),
         ]
 
     def has_change_permission(self, request, obj=None):
