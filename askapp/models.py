@@ -219,7 +219,7 @@ class Thread(models.Model):
     text = MarkdownxField(null=True)
 
     # link field for the Threads of the type Link
-    link = models.URLField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True, unique=True)
 
     # link's domain. Used for /domains page by the task #66
     domain = models.CharField(max_length=255, null=True, blank=True)
