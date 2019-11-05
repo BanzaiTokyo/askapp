@@ -394,6 +394,13 @@ class ThreadLikeView(LoginRequiredMixin, View):
     """
     /thread/:id/:slug/vote/up|down handler.
     """
+    def get(self, request, *args, **kwargs):
+        thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
+        #rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
+        tl = models.ThreadLike.vote(thread, request.user, kwargs['verb'])
+        return redirect(request.META.get('HTTP_REFERER',
+                                         reverse_lazy('thread', args=(thread.id, slugify(thread.title)))))
+
     def post(self, request, *args, **kwargs):
         thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
         #rules_light.require(request.user, 'askapp.threadlike.%s' % kwargs['verb'], thread)
@@ -414,6 +421,13 @@ class PostLikeView(LoginRequiredMixin, View):
     """
     /post/:id/:slug/vote/up|down handler.
     """
+    def get(self, request, *args, **kwargs):
+        post = get_object_or_404(models.Post, pk=kwargs['post_id'])
+        #rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
+        pl = models.PostLike.vote(post, request.user, kwargs['verb'])
+        return redirect(request.META.get('HTTP_REFERER',
+                                         reverse_lazy('thread', args=(post.thread.id, slugify(post.thread.title)))))
+
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(models.Post, pk=kwargs['post_id'])
         #rules_light.require(request.user, 'askapp.postlike.%s' % kwargs['verb'], post)
