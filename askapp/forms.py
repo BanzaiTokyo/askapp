@@ -51,15 +51,22 @@ class ThreadForm(forms.ModelForm):
 
         #if thread_type and self.initial.get('thread_type', thread_type) != thread_type and not self.user.is_staff and not self.has_error('title'):
         #    self.add_error('title', 'You are not allowed to change the thread type')
-
-        if thread_type in ['LL','YT'] and not link and not self.has_error('link'):
+        if thread_type in [Thread.LINK, Thread.YOUTUBE] and not self.has_error('link'):
+            if not link:
                 msg = _("This field is required")
                 self.add_error('link', msg)
-        elif self.has_error('link') and thread_type not in ['LL','YT']:
+            else:
+                youtube_info = Thread(link=link).parse_youtube_url()
+                if youtube_info:
+                    exists = Thread.objects.filter(link__contains=youtube_info['id'])
+                    if len(exists):
+                        msg = _("Sorry, someone has already posted this video")
+                        self.add_error('link', msg)
+                elif thread_type == Thread.YOUTUBE:
+                    msg = _("This is not a Youtube URL")
+                    self.add_error('link', msg)
+        elif self.has_error('link') and thread_type not in [Thread.LINK, Thread.YOUTUBE]:
             del self.errors['link']
-        if thread_type == 'YT' and not self.has_error('link') and not Thread(link=link).parse_youtube_url():
-            msg = _("This is not a Youtube URL")
-            self.add_error('link', msg)
 
 
 class ReplyForm(forms.ModelForm):

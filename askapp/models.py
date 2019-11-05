@@ -302,7 +302,7 @@ class Thread(models.Model):
             self.image = SimpleUploadedFile(filename, response.content, response.headers['content-type'])
 
     def prepare_images(self):
-        if self.thread_type == 'YT' and not self.image:
+        if self.thread_type == self.YOUTUBE and not self.image:
             self._load_youtube_thumbnail()
         if not self.id:
             return
@@ -312,9 +312,9 @@ class Thread(models.Model):
         """
         extract domain name for threads of type "link"
         """
-        if self.thread_type not in ['LL', 'YT']:
+        if self.thread_type not in [self.LINK, self.YOUTUBE]:
             self.link = None
-        if self.thread_type != 'LL':
+        if self.thread_type != self.LINK:
             self.domain = None
         else:
             hostname = urlparse(self.link)
