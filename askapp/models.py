@@ -178,6 +178,7 @@ class Thread(models.Model):
     DISCUSSION = "DD"
     LINK = "LL"
     YOUTUBE = "YT"
+    DUPLICATE = "DU"
 
     # iterable collection for types of posts
     # must consist of iterables of exactly two items
@@ -186,7 +187,9 @@ class Thread(models.Model):
         (DISCUSSION, _('Discussion')),
         (LINK, _('Link')),
         (YOUTUBE, _('Youtube video')),
+        (DUPLICATE, _('Duplicate thread')),
     )
+    TYPES_WITH_LINK = [LINK, YOUTUBE, DUPLICATE]
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
@@ -202,10 +205,10 @@ class Thread(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, default=1)
 
     # atomatically added timestamp field when the record is created
-    created = models.DateTimeField(auto_now_add = True)
+    created = models.DateTimeField(auto_now_add=True)
 
     # atomatically added timestamp field when the record is modified
-    modified = models.DateTimeField(auto_now = True)
+    modified = models.DateTimeField(auto_now=True)
 
     # Thread must have one of the types defined in TYPES_OF_THREAD
     thread_type = models.CharField(
@@ -236,6 +239,9 @@ class Thread(models.Model):
     # the current score of the post. It is only calculated for thread posts (no parents)
     # that are not older than one week old
     score = models.IntegerField(default=0)
+
+    # when thread type is "duplicate" this is a link to the original, "main" thread
+    original = models.ForeignKey("self", blank=True, null=True, on_delete=models.SET_NULL)
 
     def __init__(self, *args, **kwargs):
         super(Thread, self).__init__(*args, **kwargs)
@@ -312,9 +318,9 @@ class Thread(models.Model):
         """
         extract domain name for threads of type "link"
         """
-        if self.thread_type not in [self.LINK, self.YOUTUBE]:
+        if self.thread_type not in self.TYPES_WITH_LINK:
             self.link = None
-        if self.thread_type != self.LINK:
+        if self.thread_type not in [self.LINK, self.DUPLICATE]:
             self.domain = None
         else:
             hostname = urlparse(self.link)
@@ -357,6 +363,12 @@ class Thread(models.Model):
         check whether the thread of type "question" has an answer, to prevent marking another comment as the answer
         """
         return self.answers.filter(accepted__isnull=False).count() > 0
+
+    @cached_property
+    def duplicates(self):
+        ids = [self.id, self.original] if self.original else [self.id]
+        q = models.Q(original__in=ids) & ~models.Q(id=self.id)
+        return Thread.objects.filter(q, deleted=False)
 
 
 class Post(MPTTModel):

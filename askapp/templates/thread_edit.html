@@ -13,7 +13,14 @@
 	            {{ form.thread_type }}
             </div>
             {% endif %}
-            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'LL,YT' %}
+            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'DU' %}
+            <div class="form-group" id="duplicate_group">
+	            <label for="id_original">Original thread ID:</label>
+	            {{ form.original }}
+	            {{ form.original.errors }}
+            </div>
+            {% endif %}
+            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'LL,YT,DU' %}
             <div class="form-group" id="url_group">
 	            <label for="id_link">URL:</label>
 	            {{ form.link }}
@@ -50,9 +57,18 @@
     </div>
 
 {{ form.media }}
-{% if not form.instance.pk or admin_view %}
 <script>
+{% if not admin_view %}
+  $('#id_thread_type option[value="DU"]').remove();
+{% else %}
+  $('form').on('submit', function(data, q) {
+      if ($('#id_thread_type').val() != 'DU')
+          $('#id_original').val('')
+      return true
+  })
+{% endif %}
 
+{% if not form.instance.pk or admin_view %}
 function preload_youtube() {
   url = $('#id_link').val();
   $.getJSON('{% url 'youtube_info' %}?q='+url, function(data) {
@@ -70,7 +86,7 @@ function preload_youtube() {
   return false;
 }
 $('#id_thread_type').on('change', function() {
-	if ($(this).val() == 'LL' || $(this).val() == 'YT')
+	if ($.inArray($(this).val(), ['LL', 'YT', 'DU']) >= 0)
 		$('#url_group').show();
 	else
 		$('#url_group').hide();
@@ -78,6 +94,10 @@ $('#id_thread_type').on('change', function() {
     $('#yt_group').show();
   else
     $('#yt_group').hide();
+  if ($('#id_thread_type').val() == 'DU')
+      $('#duplicate_group').show();
+  else
+      $('#duplicate_group').hide();
 });
 $('#id_link').on('input', function () {
   if (this.value)
@@ -87,8 +107,8 @@ $('#id_link').on('input', function () {
 })
 $('#id_thread_type').triggerHandler('change');
 $('#id_link').triggerHandler('input');
-</script>
 {% endif %}
+</script>
 {% endblock %}
 
 

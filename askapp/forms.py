@@ -31,10 +31,15 @@ class AskappClearableFileInput(forms.widgets.ClearableFileInput):
 class ThreadForm(forms.ModelForm):
     class Meta:
         model = Thread
-        fields = ('thread_type', 'link', 'title', 'text', 'tags', 'image')
-
+        fields = ('thread_type', 'original', 'link', 'title', 'text', 'tags', 'image')
         widgets = {
+            'original': forms.TextInput(),
             'image': AskappClearableFileInput()
+        }
+        error_messages = {
+            'original': {
+                'invalid_choice': _('This thread is not found'),
+            },
         }
 
     def __init__(self, user, *args, **kwargs):
@@ -51,7 +56,7 @@ class ThreadForm(forms.ModelForm):
 
         #if thread_type and self.initial.get('thread_type', thread_type) != thread_type and not self.user.is_staff and not self.has_error('title'):
         #    self.add_error('title', 'You are not allowed to change the thread type')
-        if thread_type in [Thread.LINK, Thread.YOUTUBE] and not self.has_error('link'):
+        if thread_type in Thread.TYPES_WITH_LINK and not self.has_error('link'):
             if not link:
                 msg = _("This field is required")
                 self.add_error('link', msg)
@@ -65,7 +70,7 @@ class ThreadForm(forms.ModelForm):
                 elif thread_type == Thread.YOUTUBE:
                     msg = _("This is not a Youtube URL")
                     self.add_error('link', msg)
-        elif self.has_error('link') and thread_type not in [Thread.LINK, Thread.YOUTUBE]:
+        elif self.has_error('link') and thread_type not in Thread.TYPES_WITH_LINK:
             del self.errors['link']
 
 

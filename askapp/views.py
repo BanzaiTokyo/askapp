@@ -46,7 +46,11 @@ class HomeView(View):
         Returns the list of threads to display on the page. This function is overwritten in descendant classes
         """
         # pick up non-sticky or old sticky threads
-        result = models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-score')
+        result = models.Thread.objects.filter(
+            Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()),
+            ~Q(thread_type=models.Thread.DUPLICATE),
+            deleted=False
+        ).order_by('-score')
         return result[:10]
 
     def get_sticky(self):
@@ -75,7 +79,11 @@ class RecentThreadsView(HomeView):
     def get_threads(self):
         # exclude sticky threads from the first page (they are displayed in a separate list)
         if self.request.GET.get('page', '1') == '1':
-            return models.Thread.objects.filter( Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()), deleted=False).order_by('-created')
+            return models.Thread.objects.filter(
+                Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()),
+                ~Q(thread_type=models.Thread.DUPLICATE),
+                deleted=False
+            ).order_by('-created')
         else:
             return models.Thread.objects.filter(deleted=False).order_by('-created')
 
