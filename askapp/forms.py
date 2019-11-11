@@ -63,7 +63,7 @@ class ThreadForm(forms.ModelForm):
             else:
                 youtube_info = Thread(link=link).parse_youtube_url()
                 if youtube_info:
-                    exists = Thread.objects.filter(link__contains=youtube_info['id'])
+                    exists = Thread.objects.filter(link__contains=youtube_info['id']).exclude(id=self.instance.id)
                     if len(exists):
                         msg = _("Sorry, someone has already posted this video")
                         self.add_error('link', msg)
