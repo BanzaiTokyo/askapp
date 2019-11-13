@@ -45,8 +45,10 @@
 
                 <div class="vote-buttons">
                 {# Check the type of thread #}
-                {% if object.thread_type in 'LL,DU' %}
+                {% if object.thread_type == 'LL' %}
                     <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                {% elif object.thread_type == 'DU' %}
+                    <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
                 {% elif object.thread_type == 'DD' %}
                     <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 {% elif object.thread_type == 'QQ' %}
