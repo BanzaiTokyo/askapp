@@ -46,6 +46,8 @@ class ThreadForm(forms.ModelForm):
         super(ThreadForm, self).__init__(*args, **kwargs)
         if self.instance and not self.instance.id:
             self.instance.user = user
+            if not user.is_staff:
+                self.fields['thread_type'].choices = (tt for tt in Thread.TYPES_OF_THREAD if tt[0] != Thread.DUPLICATE)
         elif not user.is_staff:
             self.fields.pop('thread_type')
 

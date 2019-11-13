@@ -58,9 +58,7 @@
 
 {{ form.media }}
 <script>
-{% if not admin_view %}
-  $('#id_thread_type option[value="DU"]').remove();
-{% else %}
+{% if admin_view %}
   $('form').on('submit', function(data, q) {
       if ($('#id_thread_type').val() != 'DU')
           $('#id_original').val('')
