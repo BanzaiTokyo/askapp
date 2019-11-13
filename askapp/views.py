@@ -79,13 +79,14 @@ class RecentThreadsView(HomeView):
     def get_threads(self):
         # exclude sticky threads from the first page (they are displayed in a separate list)
         if self.request.GET.get('page', '1') == '1':
-            return models.Thread.objects.filter(
-                Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()),
-                ~Q(thread_type=models.Thread.DUPLICATE),
+            query = models.Thread.objects.filter(
+                Q(sticky__isnull=True) | Q(sticky__lt=datetime.now()))
+        else:
+            query = models.Thread.objects
+        result = query.filter(~Q(thread_type=models.Thread.DUPLICATE),
                 deleted=False
             ).order_by('-created')
-        else:
-            return models.Thread.objects.filter(deleted=False).order_by('-created')
+        return result
 
 
 class FavoriteThreadsView(View):
