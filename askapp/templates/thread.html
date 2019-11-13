@@ -106,7 +106,7 @@
           <h3>Similar articles:</h3>
           {% for dup in object.duplicates %}
             <h4>
-              <a href="{% url 'thread' dup.id dup.title|slugify %}">{{ dup.title }}</a>
+              <a href="{{ dup.link }}">{{ dup.title }}</a>
               {% if dup.domain %}<span class="small">{{ dup.domain }}</span>{% endif %}
             </h4>
           {% endfor %}
