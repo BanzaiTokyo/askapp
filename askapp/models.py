@@ -366,8 +366,11 @@ class Thread(models.Model):
 
     @cached_property
     def duplicates(self):
-        ids = [self.id, self.original] if self.original else [self.id]
-        q = models.Q(original__in=ids) & ~models.Q(id=self.id)
+        if self.original:
+            q = models.Q(original__in=[self.original.id, self.id]) | models.Q(id=self.original.id)
+            q = q & ~models.Q(id=self.id)
+        else:
+            q = models.Q(original=self.id)
         return Thread.objects.filter(q, deleted=False)
 
 
