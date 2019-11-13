@@ -49,6 +49,11 @@ class ThreadForm(forms.ModelForm):
         elif not user.is_staff:
             self.fields.pop('thread_type')
 
+    def clean_original(self):
+        if self.instance and self.instance == self.cleaned_data.get('original'):
+            raise forms.fields.ValidationError('Cannot reference itself as a duplicate')
+        return self.cleaned_data.get('original')
+
     def clean(self):
         cleaned_data = super(ThreadForm, self).clean()
         link = cleaned_data.get("link")
