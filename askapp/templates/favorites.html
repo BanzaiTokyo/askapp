@@ -5,6 +5,9 @@
   {% if threads %}
 	  {% include 'threads_list.html' with threads=threads sticky=False %}
   {% else %}
-    <h2>You have no favorite threads yet</h2>
+    <p>This page will display all the articles that you have upvoted.</p>
+    <p>Upvoting interesting articles does not only help other users - the most upvoted articles will be displayed on the homepage of our website and will be more visible to other members.</p>
+    <p>But most importantly, this will be useful to you - you will be able to find all articles that you have liked in the past on this page.</p>
+    <p>So far it looks like you haven't upvoted any articles, so go ahead, take a look at our recent page and click the up arrow newt to an article that you like.</p>
   {% endif %}
 {% endblock %}
