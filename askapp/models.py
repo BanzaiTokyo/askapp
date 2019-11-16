@@ -51,6 +51,15 @@ def avatar_name_path(instance, filename):
     return new_path
 
 
+def favorite_threads(user):
+    """
+    get list of the threads that user has "upvoted"
+    """
+    favorites = ThreadLike.objects.filter(user=user, points__gt=0).order_by('-created')
+    threads = [f.thread for f in favorites]
+    return threads
+
+
 class AskappImageFieldFile(ImageFieldFile):
     """
     Return default avatar if there is no image
@@ -129,12 +138,7 @@ class Profile(models.Model):
 
     @cached_property
     def favorite_threads(self):
-        """
-        get list of the threads that user has "upvoted"
-        """
-        favorites = ThreadLike.objects.filter(user=self.user, points__gt=0).order_by('-created')
-        threads = [f.thread for f in favorites]
-        return threads
+        return favorite_threads(self.user)
 
 
 @receiver(post_save, sender=User)
