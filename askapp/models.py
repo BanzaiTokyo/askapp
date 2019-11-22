@@ -79,6 +79,21 @@ class AskappImageField(models.ImageField):
     attr_class = AskappImageFieldFile
 
 
+class UserLevel(models.Model):
+    """
+    User "level" object. Shows how many articles a user with this level can upvote/downvote
+    """
+
+    name = models.CharField(blank=False, max_length=100)  # level name
+    upvotes = models.IntegerField(default=3, verbose_name='Upvotes per day')  # how many articles a user can upvote per day
+    downvotes = models.IntegerField(default=0)
+    upvote_same = models.IntegerField(default=1, verbose_name='Upvotes of the same article')  # can user upvote the same article multiple times?
+    downvote_same = models.IntegerField(default=1, verbose_name='Downvote same article')
+
+    def __str__(self):
+        return str(self.name)
+
+
 class Profile(models.Model):
     """
     Additional user properties. Attached to the Django user object by 1-to-1 relation
@@ -88,6 +103,7 @@ class Profile(models.Model):
     country = CountryField(blank=True)  # country of residence. 3rd party component, saved as ISO code, displayed as full name. Input control is a dropdown list, supporting localisation
     city = models.CharField(max_length=50, blank=True)  # city of residence
     about = models.TextField(max_length=500, blank=True)  # "about me", biography text field
+    level = models.ForeignKey(UserLevel, on_delete=models.DO_NOTHING, null=True, default=1)  #  user level, kinda "permissions" in the system
 
     def __init__(self, *args, **kwargs):
         super(Profile, self).__init__(*args, **kwargs)
@@ -139,6 +155,20 @@ class Profile(models.Model):
     @cached_property
     def favorite_threads(self):
         return favorite_threads(self.user)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, created, **kwargs):
+    if hasattr(instance, 'profile') and instance.profile:
+        instance.profile.save()
+    elif not created:
+        create_user_profile(sender, instance, created=True, **kwargs)
 
 
 @receiver(post_save, sender=User)
@@ -458,11 +488,14 @@ class ThreadLike(models.Model):
         kwargs = {'thread': thread, 'user': user}
         try:
             obj = cls.objects.get(**kwargs)
-            if not rules_light.registry['askapp.threadlike.%s' % verb](user, None, obj):
-                return obj
         except ObjectDoesNotExist:
             obj = cls(points=0, **kwargs)
+        if (not rules_light.registry['askapp.threadlike.%s' % verb](user, None, thread)
+            or not rules_light.registry['askapp.user.%svote_threads' % verb](user, None)
+        ):
+            return obj
         obj.points += points
+        obj.created = datetime.utcnow()
         obj.save()
         return obj
 
@@ -488,7 +521,7 @@ class PostLike(models.Model):
         kwargs = {'post': post, 'user': user}
         try:
             obj = cls.objects.get(**kwargs)
-            if not rules_light.registry['askapp.postlike.%s' % verb](user, None, obj):
+            if not rules_light.registry['askapp.postlike.%s' % verb](user, None, post):
                 return obj
         except ObjectDoesNotExist:
             obj = cls(points=0, **kwargs)

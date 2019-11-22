@@ -34,3 +34,17 @@ def url_active(context, viewname):
 @register.filter
 def avatar_url(user):
     return (user.profile.avatar.url if hasattr(user, 'profile') else '') or settings.DEFAULT_AVATAR_URL
+
+@register.simple_tag(takes_context=True)
+def level_upvotes(context):
+    request = context['request']
+    if hasattr(request.user, 'profile') and request.user.profile and hasattr(request.user.profile, 'level') and request.user.profile.level:
+        return request.user.profile.level.upvotes
+    return 0
+
+@register.simple_tag(takes_context=True)
+def level_downvotes(context):
+    request = context['request']
+    if hasattr(request.user, 'profile') and request.user.profile and hasattr(request.user.profile, 'level') and request.user.profile.level:
+        return request.user.profile.level.downvotes
+    return 0

@@ -414,8 +414,10 @@ class ThreadLikeView(LoginRequiredMixin, View):
             thread = get_object_or_404(models.Thread, pk=kwargs['thread_id'])
             return JsonResponse({
                 'points': thread.points,
-                'can_like_thread': rules_light.registry['askapp.threadlike.%s' % kwargs['verb']](request.user, None, thread),
-                'can_upvote_threads': rules_light.registry['askapp.user.upvote_threads'](request.user, None)
+                'can_like_thread': rules_light.registry['askapp.threadlike.up'](request.user, None, thread),
+                'can_dislike_thread': rules_light.registry['askapp.threadlike.down'](request.user, None, thread),
+                'can_upvote_threads': rules_light.registry['askapp.user.upvote_threads'](request.user, None),
+                'can_downvote_threads': rules_light.registry['askapp.user.downvote_threads'](request.user, None),
             })
         else:
             return redirect(request.META.get('HTTP_REFERER',

@@ -19,6 +19,9 @@
     {% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
     {% rule 'askapp.threadlike.up' object as can_like_thread %}
     {% rule 'askapp.threadlike.down' object as can_dislike_thread %}
+    <script>
+      var level_upvotes = {% level_upvotes %}, level_downvotes = {% level_downvotes %}
+    </script>
     <!--First Thread-->
     <div class="row">
         <div>

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from django.db import models
 from markdownx.widgets import AdminMarkdownxWidget
-from askapp.models import Profile, Thread, Tag, Post, ThreadLike
+from askapp.models import Profile, UserLevel, Thread, Tag, Post, ThreadLike
 from django.db.models import Value, CharField
 from django.shortcuts import render
 from django.urls import path
@@ -134,6 +134,10 @@ class AuditModelAdmin(admin.ModelAdmin):
         return True
 
 
+class LevelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'upvotes', 'downvotes', 'upvote_same', 'downvote_same')
+
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
@@ -141,3 +145,4 @@ admin.site.register(Thread, ThreadAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(AuditModel, AuditModelAdmin)
+admin.site.register(UserLevel, LevelAdmin)

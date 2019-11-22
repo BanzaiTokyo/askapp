@@ -29,17 +29,31 @@ def can_delete_comment_tree(user, rule, post):
 
 
 def can_upvote_threads(user, rule):
-    return user.is_active and ThreadLike.objects.filter(user=user, created__gte=datetime.utcnow()-timedelta(days=1)).count() < int(str(UPVOTES_PER_DAY))\
-        or user.is_staff
+    if not user.is_active:
+        return False
+    num_today_likes = ThreadLike.objects.filter(user=user, points__gt=0, created__gte=datetime.utcnow()-timedelta(days=1)).count()
+    return num_today_likes < user.profile.level.upvotes or user.is_staff
 
 
 def can_like_thread(user, rule, thread):
-    return user.is_active and thread.user != user and ThreadLike.objects.filter(thread=thread, user=user).count() == 0 \
-        or user.is_staff
+    if not user.is_active:
+        return False
+    already_liked = ThreadLike.objects.filter(thread=thread, user=user, points__gt=0).count()
+    return thread.user != user and (already_liked < user.profile.level.upvote_same) or user.is_staff
+
+
+def can_downvote_threads(user, rule):
+    if not user.is_active:
+        return False
+    num_today_dislikes = ThreadLike.objects.filter(user=user, points__lt=0, created__gte=datetime.utcnow()-timedelta(days=1)).count()
+    return num_today_dislikes < user.profile.level.downvotes or user.is_staff
 
 
 def can_dislike_thread(user, rule, thread):
-    return user.is_staff
+    if not user.is_active:
+        return False
+    already_disliked = ThreadLike.objects.filter(thread=thread, user=user, points__lt=0).count()
+    return thread.user != user and (already_disliked < user.profile.level.downvote_same) or user.is_staff
 
 
 def can_like_post(user, rule, post):
@@ -67,6 +81,7 @@ rules_light.registry['askapp.post.accept'] = can_accept_answer
 rules_light.registry['askapp.post.delete'] = can_delete_comment
 rules_light.registry['askapp.post.delete_all'] = can_delete_comment_tree
 rules_light.registry['askapp.user.upvote_threads'] = can_upvote_threads
+rules_light.registry['askapp.user.downvote_threads'] = can_downvote_threads
 rules_light.registry['askapp.threadlike.up'] = can_like_thread
 rules_light.registry['askapp.threadlike.down'] = can_dislike_thread
 rules_light.registry['askapp.postlike.up'] = can_like_post

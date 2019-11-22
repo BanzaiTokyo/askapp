@@ -1,5 +1,11 @@
-{% if can_dislike_thread %}
-  <a class="btn glyphicon glyphicon-chevron-down text-danger a threadlike"
-      href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
+{% if can_downvote_threads and can_dislike_thread %}
+  <a class="btn glyphicon glyphicon-chevron-down text-danger threaddislike"
+      data-href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
       title="Downvote"></a>
+{% elif can_dislike_thread and not can_downvote_threads %}
+  <a class="btn glyphicon glyphicon-chevron-down text-danger downvotetomorrow"
+     data-href="{% url 'thread_like' object.id object.title|slugify 'down' %}"
+     title="Downvote"></a>
+{% elif user.is_active %}
+  <a class="btn glyphicon glyphicon-chevron-down text-danger voted" title="You have already voted on this article"></a>
 {% endif %}

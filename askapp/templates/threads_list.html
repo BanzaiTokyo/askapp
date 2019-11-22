@@ -1,7 +1,11 @@
 {% load rules_light_tags %}
 {% load askapp_filters %}
 {% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
+{% rule 'askapp.user.downvote_threads' as can_downvote_threads %}
 
+<script>
+  var level_upvotes = {% level_upvotes %}, level_downvotes = {% level_downvotes %}
+</script>
 {% if not sticky %}
     {% load pagination_tags %}
     {% if not per_page %}
