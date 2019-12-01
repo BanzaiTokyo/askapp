@@ -312,24 +312,23 @@ class Thread(models.Model):
 
     def parse_youtube_url(self):
         id = self.youtube_id
-        item = None
-        if settings.GOOGLE_API_KEY:
+        item = {}
+        if id and settings.GOOGLE_API_KEY:
             snippet = requests.get(f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={id}&key={settings.GOOGLE_API_KEY}')
             snippet = snippet.json()
             if snippet.get('items'):
                 item = snippet['items'][0]['snippet']
                 item['image'] = item['thumbnails']['default']['url']
-        else:
+        if not item and id:  # failed to get video info from googleapis, trying 3rd party service
             snippet = requests.get(f'https://noembed.com/embed?url=https://www.youtube.com/watch?v={id}')
             snippet = snippet.json()
             if snippet.get('title'):
                 item = snippet
                 item['image'] = item['thumbnail_url']
                 item['description'] = ''
-        result = None
+        result = {'id': id} if id else None
         if item:
-            result = {k: item[k] for k in ['title', 'description', 'image']}
-            result['id'] = id
+            result.update(**{k: item[k] for k in ['title', 'description', 'image']})
         return result
 
     def _load_youtube_thumbnail(self):
