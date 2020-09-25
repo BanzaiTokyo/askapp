@@ -1,6 +1,6 @@
 mysqlclient
 python-dotenv
-Django==2.2.1
+Django==2.2.13
 django-registration-redux==2.6
 django-debug-toolbar==2.0
 django-recaptcha2==1.4.1
