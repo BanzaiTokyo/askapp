@@ -7,10 +7,10 @@ except:
     pass
 
 from django.db.models import signals
-from django.utils.functional import curry
+from functools import partial
 
 
-class WhodidMiddleware(object):
+class WhodidMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
             if hasattr(request, 'user') and request.user.is_authenticated:
@@ -18,7 +18,7 @@ class WhodidMiddleware(object):
             else:
                 user = None
 
-            mark_whodid = curry(self.mark_whodid, user)
+            mark_whodid = partial(self.mark_whodid, user)
             signals.pre_save.connect(mark_whodid,  dispatch_uid = (self.__class__, request,), weak = False)
 
     def process_response(self, request, response):
