@@ -200,10 +200,7 @@ class AskappRegistrationView(RegistrationView):
     template_name = 'registration_form.html'
 
     def registration_allowed(self):
-        """
-        This method returns proper settings.REGISTRATION_OPEN value when used with django-siteprefs
-        """
-        return REGISTRATION_OPEN.get_value() if isinstance(REGISTRATION_OPEN, object) else REGISTRATION_OPEN
+        return REGISTRATION_OPEN
 
     @staticmethod
     def is_email_blacklisted(email):
