@@ -11,10 +11,16 @@
 - python manage.py collectstatic
 - add a cron job `python manage.py calculate_scores` daily or hourly
 
+## Run project in Docker
+- make sure you have Docker installed
+- run `docker-compose up` from the project folder
+This will run the project available at http://localhost:8000. 
+It already has an admin user "askapp" with password "askapp"
+
 ## Environment variables:
 ```DJANGO_SECRET - any random string, a secret key used internally by Django security mechanisms
 DB_HOST - database hostname
-DB_DATABASE - database name
+DB_NAME - database name
 DB_USER, DB_PASSWORD - MySQL credentials
 DB_PASSWORD - database user password
 EMAIL_HOST - SMTP server address
