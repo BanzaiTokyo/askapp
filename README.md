@@ -1,5 +1,12 @@
 # Django based discussion board and a Q&amp;A system
 
+## Run project in Docker
+The easiest way to check out askapp is to run it's dockerized version:
+- make sure you have Docker installed
+- run `docker-compose up` from the project folder
+This will run the project available at http://localhost:8000. 
+It already has an admin user "askapp" with password "askapp"
+
 ## Steps to deploy a project:
 - git clone https://github.com/BanzaiTokyo/askapp.git <project_dir>
 - cd <project_dir>
@@ -10,12 +17,6 @@
 - python manage.py createsuperuser
 - python manage.py collectstatic
 - add a cron job `python manage.py calculate_scores` daily or hourly
-
-## Run project in Docker
-- make sure you have Docker installed
-- run `docker-compose up` from the project folder
-This will run the project available at http://localhost:8000. 
-It already has an admin user "askapp" with password "askapp"
 
 ## Environment variables:
 ```DJANGO_SECRET - any random string, a secret key used internally by Django security mechanisms
