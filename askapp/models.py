@@ -213,6 +213,7 @@ class Thread(models.Model):
     LINK = "LL"
     YOUTUBE = "YT"
     DUPLICATE = "DU"
+    VIDEOSTREAM = "VS"
 
     # iterable collection for types of posts
     # must consist of iterables of exactly two items
@@ -222,8 +223,9 @@ class Thread(models.Model):
         (LINK, _('Link')),
         (YOUTUBE, _('Youtube video')),
         (DUPLICATE, _('Duplicate thread')),
+        (VIDEOSTREAM, _('Video stream')),
     )
-    TYPES_WITH_LINK = [LINK, YOUTUBE, DUPLICATE]
+    TYPES_WITH_LINK = [LINK, YOUTUBE, DUPLICATE, VIDEOSTREAM]
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
@@ -308,6 +310,8 @@ class Thread(models.Model):
         video_id = re.split(r, self.link)
         if len(video_id) == 3:
             video_id = re.split(r"[^0-9a-z_\-](?i)", video_id[2])
+        else:
+            return None
         return video_id[0] if video_id else None
 
     def parse_youtube_url(self):

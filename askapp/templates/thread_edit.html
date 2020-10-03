@@ -20,9 +20,9 @@
 	            {{ form.original.errors }}
             </div>
             {% endif %}
-            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'LL,YT,DU' %}
+            {% if not form.instance.pk or admin_view or form.instance.thread_type in 'LL,YT,DU,VS' %}
             <div class="form-group" id="url_group">
-	            <label for="id_link">URL:</label>
+	            <label for="id_link" id="id_link_label">URL:</label>
 	            {{ form.link }}
               <button id="yt_group" onclick="return preload_youtube()" class="btn btn-info">Preload</button>
 	            {{ form.link.errors }}
@@ -84,9 +84,13 @@ function preload_youtube() {
   return false;
 }
 $('#id_thread_type').on('change', function() {
-	if ($.inArray($(this).val(), ['LL', 'YT', 'DU']) >= 0)
-		$('#url_group').show();
-	else
+	if ($.inArray($(this).val(), ['LL', 'YT', 'DU', 'VS']) >= 0) {
+      $('#url_group').show();
+      if ($(this).val() == 'VS')
+          $('#id_link_label').text('Stream URL:')
+      else
+          $('#id_link_label').text('URL:')
+  } else
 		$('#url_group').hide();
   if ($('#id_thread_type').val() == 'YT')
     $('#yt_group').show();
