@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 
 from django.db import models
@@ -8,15 +9,12 @@ from django.dispatch import receiver
 from django_countries.fields import CountryField
 from django.core.files.storage import FileSystemStorage
 from io import BytesIO
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
 from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
 from django.template.defaultfilters import slugify
-try:
-    from urllib.parse import urlparse
-except:
-    from urlparse import urlparse
+from urllib.parse import urlparse
 from datetime import datetime
 import re
 import requests
@@ -29,7 +27,6 @@ from django.utils.functional import cached_property
 import rules_light
 from markdownx.models import MarkdownxField
 from askapp import settings
-from siteprefs.models import Preference
 
 
 class OverwriteStorage(FileSystemStorage):
@@ -159,16 +156,13 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
+    if created or not hasattr(instance, 'profile'):
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, created, **kwargs):
-    if hasattr(instance, 'profile') and instance.profile:
-        instance.profile.save()
-    elif not created:
-        create_user_profile(sender, instance, created=True, **kwargs)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 @receiver(post_save, sender=User)
@@ -213,6 +207,7 @@ class Thread(models.Model):
     LINK = "LL"
     YOUTUBE = "YT"
     DUPLICATE = "DU"
+    VIDEOSTREAM = "VS"
 
     # iterable collection for types of posts
     # must consist of iterables of exactly two items
@@ -222,8 +217,9 @@ class Thread(models.Model):
         (LINK, _('Link')),
         (YOUTUBE, _('Youtube video')),
         (DUPLICATE, _('Duplicate thread')),
+        (VIDEOSTREAM, _('Video stream')),
     )
-    TYPES_WITH_LINK = [LINK, YOUTUBE, DUPLICATE]
+    TYPES_WITH_LINK = [LINK, YOUTUBE, DUPLICATE, VIDEOSTREAM]
 
     #many to many relationship with tags. When a post is created, it needs to be saved and then tags can be added
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
@@ -290,6 +286,17 @@ class Thread(models.Model):
         super(Thread, self).save()
         AuditThread.audit(self)  # log all changes applied to the thread
 
+    def resize_image(self, content, size, format='JPEG'):
+        im = Image.open(BytesIO(content)).convert('RGBA')
+        if im.size[0] > size[0] or im.size[1] > size[1]:
+            im.thumbnail(size)
+        new_image = Image.new('RGBA', im.size, 'WHITE')
+        new_image.paste(im, (0, 0), im)
+        new_image = new_image.convert('RGB')
+        result = BytesIO()
+        new_image.save(result, format)
+        return result
+
     def _delete_old_image(self):
         try:
             this = Thread.objects.get(id=self.id)
@@ -308,6 +315,8 @@ class Thread(models.Model):
         video_id = re.split(r, self.link)
         if len(video_id) == 3:
             video_id = re.split(r"[^0-9a-z_\-](?i)", video_id[2])
+        else:
+            return None
         return video_id[0] if video_id else None
 
     def parse_youtube_url(self):
@@ -343,9 +352,11 @@ class Thread(models.Model):
     def prepare_images(self):
         if self.thread_type == self.YOUTUBE and not self.image:
             self._load_youtube_thumbnail()
-        if not self.id:
-            return
         self._delete_old_image()
+        if self.image:
+            img = self.resize_image(self.image.read(), size=settings.MAX_IMAGE_SIZE, format='JPEG')
+            self.image = InMemoryUploadedFile(img, 'ImageField', "%s.jpg" % self.image.name.split('.')[0],
+                                              'image/jpeg', sys.getsizeof(img), None)
 
     def update_link(self):
         """
@@ -575,14 +586,3 @@ class AuditThread(models.Model):
             return
         audit = cls(user=instance.modified_by, thread=instance, action=action, content=content)
         audit.save()
-
-
-@receiver(post_save, sender=Preference)
-def clear_language_cache(sender, instance, **kwargs):
-    """
-    This function clears lru cache of django.utils.translation.trans_real.get_supported_language_variant
-    Otherwise Django ignores settings.LANGUAGE_CODE change
-    """
-    if instance.name == 'language_code':
-        from django.utils.translation.trans_real import get_supported_language_variant
-        get_supported_language_variant.cache_clear()
