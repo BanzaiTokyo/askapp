@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 
 from django.db import models
@@ -8,7 +9,7 @@ from django.dispatch import receiver
 from django_countries.fields import CountryField
 from django.core.files.storage import FileSystemStorage
 from io import BytesIO
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
 from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
@@ -290,6 +291,13 @@ class Thread(models.Model):
         super(Thread, self).save()
         AuditThread.audit(self)  # log all changes applied to the thread
 
+    def resize_image(self, content, size, format='JPEG'):
+        im = Image.open(BytesIO(content))
+        im.thumbnail(size)
+        result = BytesIO()
+        im.save(result, format)
+        return result
+
     def _delete_old_image(self):
         try:
             this = Thread.objects.get(id=self.id)
@@ -343,9 +351,11 @@ class Thread(models.Model):
     def prepare_images(self):
         if self.thread_type == self.YOUTUBE and not self.image:
             self._load_youtube_thumbnail()
-        if not self.id:
-            return
         self._delete_old_image()
+        if self.image:
+            img = self.resize_image(self.image.read(), size=settings.MAX_IMAGE_SIZE, format='JPEG')
+            self.image = InMemoryUploadedFile(img, 'ImageField', "%s.jpg" % self.image.name.split('.')[0],
+                                              'image/jpeg', sys.getsizeof(img), None)
 
     def update_link(self):
         """

@@ -183,6 +183,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'askapp/media')
+MAX_IMAGE_SIZE = (640, 480)
 
 AVATAR_SIZE = (100, 100)
 DEFAULT_AVATAR_URL = STATIC_URL + 'images/avatar.png'
