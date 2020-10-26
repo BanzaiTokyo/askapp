@@ -3,8 +3,6 @@
 ## Run project in Docker
 The easiest way to check out askapp is to run it's dockerized version:
 - make sure you have Docker installed
-- run `docker-compose run web python manage.py migrate`
-- run `docker-compose run web python manage.py collectstatic`
 - run `docker-compose up` from the project folder
 This will run the project available at http://localhost:8000. 
 It already has an admin user "askapp" with password "askapp"
