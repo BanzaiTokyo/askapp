@@ -14,6 +14,7 @@ from django.urls import resolve
 from django.db.models import Q, Count, Avg
 from memoize import memoize
 from django.http import JsonResponse
+from constance import config
 
 from datetime import datetime, timedelta
 from collections import namedtuple
@@ -200,7 +201,7 @@ class AskappRegistrationView(RegistrationView):
     template_name = 'registration_form.html'
 
     def registration_allowed(self):
-        return settings.REGISTRATION_OPEN
+        return config.REGISTRATION_OPEN
 
     @staticmethod
     def is_email_blacklisted(email):
@@ -211,7 +212,7 @@ class AskappRegistrationView(RegistrationView):
         populate template variables for the activation email
         """
         result = super(AskappRegistrationView, self).get_email_context(activation_key)
-        d = {'domain': self.request.get_host(), 'name': settings.SITE_NAME}
+        d = {'domain': self.request.get_host(), 'name': config.SITE_NAME}
         result['site'] = namedtuple("Site", d.keys())(*d.values())
         return result
 
@@ -490,9 +491,7 @@ class DomainsView(View):
             if order_dir.lower() == 'desc':
                 order = '-' + order
             result = result.order_by(order)
-        if hasattr(settings, 'NUM_DOMAIN_STATS'):
-            #int(str()) converts the setting from django-siteprefs object back to its original type
-            result = result[:int(str(settings.NUM_DOMAIN_STATS) or 10)]
+        result = result[:config.NUM_DOMAIN_STATS]
         return result
 
     def get(self, request, *args, **kwargs):

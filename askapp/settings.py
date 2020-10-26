@@ -27,7 +27,8 @@ ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 INSTALLED_APPS = (
-    'siteprefs',
+    'constance',
+    'constance.backends.database',
     'askapp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,7 +78,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'askapp.context_processors.site_processor',
-                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -177,19 +177,20 @@ RECAPTCHA_PUBLIC_KEY = get_env_variable('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 # Google API key to get info from youtube videos
 GOOGLE_API_KEY = get_env_variable('GOOGLE_API_KEY', '')
+GOOGLE_ANALYTICS_ID = get_env_variable('GOOGLE_ANALYTICS_ID', '')
 
-# setting used by Django "sites" framework
-SITE_NAME = 'Akihabara'
-SITE_LOGO = 'images/logo.png'  # consider file path is relative to static files
-
-REGISTRATION_OPEN = False
-GOOGLE_ANALYTICS_ID = ''
-
-# number of rows in the table at the /domains page
-NUM_DOMAIN_STATS = 3
-
-UPVOTES_PER_DAY = 3
-
-ABOUT_TEXT = ''
 AUDIT_LOG_SIZE = 100
 TECH_USER = 0  # specify user id to hide it from activity log
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_DATABASE_CACHE_BACKEND = 'default'
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'image_field': ['django.forms.ImageField', {}]
+}
+CONSTANCE_CONFIG = {
+    'SITE_NAME': ('', 'Site Name'),
+    'SITE_LOGO': ('logo.png', 'Site logo', 'image_field'),
+    'REGISTRATION_OPEN': (False, 'Is registration open?', bool),
+    'NUM_DOMAIN_STATS': (50, 'number of rows in the table at the /domains page', int),
+    'ABOUT_TEXT': ('', '"About" text')
+}

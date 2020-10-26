@@ -1,7 +1,6 @@
 import rules_light
 from askapp.models import ThreadLike, PostLike
 from datetime import datetime, timedelta
-from .settings import UPVOTES_PER_DAY
 
 def can_edit_thread(user, rule, thread):
     return user.is_staff or thread.user == user

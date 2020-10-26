@@ -65,7 +65,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="{% url 'index' %}">
-                  {% if site_logo %}<img src="{% static site_logo %}"/>{% endif %}
+                  {% if site_logo %}<img src="{{ get_media_prefix }}{{ site_logo }}"/>{% endif %}
                   {{ site_name }}
                 </a>
             </div>
