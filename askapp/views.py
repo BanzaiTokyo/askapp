@@ -3,7 +3,7 @@ from django.views.generic import View
 from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
-from askapp.settings import BLACKLISTED_DOMAINS, REGISTRATION_OPEN, SITE_NAME
+from askapp import settings
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
@@ -200,18 +200,18 @@ class AskappRegistrationView(RegistrationView):
     template_name = 'registration_form.html'
 
     def registration_allowed(self):
-        return REGISTRATION_OPEN
+        return settings.REGISTRATION_OPEN
 
     @staticmethod
     def is_email_blacklisted(email):
-        return any([email.lower().endswith('@'+d) for d in BLACKLISTED_DOMAINS])
+        return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
 
     def get_email_context(self, activation_key):
         """
         populate template variables for the activation email
         """
         result = super(AskappRegistrationView, self).get_email_context(activation_key)
-        d = {'domain': self.request.get_host(), 'name': SITE_NAME}
+        d = {'domain': self.request.get_host(), 'name': settings.SITE_NAME}
         result['site'] = namedtuple("Site", d.keys())(*d.values())
         return result
 
