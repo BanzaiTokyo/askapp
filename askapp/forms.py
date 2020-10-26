@@ -1,22 +1,25 @@
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
-from registration.forms import RegistrationFormTermsOfService
+from registration.forms import RegistrationFormUniqueEmail
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from .models import Profile, Thread, Post
 
 
-class RecaptchaRegistrationForm(RegistrationFormTermsOfService):
+class RecaptchaRegistrationForm(RegistrationFormUniqueEmail):
+    tos = forms.BooleanField(widget=forms.CheckboxInput,
+                             label=_('I have read and agree to the Terms of Service'),
+                             error_messages={'required': _("You must agree to the terms to register")})
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
 
-form_control = {'class': 'form-control'}
+
 class ProfileForm(forms.ModelForm):
     is_active = forms.BooleanField(required=False)
     class Meta:
         model = Profile
         fields = ('avatar', 'country', 'city', 'about')
         widgets = {
-            'country': forms.Select(attrs=form_control),
+            'country': forms.Select(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Enter your city')}),
             'about': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
