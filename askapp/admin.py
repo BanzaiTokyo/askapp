@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db import models
 from markdownx.widgets import AdminMarkdownxWidget
@@ -16,12 +16,12 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'profile'
 
-
-class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline, )
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 class CustomUserAdmin(UserAdmin):
+    inlines = (ProfileInline, )
     ordering = ('-date_joined',)
     list_display = ('username', 'first_name', 'last_name', 'email', 'id','date_joined')
 

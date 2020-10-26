@@ -14,10 +14,7 @@ from django.db.models.fields.files import ImageFieldFile
 from PIL import Image, ImageOps
 from mptt.models import MPTTModel, TreeForeignKey
 from django.template.defaultfilters import slugify
-try:
-    from urllib.parse import urlparse
-except:
-    from urlparse import urlparse
+from urllib.parse import urlparse
 from datetime import datetime
 import re
 import requests
@@ -159,16 +156,13 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
+    if created or not hasattr(instance, 'profile'):
         Profile.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, created, **kwargs):
-    if hasattr(instance, 'profile') and instance.profile:
-        instance.profile.save()
-    elif not created:
-        create_user_profile(sender, instance, created=True, **kwargs)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 @receiver(post_save, sender=User)
@@ -292,9 +286,13 @@ class Thread(models.Model):
 
     def resize_image(self, content, size, format='JPEG'):
         im = Image.open(BytesIO(content))
-        im.thumbnail(size)
+        if im.size[0] > size[0] or im.size[1] > size[1]:
+            im.thumbnail(size)
+        new_image = Image.new("RGBA", im.size, "WHITE")
+        new_image.paste(im, (0, 0), im)
+        new_image = new_image.convert('RGB')
         result = BytesIO()
-        im.save(result, format)
+        new_image.save(result, format)
         return result
 
     def _delete_old_image(self):

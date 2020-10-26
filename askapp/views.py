@@ -88,7 +88,7 @@ class RecentThreadsView(HomeView):
         return query
 
 
-class FavoriteThreadsView(View):
+class FavoriteThreadsView(LoginRequiredMixin, View):
     """
     /favorites page handler
     """
@@ -100,7 +100,7 @@ class FavoriteThreadsView(View):
         return render(request, 'favorites.html', context)
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = models.User
     template_name = 'profile.html'
 
