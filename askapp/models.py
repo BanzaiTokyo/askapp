@@ -287,10 +287,10 @@ class Thread(models.Model):
         AuditThread.audit(self)  # log all changes applied to the thread
 
     def resize_image(self, content, size, format='JPEG'):
-        im = Image.open(BytesIO(content))
+        im = Image.open(BytesIO(content)).convert('RGBA')
         if im.size[0] > size[0] or im.size[1] > size[1]:
             im.thumbnail(size)
-        new_image = Image.new("RGBA", im.size, "WHITE")
+        new_image = Image.new('RGBA', im.size, 'WHITE')
         new_image.paste(im, (0, 0), im)
         new_image = new_image.convert('RGB')
         result = BytesIO()
