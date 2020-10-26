@@ -17,6 +17,7 @@ from constance import config
 
 from datetime import datetime, timedelta
 from collections import namedtuple
+import urllib.request
 
 import rules_light
 import askapp.auth_rules
@@ -204,22 +205,21 @@ class AskappRegistrationView(RegistrationView):
 
     @staticmethod
     def is_email_blacklisted(email):
-        return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
+        try:
+            sfs_url = f'http://api.stopforumspam.org/api?email={email}'
+            contents = urllib.request.urlopen(sfs_url).read()
+            return b'<appears>yes</appears>' in contents
+        except Exception:
+            return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
 
-    def get_email_context(self, activation_key):
-        """
-        populate template variables for the activation email
-        """
-        result = super(AskappRegistrationView, self).get_email_context(activation_key)
-        d = {'domain': self.request.get_host(), 'name': config.SITE_NAME}
-        result['site'] = namedtuple("Site", d.keys())(*d.values())
-        return result
-
-    def send_activation_email(self, user):
-        if self.is_email_blacklisted(user.email):
-            logging.debug('blacklisted email %s', user.email)
+    def register(self, form):
+        email = form.cleaned_data['email']
+        if self.is_email_blacklisted(email):
+            logging.debug('blacklisted email %s', email)
+            self.SEND_ACTIVATION_EMAIL = False
         else:
-            super(AskappRegistrationView, self).send_activation_email(user)
+            self.SEND_ACTIVATION_EMAIL = getattr(settings, 'SEND_ACTIVATION_EMAIL', True)
+        return super().register(form)
 
 
 class ThreadMixin(object):
