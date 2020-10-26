@@ -3,7 +3,6 @@ from django.views.generic import View
 from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
-from askapp.settings import BLACKLISTED_DOMAINS, REGISTRATION_OPEN, SITE_NAME
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
@@ -14,6 +13,7 @@ from django.urls import resolve
 from django.db.models import Q, Count, Avg
 from memoize import memoize
 from django.http import JsonResponse
+from constance import config
 
 from datetime import datetime, timedelta
 from collections import namedtuple
@@ -88,7 +88,7 @@ class RecentThreadsView(HomeView):
         return query
 
 
-class FavoriteThreadsView(View):
+class FavoriteThreadsView(LoginRequiredMixin, View):
     """
     /favorites page handler
     """
@@ -100,7 +100,7 @@ class FavoriteThreadsView(View):
         return render(request, 'favorites.html', context)
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = models.User
     template_name = 'profile.html'
 
@@ -200,18 +200,18 @@ class AskappRegistrationView(RegistrationView):
     template_name = 'registration_form.html'
 
     def registration_allowed(self):
-        return REGISTRATION_OPEN
+        return config.REGISTRATION_OPEN
 
     @staticmethod
     def is_email_blacklisted(email):
-        return any([email.lower().endswith('@'+d) for d in BLACKLISTED_DOMAINS])
+        return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
 
     def get_email_context(self, activation_key):
         """
         populate template variables for the activation email
         """
         result = super(AskappRegistrationView, self).get_email_context(activation_key)
-        d = {'domain': self.request.get_host(), 'name': SITE_NAME}
+        d = {'domain': self.request.get_host(), 'name': config.SITE_NAME}
         result['site'] = namedtuple("Site", d.keys())(*d.values())
         return result
 
@@ -490,9 +490,7 @@ class DomainsView(View):
             if order_dir.lower() == 'desc':
                 order = '-' + order
             result = result.order_by(order)
-        if hasattr(settings, 'NUM_DOMAIN_STATS'):
-            #int(str()) converts the setting from django-siteprefs object back to its original type
-            result = result[:int(str(settings.NUM_DOMAIN_STATS) or 10)]
+        result = result[:config.NUM_DOMAIN_STATS]
         return result
 
     def get(self, request, *args, **kwargs):

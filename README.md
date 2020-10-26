@@ -26,7 +26,10 @@ DB_USER, DB_PASSWORD - MySQL credentials
 DB_PASSWORD - database user password
 EMAIL_HOST - SMTP server address
 EMAIL_ADDRESS, EMAIL_HOST_PASSWORD - SMTP credentials
-GOOGLE_API_KEY - a key for Youtube API to pull description for Youtube videos```
+GOOGLE_API_KEY - a key for Youtube API to pull description for Youtube videos
+RECAPTCHA_PRIVATE_KEY and RECAPTCHA_PUBLIC_KEY - Google reCaptcha's secret/site keys. Read more at https://www.google.com/recaptcha/admin
+GOOGLE_ANALYTICS_ID - optional, Google Analytics ID to collect site statistics
+```
 
 ### How to get Google API Key
 There are numerous tutorials how to do that, for example
