@@ -93,11 +93,14 @@
                     <div class="embed-responsive embed-responsive-16by9">
                       <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ object.youtube_id }}" frameborder="0" allowfullscreen></iframe>
                     </div>
-                {% elif object.image %}
+                {% elif object.image and object.thread_type != 'VS' %}
                     <br>
                     <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;">
                 {% endif %}
 
+                {% if object.thread_type == 'VS' %}
+                  {% include 'includes/video_player.html' %}
+                {% endif %}
                 {{ object.text|markdownify }}
             </div>
         </div>
