@@ -17,6 +17,7 @@
     {% rule 'askapp.thread.delete' object as can_delete %}
     {% rule 'askapp.post.create' object as can_reply %}
     {% rule 'askapp.user.upvote_threads' as can_upvote_threads %}
+    {% rule 'askapp.user.downvote_threads' as can_downvote_threads %}
     {% rule 'askapp.threadlike.up' object as can_like_thread %}
     {% rule 'askapp.threadlike.down' object as can_dislike_thread %}
     <script>
@@ -93,11 +94,14 @@
                     <div class="embed-responsive embed-responsive-16by9">
                       <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ object.youtube_id }}" frameborder="0" allowfullscreen></iframe>
                     </div>
-                {% elif object.image %}
+                {% elif object.image and object.thread_type != 'VS' %}
                     <br>
                     <img src="{{ object.image.url }}" style="max-width:100%; height: auto; display:block;">
                 {% endif %}
 
+                {% if object.thread_type == 'VS' %}
+                  {% include 'includes/video_player.html' %}
+                {% endif %}
                 {{ object.text|markdownify }}
             </div>
         </div>

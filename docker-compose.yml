@@ -16,8 +16,9 @@ services:
       EMAIL_ADDRESS: askapp@askapp.com
       EMAIL_HOST: askapp
       EMAIL_HOST_PASSWORD: askapp
-    volumes:
-      - .:/code
+    #volumes:
+    #  - .:/code
+    command: sh -c "cp -r docker/media askapp && /wait && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
@@ -25,9 +26,10 @@ services:
   mysql:
     image: mysql:5.7.19
     volumes:
-      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - ./docker/sql:/docker-entrypoint-initdb.d
       - dbdata:/var/lib/mysql
     environment:
+      MYSQL_DATABASE: askapp
       MYSQL_ROOT_PASSWORD: askapp
     restart: always
 
