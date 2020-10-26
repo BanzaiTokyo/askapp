@@ -3,7 +3,6 @@ from django.views.generic import View
 from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
-from askapp import settings
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
