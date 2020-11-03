@@ -22,8 +22,8 @@ SECRET_KEY = get_env_variable('DJANGO_SECRET')
 DEBUG = True
 
 INTERNAL_IPS = ['127.0.0.1', '::1']
-
 ALLOWED_HOSTS = ['*', ]
+SITE_ID = 1
 
 # Application definition
 INSTALLED_APPS = (
@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'debug_toolbar',
@@ -46,7 +47,10 @@ INSTALLED_APPS = (
     'pagination_bootstrap',
     'markdownx',
     'memoize',
-    'registration'
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 )
 
 MIDDLEWARE = (
@@ -115,10 +119,18 @@ DATABASES = {
 }
 # [END db_setup]
 
-# [django-registration] related parameters
-# https://django-registration.readthedocs.io/en/2.2/
-ACCOUNT_ACTIVATION_DAYS = 7
-# [END django-registration]
+# [django-allauth] related parameters
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    #'allauth.account.auth_backends.AuthenticationBackend',
+]
+SOCIALACCOUNT_ADAPTER = "askapp.socialaccount.CustomSocialAccountAdapter"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_FORMS = {'signup': 'askapp.forms.RecaptchaRegistrationForm'}
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_LOGOUT_ON_GET = True
+# [END django-allauth]
 
 EMAIL = get_env_variable('EMAIL_ADDRESS')
 

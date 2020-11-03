@@ -69,10 +69,8 @@
 
 
                 {# Example: Login or register to post a comment#}
-                {% url 'auth_login' as url_auth_login %}
-                {% url 'register' as url_register %}
-                <a href="{{ url_auth_login }}?next={{ request.path }}">Login</a> or
-                <a href="{{ url_register }}">Register</a> to post a comment
+                <a href="{% url 'account_login' %}">Login</a> or
+                <a href="{% url 'account_signup' %}">Register</a> to post a comment
 
             {% endif %}
         </div>

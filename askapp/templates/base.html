@@ -86,11 +86,10 @@
                 <div class="nav navbar-btn navbar-right">
                     {% if user.is_authenticated %}
                         Logged in: <a href="{% url 'profile_edit' %}">{{ user.username }}</a>
-                        (<a href="{% url 'auth_logout' %}?next={{ request.path }}">Log out</a> )
+                        (<a href="{% url 'account_logout' %}">Log out</a> )
                     {% else %}
-                        <a href="{% url 'auth_login' %}?next={{ request.path }}" class="btn btn-link">Login</a>
-                        <a href="{% url 'registration_register' %}"
-                           class="btn btn-primary">Register</a>
+                        <a href="{% url 'account_login' %}" class="btn btn-link">Login</a>
+                        <a href="{% url 'account_signup' %}" class="btn btn-primary">Register</a>
                     {% endif %}
 
 
@@ -109,6 +108,7 @@
 
         {#--------------main column ----------------#}
         <div class="col-md-9">
+            {% block messages %}{% endblock %}
             {% block content %}
                 this is the content block
             {% endblock %}
