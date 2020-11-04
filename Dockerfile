@@ -1,6 +1,6 @@
 FROM python:3.8.2-alpine
 
-RUN apk update && apk add --no-cache --virtual build-deps build-base gcc g++ musl-dev libc-dev && \
+RUN apk update && apk add --no-cache --virtual build-deps build-base gcc g++ musl-dev libc-dev libffi-dev && \
     apk add mariadb-dev linux-headers openssh-client git && \
     pip install mysqlclient && \
     apk add jpeg-dev zlib-dev libjpeg
