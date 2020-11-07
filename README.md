@@ -18,6 +18,16 @@ It already has an admin user "askapp" with password "askapp"
 - python manage.py collectstatic
 - add a cron job `python manage.py calculate_scores` daily or hourly
 
+## Enabling login with Google
+Go to https://console.developers.google.com/, create a new project
+Go to "Credentials" on left side menu, create new via "OAuth Client ID" option,
+specify site root url (http://127.0.0.1:8000 for local or Docker installation ) 
+for "Authorized Javascript origins" and (http://127.0.0.1:8000/accounts/google/login/callback/)
+for "Authorized redirect URL".
+Go to site admin -> "social accounts" -> "social applications", open or create social 
+application named Google, add "client id" and "secret key" obtained from Google Oauth client.
+Add site to "chosen sites", save changes.
+
 ## Environment variables:
 ```DJANGO_SECRET - any random string, a secret key used internally by Django security mechanisms
 DB_HOST - database hostname
