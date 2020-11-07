@@ -1,16 +1,35 @@
+import urllib.request
 from snowpenguin.django.recaptcha2.fields import ReCaptchaField
 from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
-from registration.forms import RegistrationFormUniqueEmail
+from allauth.account.forms import SignupForm
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from .models import Profile, Thread, Post
+from askapp import settings
 
 
-class RecaptchaRegistrationForm(RegistrationFormUniqueEmail):
+class RecaptchaRegistrationForm(SignupForm):
     tos = forms.BooleanField(widget=forms.CheckboxInput,
                              label=_('I have read and agree to the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
     captcha = ReCaptchaField(widget=ReCaptchaWidget())
+
+    @staticmethod
+    def is_email_blacklisted(email):
+        try:
+            sfs_url = f'http://api.stopforumspam.org/api?email={email}'
+            contents = urllib.request.urlopen(sfs_url).read()
+            return b'<appears>yes</appears>' in contents
+        except Exception:
+            return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
+
+    def save(self, request):
+        user = super().save(request)
+        email = self.cleaned_data.get("email")
+        if email and self.is_email_blacklisted(email):
+            user.is_active = False
+            user.save()
+        return user
 
 
 class ProfileForm(forms.ModelForm):

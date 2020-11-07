@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
-from registration.backends.default.views import RegistrationView
 from django.conf import settings
 from askapp import forms, models
 from django.views.generic.edit import CreateView, UpdateView
@@ -16,12 +15,8 @@ from django.http import JsonResponse
 from constance import config
 
 from datetime import datetime, timedelta
-from collections import namedtuple
-import urllib.request
 
 import rules_light
-import askapp.auth_rules
-import logging
 
 
 class LoginRequiredMixin(object):
@@ -191,35 +186,6 @@ class ThreadView(DetailView):
 
     def get_template_names(self):
         return 'thread_question.html' if self.object.thread_type == self.object.QUESTION else 'thread.html'
-
-
-class AskappRegistrationView(RegistrationView):
-    """
-    /account/register page handler
-    """
-    form_class = forms.RecaptchaRegistrationForm
-    template_name = 'registration_form.html'
-
-    def registration_allowed(self):
-        return config.REGISTRATION_OPEN
-
-    @staticmethod
-    def is_email_blacklisted(email):
-        try:
-            sfs_url = f'http://api.stopforumspam.org/api?email={email}'
-            contents = urllib.request.urlopen(sfs_url).read()
-            return b'<appears>yes</appears>' in contents
-        except Exception:
-            return any([email.lower().endswith('@'+d) for d in settings.BLACKLISTED_DOMAINS])
-
-    def register(self, form):
-        email = form.cleaned_data['email']
-        if self.is_email_blacklisted(email):
-            logging.debug('blacklisted email %s', email)
-            self.SEND_ACTIVATION_EMAIL = False
-        else:
-            self.SEND_ACTIVATION_EMAIL = getattr(settings, 'SEND_ACTIVATION_EMAIL', True)
-        return super().register(form)
 
 
 class ThreadMixin(object):

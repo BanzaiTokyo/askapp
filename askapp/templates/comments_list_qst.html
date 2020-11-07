@@ -13,7 +13,7 @@
                 <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
             {% else %}
                 <a class="btn glyphicon glyphicon-chevron-up "
-                   href="{% url 'auth_login' %}?next={% url 'post_like' node.id 'up' %}"></a>
+                   href="{% url 'account_login' %}"></a>
             {% endif %}
             <span class="text-danger num-points"> {{ node.points }} </span>
             {% if can_dislike_post %}<a class="btn glyphicon glyphicon-chevron-down text-danger a"

@@ -6,5 +6,5 @@
 {% elif user.is_active %}
   <a class="btn glyphicon glyphicon-chevron-up voted" title="You have already voted on this article"></a>
 {% else %}
-  <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'thread_like' object.id object.title|slugify 'up' %}" title="Upvote"></a>
+  <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'account_login' %}?next={% url 'thread_like' object.id object.title|slugify 'up' %}" title="Upvote"></a>
 {% endif %}

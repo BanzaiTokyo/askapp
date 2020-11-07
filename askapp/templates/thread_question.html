@@ -113,7 +113,7 @@
               {% elif request.user.is_active %}
                 <a class="btn glyphicon glyphicon-chevron-up disabled"></a>
               {% else %}
-                <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'auth_login' %}?next={% url 'post_like' answer.id 'up' %}"></a>
+                <a class="btn glyphicon glyphicon-chevron-up " href="{% url 'account_login' %}"></a>
               {% endif %}
               <span class="text-danger"> {{ answer.points }} </span>
               {% if can_dislike_post  %}<a class="btn glyphicon glyphicon-chevron-down text-danger" href="{% url 'post_like' answer.id 'down' %}"></a>{% endif %}

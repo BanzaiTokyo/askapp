@@ -37,9 +37,9 @@ urlpatterns = [
     url(r'^domains$', views.DomainsView.as_view(), name="domains"),
     url(r'^domains/(?P<domain>[-\w\.]+)$', views.DomainThreadsView.as_view(), name="domain_thread"),
 
-    url(r'^accounts/register/$', views.AskappRegistrationView.as_view(), name='register'),
+    #url(r'^accounts/register/$', views.AskappRegistrationView.as_view(), name='register'),
     #url(r'^accounts/', (reg_urls, 'registration', 'registration')),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('allauth.urls')),
 
 
     # authenticated users
