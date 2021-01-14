@@ -154,6 +154,34 @@ class Profile(models.Model):
         return favorite_threads(self.user)
 
 
+class Token(models.Model):
+    """
+    An access token that is associated with a user.  This is essentially the same as the token model from Django REST Framework
+    """
+    key = models.CharField(max_length=40, primary_key=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.key:
+            self.key = self.generate_key()
+        return super().save(*args, **kwargs)
+
+    def generate_key(self):
+        import binascii
+        return binascii.hexlify(os.urandom(20)).decode()
+
+    def __unicode__(self):
+        return self.key
+
+    class Meta:
+        db_table = 'django_token_token'
+
+    class Meta1:
+        app_label = 'auth'
+        db_table = 'django_token_token'
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created or not hasattr(instance, 'profile'):

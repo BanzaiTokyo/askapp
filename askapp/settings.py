@@ -64,6 +64,7 @@ MIDDLEWARE = (
     'rules_light.middleware.Middleware',
     'pagination_bootstrap.middleware.PaginationMiddleware',
     'askapp.middleware.WhodidMiddleware',
+    'askapp.middleware.TokenMiddleware',
 
 )
 
@@ -123,6 +124,7 @@ DATABASES = {
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'askapp.backends.TokenBackend',
     #'allauth.account.auth_backends.AuthenticationBackend',
 ]
 SOCIALACCOUNT_ADAPTER = "askapp.socialaccount.CustomSocialAccountAdapter"
