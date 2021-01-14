@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 from django.http import HttpResponse
 
 from askapp import settings
-from askapp import views
+from askapp import views, api
 from askapp.sitemaps import sitemap_dict
 from markdownx.urls import urlpatterns as markdownx_urls
 #from registration.backends.default.urls import urlpatterns as reg_urls
@@ -41,6 +41,8 @@ urlpatterns = [
     #url(r'^accounts/', (reg_urls, 'registration', 'registration')),
     url(r'^accounts/', include('allauth.urls')),
 
+    # API
+    url(r'api/v1/article/add$', api.AddArticle.as_view(), name="api_add_article"),
 
     # authenticated users
     url(r'^profile/edit$', views.ProfileEditView.as_view(), name="profile_edit"),
