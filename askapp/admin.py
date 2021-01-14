@@ -3,10 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db import models
 from markdownx.widgets import AdminMarkdownxWidget
-from askapp.models import Profile, UserLevel, Thread, Tag, Post, ThreadLike
+from askapp.models import Profile, UserLevel, Thread, Tag, Post, ThreadLike, Token
 from django.db.models import Value, CharField
 from django.shortcuts import render
 from django.urls import path
+from django.utils.safestring import mark_safe
 from django.apps.registry import apps
 from askapp import settings
 
@@ -20,8 +21,15 @@ class ProfileInline(admin.StackedInline):
         return False
 
 
+class TokenInline(admin.StackedInline):
+    model = Token
+
+    class Media:
+        js = ('js/admin.js', )
+
+
 class CustomUserAdmin(UserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline, TokenInline)
     ordering = ('-date_joined',)
     list_display = ('username', 'first_name', 'last_name', 'email', 'id','date_joined')
 
