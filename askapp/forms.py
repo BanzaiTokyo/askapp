@@ -44,10 +44,11 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-class AskappClearableFileInput(forms.widgets.ClearableFileInput):
-    template_with_initial = (
-        '%(clear_template)s<br />%(input_text)s: %(input)s'
-    )
+class ConstanceClearableFileInput(forms.widgets.ClearableFileInput):
+    template_name = 'admin/askapp/constance_file_input.html'
+
+    def is_initial(self, value):
+        return bool(value)
 
 
 class ThreadForm(forms.ModelForm):
@@ -56,7 +57,7 @@ class ThreadForm(forms.ModelForm):
         fields = ('thread_type', 'original', 'link', 'title', 'text', 'tags', 'image')
         widgets = {
             'original': forms.TextInput(),
-            'image': AskappClearableFileInput()
+            'image': forms.widgets.ClearableFileInput()
         }
         error_messages = {
             'original': {

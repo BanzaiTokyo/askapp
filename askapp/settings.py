@@ -199,11 +199,12 @@ TECH_USER = 0  # specify user id to hide it from activity log
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_DATABASE_CACHE_BACKEND = 'default'
 CONSTANCE_ADDITIONAL_FIELDS = {
-    'image_field': ['django.forms.ImageField', {}]
+    'image_field': ['django.forms.ImageField', {'required': False, 'widget': 'askapp.forms.ConstanceClearableFileInput'}]
 }
+
 CONSTANCE_CONFIG = {
     'SITE_NAME': ('', 'Site Name'),
-    'SITE_LOGO': ('logo.png', 'Site logo', 'image_field'),
+    'SITE_LOGO': ('', 'Site logo', 'image_field'),
     'REGISTRATION_OPEN': (False, 'Is registration open?', bool),
     'NUM_DOMAIN_STATS': (50, 'number of rows in the table at the /domains page', int),
     'ABOUT_TEXT': ('', '"About" text')
