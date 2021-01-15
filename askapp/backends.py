@@ -1,6 +1,6 @@
 """Taken from https://github.com/jasonbeverage/django-token"""
 
-from django_token.models import Token
+from askapp.models import Token
 
 from django.contrib.auth import get_user_model
 
