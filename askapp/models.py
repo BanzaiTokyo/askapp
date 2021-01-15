@@ -174,13 +174,6 @@ class Token(models.Model):
     def __unicode__(self):
         return self.key
 
-    class Meta:
-        db_table = 'django_token_token'
-
-    class Meta1:
-        app_label = 'auth'
-        db_table = 'django_token_token'
-
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
