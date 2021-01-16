@@ -29,10 +29,6 @@ img {
 .footer .nav>li {
     display: inline-block;
 }
-.footer .navbar-nav {
-    margin-bottom: 0;
-    margin-top: 5px;
-}
 .bs-callout {
     padding: 20px;
     border: 1px solid #eee;
