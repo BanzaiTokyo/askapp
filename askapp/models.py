@@ -298,7 +298,7 @@ class Thread(models.Model):
         super(Thread, self).__init__(*args, **kwargs)
         self._old = model_to_dict(self, fields=['id', 'hidden', 'closed', 'sticky', 'sponsored', 'deleted', 'text', 'title'])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
